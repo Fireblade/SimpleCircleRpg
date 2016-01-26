@@ -19,12 +19,16 @@ public class GameClient {
 	private String name;
 	private long uid;
 	
+	public Character myCharacter;
+	
 	HashMap<Integer, Character> characters = new HashMap();
 	
 	
 	public GameClient (String name) {
 		client = new Client();
 	    client.start();
+	    
+	    this.name = name;
 		
 		Network.register(client);
 		
@@ -37,8 +41,13 @@ public class GameClient {
 					System.out.println(((OtherClient) object).name + " has connected with userID: " + ((OtherClient) object).id);
 				}
 				if (object instanceof AddCharacter) {
-					//AddCharacter msg = (AddCharacter)object;
-					//characters.put(msg.character.id, msg.character);
+					AddCharacter msg = (AddCharacter)object;
+					characters.put(msg.character.id, msg.character);
+					System.out.println("Added character... " + msg.character.name);
+					// TODO fix way of getting clients character
+					if(msg.character.name.equals(name)){
+						myCharacter = msg.character;
+					}
 					return;
 				}
 				

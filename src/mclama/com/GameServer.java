@@ -147,12 +147,15 @@ public class GameServer {
 		// Add logged in character to all connections.
 		AddCharacter addCharacter = new AddCharacter();
 		addCharacter.character = character;
-		System.out.println("1");
-		server.sendToAllTCP(addCharacter);
-		System.out.println("2");
+		server.sendToAllUDP(addCharacter);
 	}
 	
 	static class CharacterConnection extends Connection {
 		public Character character;
 	}
+	
+	public int connectedClients(){
+		return loggedIn.size();
+	}
+
 }
