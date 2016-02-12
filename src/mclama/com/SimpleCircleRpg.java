@@ -14,6 +14,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
+import mclama.com.monster.Monster;
+
 public class SimpleCircleRpg {
 
 	public static boolean gameIsRunning = false;
@@ -43,6 +45,7 @@ public class SimpleCircleRpg {
 
 	/** is VSync Enabled */
 	boolean vsync;
+	private Player myPlayer;
 
 	public static void main(String[] args) throws IOException {
 
@@ -126,6 +129,9 @@ public class SimpleCircleRpg {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		
+		myPlayer = new Player();
+		
 
 	}
 
@@ -147,7 +153,28 @@ public class SimpleCircleRpg {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 					if (gameIsRunning) {
-						System.out.println("send");
+						int[] rarerolls = {0,0,0,0,0,0,0};
+						//System.out.println("send");
+						for(int count=0; count<=10000; count++)
+						{
+							Monster monst = new Monster(0, 1, 1, 5,5);
+							monst.die(myPlayer);
+							
+							for(int i=0; i<monst.getItem_drops().size(); i++){
+								rarerolls[monst.getItem_drops().get(i).getRarity()]++;
+							}
+						}
+						
+						System.out.println("0: " + rarerolls[0]);
+						System.out.println("1: " + rarerolls[1]);
+						System.out.println("2: " + rarerolls[2]);
+						System.out.println("3: " + rarerolls[3]);
+						System.out.println("4: " + rarerolls[4]);
+						System.out.println("5: " + rarerolls[5]);
+						System.out.println("6: " + rarerolls[6]);
+						
+						System.out.println("items: " + (rarerolls[1] + rarerolls[2] + rarerolls[3] +
+								rarerolls[4] + rarerolls[5] + rarerolls[6]));
 					}
 				}
 				// if (Keyboard.getEventKey() == Keyboard.KEY_F) {
