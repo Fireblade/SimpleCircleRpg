@@ -22,9 +22,7 @@ public class Item {
 	}
 	
 	
-	
-	
-	
+
 	
 	/*
 	 * 1-handed melee weapon

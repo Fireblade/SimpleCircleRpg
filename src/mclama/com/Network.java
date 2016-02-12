@@ -38,7 +38,8 @@ public class Network {
 	}
 	
 	public static class UpdateCharacter {
-		public int id, x, y;
+		public int id;
+		public double x, y;
 	}
 	
 	public static class AddCharacter {
@@ -46,7 +47,7 @@ public class Network {
 	}
 	
 	public static class MoveCharacter {
-		public int x, y;
+		public double x, y;
 	}
 
 }

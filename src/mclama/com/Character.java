@@ -2,5 +2,6 @@ package mclama.com;
 
 public class Character {
 	public String name;
-	public int id, x, y;
+	public int id;
+	public double x, y;
 }
