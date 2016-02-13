@@ -47,7 +47,7 @@ public class SimpleCircleRpg {
 	boolean vsync;
 	private Player myPlayer;
 	private Monster monst=null;
-	private int mouseX, mouseY;
+	private double mouseX, mouseY;
 
 	public static void main(String[] args) throws IOException {
 
@@ -147,8 +147,8 @@ public class SimpleCircleRpg {
 
 	public void update(int delta) {
 		// rotate quad
-		mouseX = Mouse.getX();
-		mouseY = game_height - Mouse.getY();
+		mouseX = Mouse.getX() - camX;
+		mouseY = HEIGHT - Mouse.getY() - 1 - camY;
 		
 //		float mx = Mouse.getX() - camX;
 //		float my = HEIGHT - Mouse.getY() - 1 - camY;

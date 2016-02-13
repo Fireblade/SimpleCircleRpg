@@ -59,7 +59,7 @@ public class Entity {
 		}// else texture = QuickLoad(texName);
 		
 		if(moveToLoc && D_PlayerShowMoveToLine){
-			glTranslatef(camX,camY,0);
+			glTranslated(camX,camY,0);
 			glDisable(GL_TEXTURE_2D);
 			glColor4f(1f,0f,0f,1f);
 			glBegin(GL_LINES);

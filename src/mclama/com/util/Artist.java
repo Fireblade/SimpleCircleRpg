@@ -18,7 +18,7 @@ public class Artist {
 	//public static final int WIDTH = 1280/2, HEIGHT = 960/2;
 	//public static final int WIDTH = (int) (1920/1.5), HEIGHT = (int) (1080/1.5);
 	public static final int WIDTH = 720, HEIGHT = 480;
-	public static float camX=0, camY=0;
+	public static double camX=0, camY=0;
 	
 	
 	public static Texture tex_circle;
