@@ -6,15 +6,20 @@ import java.util.Scanner;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
-import mclama.com.monster.Monster;
+import mclama.com.entity.Monster;
+import mclama.com.entity.Player;
+import mclama.com.util.Artist;
+
+import static mclama.com.util.Artist.*;
 
 public class SimpleCircleRpg {
 
@@ -46,6 +51,8 @@ public class SimpleCircleRpg {
 	/** is VSync Enabled */
 	boolean vsync;
 	private Player myPlayer;
+	private Monster monst=null;
+	private int mouseX, mouseY;
 
 	public static void main(String[] args) throws IOException {
 
@@ -112,6 +119,9 @@ public class SimpleCircleRpg {
 	}
 
 	private void initialize() {
+		Artist.createCircleLibrary();
+		
+		
 		ttf = new UnicodeFont(new java.awt.Font("Verdana", java.awt.Font.PLAIN, 12));
 		ttf.getEffects().add(new ColorEffect(java.awt.Color.white));
 		ttf.addAsciiGlyphs();
@@ -138,16 +148,18 @@ public class SimpleCircleRpg {
 	public void update(int delta) {
 		// rotate quad
 		rotation += 0.15f * delta;
+		mouseX = Mouse.getX();
+		mouseY = game_height - Mouse.getY();
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-			x -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-			x += 0.35f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_A))
+			monst.setX(monst.getX() - 0.35f * delta);
+		if (Keyboard.isKeyDown(Keyboard.KEY_D))
+			monst.setX(monst.getX() + 0.35f * delta);
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-			y -= 0.35f * delta;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-			y += 0.35f * delta;
+		if (Keyboard.isKeyDown(Keyboard.KEY_W))
+			monst.setY(monst.getY() - 0.35f * delta);
+		if (Keyboard.isKeyDown(Keyboard.KEY_S))
+			monst.setY(monst.getY() + 0.35f * delta);
 
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
@@ -157,7 +169,10 @@ public class SimpleCircleRpg {
 						//System.out.println("send");
 						for(int count=0; count<=10000; count++)
 						{
-							Monster monst = new Monster(0, 1, 1, 5,5);
+							monst = new Monster(0,  1, 1, 64,64);
+							monst.setTexture(tex_circle);
+							monst.setWidth(32);
+							monst.setHeight(32);
 							monst.die(myPlayer);
 							
 							for(int i=0; i<monst.getItem_drops().size(); i++){
@@ -302,42 +317,57 @@ public class SimpleCircleRpg {
 	}
 
 	public void initGL() {
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, game_width, game_height, 0, 1, -1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0, game_width, game_height, 0, 1, -1);
+		glMatrixMode(GL_MODELVIEW);
 	}
 
 	public void renderGL() {
 		// Clear The Screen And The Depth Buffer
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		// R,G,B,A Set The Color To Blue One Time Only
-		GL11.glColor3f(0.5f, 0.5f, 1.0f);
+		glColor3f(0.5f, 0.5f, 1.0f);
 
 		// draw quad
-		GL11.glPushMatrix();
-		GL11.glTranslatef(x, y, 0);
-		GL11.glRotatef(rotation, 0f, 0f, 1f);
-		GL11.glTranslatef(-x, -y, 0);
+		glPushMatrix();
+		glTranslatef(x, y, 0);
+		glRotatef(rotation, 0f, 0f, 1f);
+		glTranslatef(-x, -y, 0);
 
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(x - 50, y - 50);
-		GL11.glVertex2f(x + 50, y - 50);
-		GL11.glVertex2f(x + 50, y + 50);
-		GL11.glVertex2f(x - 50, y + 50);
-		GL11.glEnd();
-		GL11.glPopMatrix();
+		glBegin(GL_QUADS);
+		glVertex2f(x - 50, y - 50);
+		glVertex2f(x + 50, y - 50);
+		glVertex2f(x + 50, y + 50);
+		glVertex2f(x - 50, y + 50);
+		glEnd();
+		glPopMatrix();
 
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		if(monst!=null){
+			monst.draw();
+			glColor3f(1.0f, 0.0f, 0.0f);
+			DrawPoint(monst.getX(), monst.getY());
+			DrawPoint(32, 32);
+		}
 
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)
 			ttf.drawString(10, 24, "Connections: " + server.connectedClients(), Color.orange);
 		if (gameIsRunning && client.myCharacter != null)
 			ttf.drawString(10, 38, "Name: " + client.myCharacter.name, Color.orange);
+		
+		ttf.drawString(10, 64, "mx: " + mouseX, Color.orange);
+		ttf.drawString(10, 74, "my: " + mouseY, Color.orange);
 
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		glDisable(GL_TEXTURE_2D);
+		
+		
 	}
 
 }
