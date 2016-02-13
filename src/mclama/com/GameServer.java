@@ -10,9 +10,13 @@ import com.esotericsoftware.kryonet.Server;
 import mclama.com.Network.AddCharacter;
 import mclama.com.Network.Login;
 import mclama.com.Network.MoveCharacter;
+import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.UpdateCharacter;
+import mclama.com.Network.sendPlayersCharacter;
+
+import static mclama.com.util.globals.*;
 
 public class GameServer {
 	
@@ -38,6 +42,10 @@ public class GameServer {
 
 				if (object instanceof OtherClient){
 					((OtherClient)object).id = setCharacterID();
+					server.sendToAllTCP(object);
+				}
+				
+				if (object instanceof MoveClickOrder){
 					server.sendToAllTCP(object);
 				}
 				
@@ -112,6 +120,7 @@ public class GameServer {
 			}
 		});
 		server.bind(Network.TCPport, Network.UDPport);
+		gServer = server;
 		server.start();
 	}
 	
@@ -126,14 +135,15 @@ public class GameServer {
 		Character character = new Character();
 		character.id = 0;
 		character.name = name;
-		character.x = 0;
-		character.y = 0;
+		character.x = 64;
+		character.y = 64;
 		return character;
 	}
 
 
 	void loggedIn (CharacterConnection c, Character character) {
 		c.character = character;
+		character.id = setCharacterID();
 
 		// Add existing characters to new logged in connection.
 		for (Character other : loggedIn) {
@@ -147,7 +157,12 @@ public class GameServer {
 		// Add logged in character to all connections.
 		AddCharacter addCharacter = new AddCharacter();
 		addCharacter.character = character;
-		server.sendToAllUDP(addCharacter);
+		
+		server.sendToAllTCP(addCharacter);
+		
+		sendPlayersCharacter sendChar = new sendPlayersCharacter();
+		sendChar.id = character.id;
+		c.sendTCP(sendChar);
 	}
 	
 	static class CharacterConnection extends Connection {

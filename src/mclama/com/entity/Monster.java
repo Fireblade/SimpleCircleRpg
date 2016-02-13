@@ -1,5 +1,7 @@
 package mclama.com.entity;
 
+import static mclama.com.util.Artist.tex_circle;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,6 +26,7 @@ public class Monster extends Entity{
 		this.level = level;
 		this.x = x;
 		this.y = y;
+		texture = tex_circle;
 	}
 	
 	

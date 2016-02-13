@@ -22,6 +22,8 @@ public class Network {
 		kryo.register(AddCharacter.class);
 		kryo.register(MoveCharacter.class);
 		kryo.register(Character.class);
+		kryo.register(MoveClickOrder.class);
+		kryo.register(sendPlayersCharacter.class);
 	}
 	
 	public static class Login {
@@ -48,6 +50,15 @@ public class Network {
 	
 	public static class MoveCharacter {
 		public double x, y;
+	}
+	
+	public static class MoveClickOrder {
+		public int id;
+		public double x, y;
+	}
+	
+	public static class sendPlayersCharacter{
+		public int id;
 	}
 
 }

@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Entity {
 	
 	protected int id, level;
-	protected double x, y;
+	protected double x=64, y=64;
 	protected float size=1;
 	public double speed=0.15f, xVelocity, yVelocity;
 	protected int attackRange=48;
@@ -229,6 +229,14 @@ public class Entity {
 
 	public void setHasDied(boolean hasDied) {
 		this.hasDied = hasDied;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

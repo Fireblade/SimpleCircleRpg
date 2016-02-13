@@ -1,6 +1,9 @@
 package mclama.com;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import org.lwjgl.LWJGLException;
@@ -20,6 +23,7 @@ import mclama.com.entity.Player;
 import mclama.com.util.Artist;
 
 import static mclama.com.util.Artist.*;
+import static mclama.com.util.globals.*;
 
 public class SimpleCircleRpg {
 
@@ -45,22 +49,20 @@ public class SimpleCircleRpg {
 
 	/** is VSync Enabled */
 	boolean vsync;
-	private Player myPlayer;
 	private Monster monst=null;
 	private double mouseX, mouseY;
 
 	public static void main(String[] args) throws IOException {
-
+		
 		System.out.println("Starting");
-
+		
 		Scanner reader = new Scanner(System.in);
 		System.out.println("Host or name: ");
 		String text = reader.next();
 
 		// Log.DEBUG();
-
+		
 		if (text.equals("host"))
-
 		{
 			System.out.println("What is your name: ");
 			text = reader.next();
@@ -68,17 +70,18 @@ public class SimpleCircleRpg {
 			try {
 				server = new GameServer();
 				client = new GameClient(text);
+				myPlayer.name = text;
 				gameIsRunning = true;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else
-
 		{
 			client = new GameClient(text);
+			myPlayer.name = text;
 			gameIsRunning = true;
 		}
-
+		
 		SimpleCircleRpg game = new SimpleCircleRpg();
 		game.start();
 
@@ -93,8 +96,9 @@ public class SimpleCircleRpg {
 			System.exit(0);
 		}
 
-		initialize();
+		
 		initGL(); // init OpenGL
+		initialize();
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
 
@@ -113,7 +117,7 @@ public class SimpleCircleRpg {
 		System.exit(0);
 	}
 
-	private void initialize() {
+	public void initialize() {
 		Artist.createCircleLibrary();
 		
 		
@@ -135,12 +139,9 @@ public class SimpleCircleRpg {
 			e.printStackTrace();
 		}
 		
-		myPlayer = new Player();
-		myPlayer.setTexture(tex_circle);
-		myPlayer.setX(64);
-		myPlayer.setY(64);
-		myPlayer.setWidth(32);
-		myPlayer.setHeight(32);
+		//myPlayer = new Player(); //created in globals
+		//myPlayer.setTexture(tex_circle);
+		//myPlayer.setId(playersConnectedID);
 		
 
 	}
@@ -168,11 +169,12 @@ public class SimpleCircleRpg {
 		while (Mouse.next()){
 		    if (Mouse.getEventButtonState()) {
 		        if (Mouse.getEventButton() == 0) {
-		            myPlayer.playerClicked(mouseX,mouseY);
+		        	if(myPlayer==null) System.out.println("null player");
+		        	else myPlayer.playerClicked(mouseX,mouseY);
 		        }
 		    }else {
 		        if (Mouse.getEventButton() == 0) {
-		            System.out.println("Left button released");
+		            //System.out.println("Left button released");
 		        }
 		    }
 		}
@@ -186,9 +188,6 @@ public class SimpleCircleRpg {
 						for(int count=0; count<=10000; count++)
 						{
 							monst = new Monster(0,  1, 1, 64,64);
-							monst.setTexture(tex_circle);
-							monst.setWidth(32);
-							monst.setHeight(32);
 							monst.die(myPlayer);
 							
 							for(int i=0; i<monst.getItem_drops().size(); i++){
@@ -219,8 +218,27 @@ public class SimpleCircleRpg {
 			}
 		}//end of keyboard
 		
-		myPlayer.speed = 0.15f;
-		myPlayer.tick(delta);
+		//myPlayer.tick(delta);
+		
+		Iterator<Entry<Integer, Player>> iterator = GameClient.characters.entrySet().iterator() ;
+        while(iterator.hasNext()){
+            Entry<Integer, Player> studentEntry = iterator.next();
+            System.out.println(studentEntry.getKey() +" :: "+ studentEntry.getValue());
+            //You can remove elements while iterating.
+            studentEntry.getValue().tick(delta);
+            
+            iterator.remove();
+        }
+		
+		Iterator it = GameClient.characters.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			it.remove(); // avoids a ConcurrentModificationException
+			Player player = (Player) pair.getValue();
+			
+			System.out.println(player.name);
+			player.tick(delta);
+		}
 
 		updateFPS(); // update FPS Counter
 	}
@@ -370,7 +388,27 @@ public class SimpleCircleRpg {
 			DrawPoint(myPlayer.getX(), myPlayer.getY());
 			DrawPoint(32, 32);
 		}
+		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
 		
+		Iterator it = GameClient.characters.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			it.remove(); // avoids a ConcurrentModificationException
+			Player player = (Player) pair.getValue();
+			
+			player.draw();
+		}
+		
+		
+		Iterator<Entry<Integer, Player>> iterator = GameClient.characters.entrySet().iterator() ;
+        while(iterator.hasNext()){
+            Entry<Integer, Player> studentEntry = iterator.next();
+            System.out.println(studentEntry.getKey() +" :: "+ studentEntry.getValue());
+            //You can remove elements while iterating.
+            System.out.println(studentEntry.getValue().name); 
+            
+            iterator.remove();
+        }
 
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)
