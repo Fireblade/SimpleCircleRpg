@@ -35,11 +35,6 @@ public class SimpleCircleRpg {
 	private UnicodeFont ttf;
 	private UnicodeFont ttfMon;
 
-	/** position of quad */
-	float x = 400, y = 300;
-	/** angle of quad rotation */
-	float rotation = 0;
-
 	/** time at last frame */
 	long lastFrame;
 
@@ -141,26 +136,47 @@ public class SimpleCircleRpg {
 		}
 		
 		myPlayer = new Player();
+		myPlayer.setTexture(tex_circle);
+		myPlayer.setX(64);
+		myPlayer.setY(64);
+		myPlayer.setWidth(32);
+		myPlayer.setHeight(32);
 		
 
 	}
 
 	public void update(int delta) {
 		// rotate quad
-		rotation += 0.15f * delta;
 		mouseX = Mouse.getX();
 		mouseY = game_height - Mouse.getY();
+		
+//		float mx = Mouse.getX() - camX;
+//		float my = HEIGHT - Mouse.getY() - 1 - camY;
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_A))
-			monst.setX(monst.getX() - 0.35f * delta);
+			myPlayer.setX(myPlayer.getX() - 0.35f * delta);
 		if (Keyboard.isKeyDown(Keyboard.KEY_D))
-			monst.setX(monst.getX() + 0.35f * delta);
+			myPlayer.setX(myPlayer.getX() + 0.35f * delta);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_W))
-			monst.setY(monst.getY() - 0.35f * delta);
+			myPlayer.setY(myPlayer.getY() - 0.35f * delta);
 		if (Keyboard.isKeyDown(Keyboard.KEY_S))
-			monst.setY(monst.getY() + 0.35f * delta);
+			myPlayer.setY(myPlayer.getY() + 0.35f * delta);
 
+		
+		
+		while (Mouse.next()){
+		    if (Mouse.getEventButtonState()) {
+		        if (Mouse.getEventButton() == 0) {
+		            myPlayer.playerClicked(mouseX,mouseY);
+		        }
+		    }else {
+		        if (Mouse.getEventButton() == 0) {
+		            System.out.println("Left button released");
+		        }
+		    }
+		}
+		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
@@ -201,17 +217,10 @@ public class SimpleCircleRpg {
 				// Display.setVSyncEnabled(vsync);
 				// }
 			}
-		}
-
-		// keep quad on the screen
-		if (x < 0)
-			x = 0;
-		if (x > game_width)
-			x = game_width;
-		if (y < 0)
-			y = 0;
-		if (y > game_height)
-			y = game_height;
+		}//end of keyboard
+		
+		myPlayer.speed = 0.15f;
+		myPlayer.tick(delta);
 
 		updateFPS(); // update FPS Counter
 	}
@@ -334,18 +343,18 @@ public class SimpleCircleRpg {
 		glColor3f(0.5f, 0.5f, 1.0f);
 
 		// draw quad
-		glPushMatrix();
-		glTranslatef(x, y, 0);
-		glRotatef(rotation, 0f, 0f, 1f);
-		glTranslatef(-x, -y, 0);
-
-		glBegin(GL_QUADS);
-		glVertex2f(x - 50, y - 50);
-		glVertex2f(x + 50, y - 50);
-		glVertex2f(x + 50, y + 50);
-		glVertex2f(x - 50, y + 50);
-		glEnd();
-		glPopMatrix();
+//		glPushMatrix();
+//		glTranslatef(x, y, 0);
+//		glRotatef(rotation, 0f, 0f, 1f);
+//		glTranslatef(-x, -y, 0);
+//
+//		glBegin(GL_QUADS);
+//		glVertex2f(x - 50, y - 50);
+//		glVertex2f(x + 50, y - 50);
+//		glVertex2f(x + 50, y + 50);
+//		glVertex2f(x - 50, y + 50);
+//		glEnd();
+//		glPopMatrix();
 
 		glEnable(GL_TEXTURE_2D);
 		glColor3f(1.0f, 1.0f, 1.0f);
@@ -355,6 +364,13 @@ public class SimpleCircleRpg {
 			DrawPoint(monst.getX(), monst.getY());
 			DrawPoint(32, 32);
 		}
+		if(myPlayer!=null){
+			myPlayer.draw();
+			glColor3f(1.0f, 0.0f, 0.0f);
+			DrawPoint(myPlayer.getX(), myPlayer.getY());
+			DrawPoint(32, 32);
+		}
+		
 
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)

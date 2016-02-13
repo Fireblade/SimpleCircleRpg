@@ -10,19 +10,47 @@ public class Entity {
 	protected int id, level;
 	protected double x, y;
 	protected float size=1;
+	public double speed=0.15f, xVelocity, yVelocity;
+	protected int attackRange=48;
 	
 	protected double health = 10;
 	
-	protected int width, height;
+	protected int width=32, height=32;
 	protected Texture texture;
 	
 	protected boolean alive=false;
 	protected boolean hasDied=true;
 	protected boolean moveToLoc=false;
 	
+	protected boolean isAttacking=false;
+	
+	protected Entity target;
+	
 	protected double moveX, moveY;
 	
 	
+	public void tick(int delta){
+		
+		if (moveToLoc) {
+			//System.out.println("moveloc");
+			calculateDirection(moveX, moveY);
+			if (distance(x, y, moveX, moveY) < (speed * delta) 
+					|| (isAttacking && distance(x,y,target.getX(),target.getY()) < attackRange)) {
+				moveToLoc = false;
+			} else { // so the player doesn't move and then stop
+				x += xVelocity * speed * delta;
+				y += yVelocity * speed * delta;
+			}
+
+		}
+		
+		if(target != null){
+			if(!target.isAlive()){ //target must have died.
+				isAttacking=false;
+				target = null;
+			}
+		}
+	}
 	
 	public void draw(){
 		
@@ -52,6 +80,47 @@ public class Entity {
 //			int widthOffset = getMonsterFontOffset((int) health+" ", getMonsterFont());
 //			ttf.drawString( camX + x - widthOffset/2, camY + y - height/2 - 10, (int) health + " ");
 //		}
+	}
+	
+	protected void calculateDirection(double moveX2, double moveY2){
+		double totalAllowedMovement = 1.0f;
+		double xDistanceFromTarget = Math.abs(moveX2 - x);
+		double yDistanceFromTarget = Math.abs(moveY2 - y);
+		double totalDistanceFromTarget = xDistanceFromTarget + yDistanceFromTarget;
+		double xPercentOfMovement = xDistanceFromTarget / totalDistanceFromTarget;
+		xVelocity = xPercentOfMovement;
+		yVelocity = totalAllowedMovement - xPercentOfMovement;
+		if (moveX2 < x)
+			xVelocity *= -1;
+		if(moveY2 < y) 
+			yVelocity *= -1;
+	}
+	
+	public double getAngle(float x2, float y2) {
+		double angle = Math.toDegrees(Math.atan2(
+				(x2 - x),
+				(y2 - y)
+				));
+		//angle += 90;
+		//float angle = (float) ((float) Math.atan2(x2 - (x + width/2),y2 - (y + height/2)) * 180 / 3.14);
+		//angle -= 90;
+		//if(angle < 0) angle+=360;
+		return angle;
+	}
+	
+	protected double distance(double x1, double y1, double x2, double y2) {
+		double xDistanceFromTarget = Math.abs(x1 - x2);
+		double yDistanceFromTarget = Math.abs(y1 - y2);
+		return xDistanceFromTarget + yDistanceFromTarget;
+	}
+	
+	protected float distanceX(float distance, double angle){
+		return (float) (distance * Math.sin(Math.toRadians(angle)));
+		//return (float) (distance * Math.cos(angle));
+	}
+	protected float distanceY(float distance, double angle){
+		return (float) (distance * Math.cos(Math.toRadians(angle)));
+		//return (float) (distance * Math.sin(angle));
 	}
 
 
