@@ -21,6 +21,10 @@ public class Player extends Entity{
 		moveY = mouseY;
 		moveToLoc=true;
 		
+		if(myPlayer==null){
+			System.out.println("null playr click");
+		}
+		
 		MoveClickOrder moveOrder = new MoveClickOrder();
 		moveOrder.id = id;
 		moveOrder.x = moveX;

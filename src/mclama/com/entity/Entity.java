@@ -1,8 +1,12 @@
 package mclama.com.entity;
 
 import org.newdawn.slick.opengl.Texture;
+
+import mclama.com.GameServer;
+
 import static mclama.com.util.DebugGlobals.*;
 import static mclama.com.util.Artist.*;
+import static mclama.com.util.globals.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Entity {
@@ -40,6 +44,12 @@ public class Entity {
 			} else { // so the player doesn't move and then stop
 				x += xVelocity * speed * delta;
 				y += yVelocity * speed * delta;
+				
+				if(this instanceof Player){
+					if(gameIsHosting){
+						gameServer.updateCharacter(id, x,y);
+					}
+				}
 			}
 
 		}

@@ -15,6 +15,7 @@ import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.UpdateCharacter;
 import mclama.com.Network.sendPlayersCharacter;
+import mclama.com.entity.Player;
 
 import static mclama.com.util.globals.*;
 
@@ -121,6 +122,7 @@ public class GameServer {
 		});
 		server.bind(Network.TCPport, Network.UDPport);
 		gServer = server;
+		gameServer=this;
 		server.start();
 	}
 	
@@ -148,8 +150,9 @@ public class GameServer {
 		// Add existing characters to new logged in connection.
 		for (Character other : loggedIn) {
 			AddCharacter addCharacter = new AddCharacter();
+			other = getCharacterData(other);
 			addCharacter.character = other;
-			c.sendTCP(addCharacter);
+			c.sendUDP(addCharacter);
 		}
 
 		loggedIn.add(character);
@@ -162,7 +165,29 @@ public class GameServer {
 		
 		sendPlayersCharacter sendChar = new sendPlayersCharacter();
 		sendChar.id = character.id;
-		c.sendTCP(sendChar);
+		c.sendUDP(sendChar);
+	}
+	
+	private Character getCharacterData(Character other){
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			if(plyr.getId()==other.id)
+			{
+				other.x = plyr.getX();
+				other.y = plyr.getY();
+			}
+		}
+		return other;
+	}
+	
+	public void updateCharacter(int id, double x, double y){
+		for (Character other : loggedIn) {
+			if(other.id==id){
+				other.x=x;
+				other.y=y;
+				break;
+			}
+		}
 	}
 	
 	static class CharacterConnection extends Connection {

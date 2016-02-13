@@ -1,6 +1,7 @@
 package mclama.com;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.esotericsoftware.kryonet.Client;
@@ -14,8 +15,10 @@ import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
 import mclama.com.Network.sendPlayersCharacter;
 import mclama.com.entity.Player;
+import mclama.com.item.Item;
 
 import static mclama.com.util.globals.*;
+import static mclama.com.util.Artist.*;
 
 public class GameClient {
 	
@@ -26,7 +29,8 @@ public class GameClient {
 	
 	public Character myCharacter;
 	
-	public static HashMap<Integer, Player> characters = new HashMap();
+	//public static HashMap<Integer, Player> characters = new HashMap();
+	public static ArrayList<Player> characters = new ArrayList<Player>();
 	
 	
 	public GameClient (String name) {
@@ -34,6 +38,7 @@ public class GameClient {
 	    client.start();
 	    
 	    gClient = client;
+	    gameClient=this;
 	    
 	    this.name = name;
 		
@@ -50,26 +55,20 @@ public class GameClient {
 				if (object instanceof sendPlayersCharacter) {
 					System.out.println("received my character");
 					sendPlayersCharacter msg = (sendPlayersCharacter)object;
-					Player plyr = characters.get(msg.id);
+					Player plyr = getCharacter(msg.id);
 					if(plyr!= null)
 						myPlayer = plyr;
 				}
 				if (object instanceof AddCharacter) {
 					AddCharacter msg = (AddCharacter)object;
 					Player plyr = new Player();
-					
-//					if(msg.character.name.equals(name)){ //First connection means its the host.
-//						myCharacter = msg.character;
-//						myPlayer.setId(1);
-//						//myPlayer.name = msg.character.name;
-//						characters.put(1, myPlayer);
-//						System.out.println("first connection");
-//					}else
+					//plyr.setTexture(tex_circle);
 					{
 						plyr.setId(msg.character.id);
 						plyr.name = msg.character.name;
-						characters.put(msg.character.id, plyr);
-						System.out.println("added other char... " + plyr.name);
+						plyr.setX(msg.character.x);
+						plyr.setY(msg.character.y);
+						characters.add(plyr);
 					}
 					System.out.println("Added character... " + msg.character.name + " ID: " + msg.character.id);
 					return;
@@ -79,7 +78,7 @@ public class GameClient {
 					MoveClickOrder clickOrder = ((MoveClickOrder) object);
 					System.out.println("Move order received by: " + clickOrder.id);
 					if(!(((MoveClickOrder) object).id==myPlayer.getId())){ //if not self.
-						characters.get(clickOrder.id).movingClickOrder(clickOrder.x, clickOrder.y);
+						getCharacter(clickOrder.id).movingClickOrder(clickOrder.x, clickOrder.y);
 						
 					}
 				}
@@ -105,6 +104,16 @@ public class GameClient {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public static Player getCharacter(int id){
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			if(plyr.getId()==id){
+				return plyr;
+			}
+		}
+		return null;
 	}
 
 }

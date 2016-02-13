@@ -27,8 +27,7 @@ import static mclama.com.util.globals.*;
 
 public class SimpleCircleRpg {
 
-	public static boolean gameIsRunning = false;
-	public static boolean gameIsHosting = false;
+
 
 	public static GameClient client;
 	public static GameServer server;
@@ -219,26 +218,12 @@ public class SimpleCircleRpg {
 		}//end of keyboard
 		
 		//myPlayer.tick(delta);
-		
-		Iterator<Entry<Integer, Player>> iterator = GameClient.characters.entrySet().iterator() ;
-        while(iterator.hasNext()){
-            Entry<Integer, Player> studentEntry = iterator.next();
-            System.out.println(studentEntry.getKey() +" :: "+ studentEntry.getValue());
-            //You can remove elements while iterating.
-            studentEntry.getValue().tick(delta);
-            
-            iterator.remove();
-        }
-		
-		Iterator it = GameClient.characters.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			it.remove(); // avoids a ConcurrentModificationException
-			Player player = (Player) pair.getValue();
-			
-			System.out.println(player.name);
-			player.tick(delta);
+
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			plyr.tick(delta);
 		}
+		
 
 		updateFPS(); // update FPS Counter
 	}
@@ -382,33 +367,15 @@ public class SimpleCircleRpg {
 			DrawPoint(monst.getX(), monst.getY());
 			DrawPoint(32, 32);
 		}
-		if(myPlayer!=null){
-			myPlayer.draw();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			DrawPoint(myPlayer.getX(), myPlayer.getY());
-			DrawPoint(32, 32);
-		}
+		glColor3f(1.0f, 1.0f, 1.0f);
+		
 		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
 		
-		Iterator it = GameClient.characters.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			it.remove(); // avoids a ConcurrentModificationException
-			Player player = (Player) pair.getValue();
-			
-			player.draw();
+		
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			plyr.draw();
 		}
-		
-		
-		Iterator<Entry<Integer, Player>> iterator = GameClient.characters.entrySet().iterator() ;
-        while(iterator.hasNext()){
-            Entry<Integer, Player> studentEntry = iterator.next();
-            System.out.println(studentEntry.getKey() +" :: "+ studentEntry.getValue());
-            //You can remove elements while iterating.
-            System.out.println(studentEntry.getValue().name); 
-            
-            iterator.remove();
-        }
 
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)
