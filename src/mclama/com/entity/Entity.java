@@ -66,7 +66,7 @@ public class Entity {
 		
 		if(texture!=null){
 			DrawQuadTex(texture, x, y, width, height);
-		}// else texture = QuickLoad(texName);
+		} else texture = LoadTexture("res/images/circles/circle.png", "PNG");
 		
 		if(moveToLoc && D_PlayerShowMoveToLine){
 			glTranslated(camX,camY,0);

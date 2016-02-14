@@ -62,7 +62,6 @@ public class GameClient {
 				if (object instanceof AddCharacter) {
 					AddCharacter msg = (AddCharacter)object;
 					Player plyr = new Player();
-					//plyr.setTexture(tex_circle);
 					{
 						plyr.setId(msg.character.id);
 						plyr.name = msg.character.name;

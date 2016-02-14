@@ -141,7 +141,6 @@ public class SimpleCircleRpg {
 		//myPlayer = new Player(); //created in globals
 		//myPlayer.setTexture(tex_circle);
 		//myPlayer.setId(playersConnectedID);
-		
 
 	}
 

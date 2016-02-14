@@ -14,6 +14,7 @@ public class Player extends Entity{
 	
 	public Player(){
 		texture = tex_circle;
+		
 	}
 	
 	public void playerClicked(double mouseX, double mouseY){
