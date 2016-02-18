@@ -231,7 +231,7 @@ public class LevelPresetEditor extends JFrame {
 		System.out.println(text);
 		//System.out.println(ex + "," + ey);
 		System.out.println(("que.add(new Point(x+" + 
-				(ex-sx) + ", y+" + (ey-sy) + "));\n}\nreturn false;").replace("+-", "-"));
+				(ey-sy) + ", y+" + (ex-sx) + "));\nreturn false;\n}").replace("+-", "-"));
 		
 	}
 	
