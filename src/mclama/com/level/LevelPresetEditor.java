@@ -202,7 +202,7 @@ public class LevelPresetEditor extends JFrame {
 					}
 					//System.out.println(sx - x + " x " + sx + "," + x);
 					//System.out.println(sy - y + " y " + sy + "," + y);
-					text += "tiles[x+" + (sx - x) + "][y+" + (sy - y) + "]=true;\n";
+					text += "tiles[x+" + (y-sy) + "][y+" + (x-sx) + "]=true;\n";
 				}
 			}
 		}
