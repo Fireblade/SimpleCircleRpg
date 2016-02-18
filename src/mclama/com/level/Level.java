@@ -111,23 +111,235 @@ public class Level {
 			switch(presetRoll){
 			
 			case 0:
-				if(x+3 > 0 && x+3 <width
-						&& y-2 > 0 && y+4<height){
-					tiles[x][y]=true;
-					tiles[x][y-1]=true;
-					tiles[x][y-2]=true;
-					tiles[x+1][y-2]=true;
-					tiles[x+2][y-2]=true;
-					tiles[x+3][y-2]=true;
-					
-					tiles[x][y+1]=true;
-					tiles[x][y+2]=true;
-					tiles[x+1][y+2]=true;
-					tiles[x+1][y+3]=true;
-					tiles[x+2][y+3]=true;
+				if (x + 3 < width && y - 2 > 0 && y + 3 < height) {
+					tiles[x + 2][y + 0] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 2] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 1][y + 0] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x - 1][y + 0] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 3][y - 1] = true;
+
+					que.add(new Point(x - 2, y + 3));
+				}
+
+				break;
+				
+			case 1:
+				if (x + 4 < width && y - 2 > 0 && y + 3 < height) {
+					tiles[x + 2][y + 0] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 2] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 2][y - 4] = true;
+					tiles[x + 1][y + 0] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 2] = true;
+					tiles[x + 0][y - 3] = true;
+					tiles[x - 1][y + 0] = true;
+					tiles[x - 1][y - 3] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 2][y - 3] = true;
+					tiles[x - 3][y - 1] = true;
+					tiles[x - 3][y - 2] = true;
+					tiles[x - 3][y - 3] = true;
+
+					que.add(new Point(x - 2, y + 4));
 				}
 				break;
-			}
+
+			case 2:
+				if (x + 4 < width && y - 2 > 0 && y + 3 < height) {
+					tiles[x + 2][y + 0] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 2] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 2][y - 4] = true;
+					tiles[x + 1][y + 0] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 2] = true;
+					tiles[x + 0][y - 3] = true;
+					tiles[x - 1][y + 0] = true;
+					tiles[x - 1][y - 3] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 2][y - 3] = true;
+					tiles[x - 3][y - 1] = true;
+					tiles[x - 3][y - 2] = true;
+					tiles[x - 3][y - 3] = true;
+
+					que.add(new Point(x - 2, y + 4));
+				}
+
+			case 3:
+				if (x + 8 < width && y - 3 > 0 && y + 4 < height) {
+					tiles[x + 3][y - 3] = true;
+					tiles[x + 3][y - 4] = true;
+					tiles[x + 3][y - 5] = true;
+					tiles[x + 3][y - 6] = true;
+					tiles[x + 3][y - 7] = true;
+					tiles[x + 2][y + 0] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 2] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 2][y - 5] = true;
+					tiles[x + 2][y - 7] = true;
+					tiles[x + 1][y - 1] = true;
+					tiles[x + 1][y - 5] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 1] = true;
+					tiles[x + 0][y - 3] = true;
+					tiles[x + 0][y - 4] = true;
+					tiles[x + 0][y - 5] = true;
+					tiles[x + 0][y - 6] = true;
+					tiles[x + 0][y - 7] = true;
+					tiles[x - 1][y - 5] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 2][y - 4] = true;
+					tiles[x - 2][y - 5] = true;
+					tiles[x - 2][y - 7] = true;
+					tiles[x - 2][y - 8] = true;
+					tiles[x - 3][y + 0] = true;
+					tiles[x - 3][y - 1] = true;
+					tiles[x - 3][y - 4] = true;
+					tiles[x - 3][y - 7] = true;
+					tiles[x - 4][y + 0] = true;
+					tiles[x - 4][y - 1] = true;
+					tiles[x - 4][y - 2] = true;
+					tiles[x - 4][y - 3] = true;
+					tiles[x - 4][y - 4] = true;
+					tiles[x - 4][y - 5] = true;
+					tiles[x - 4][y - 6] = true;
+					tiles[x - 4][y - 7] = true;
+
+					que.add(new Point(x + 2, y + 8));
+				}
+				break;
+
+			case 4:
+				if (x + 6 < width && y - 7 > 0 && y + 6 < height) {
+					tiles[x + 7][y - 5] = true;
+					tiles[x + 6][y - 1] = true;
+					tiles[x + 6][y - 2] = true;
+					tiles[x + 6][y - 3] = true;
+					tiles[x + 6][y - 4] = true;
+					tiles[x + 6][y - 5] = true;
+					tiles[x + 5][y - 1] = true;
+					tiles[x + 5][y - 4] = true;
+					tiles[x + 4][y - 1] = true;
+					tiles[x + 4][y - 4] = true;
+					tiles[x + 4][y - 5] = true;
+					tiles[x + 4][y - 6] = true;
+					tiles[x + 3][y - 1] = true;
+					tiles[x + 3][y - 4] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 2][y - 4] = true;
+					tiles[x + 1][y - 1] = true;
+					tiles[x + 1][y - 3] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 1] = true;
+					tiles[x + 0][y - 3] = true;
+					tiles[x + 0][y - 4] = true;
+					tiles[x + 0][y - 5] = true;
+					tiles[x - 1][y - 1] = true;
+					tiles[x - 1][y - 5] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 2][y - 2] = true;
+					tiles[x - 2][y - 3] = true;
+					tiles[x - 2][y - 5] = true;
+					tiles[x - 3][y - 5] = true;
+					tiles[x - 4][y - 1] = true;
+					tiles[x - 4][y - 2] = true;
+					tiles[x - 4][y - 3] = true;
+					tiles[x - 4][y - 5] = true;
+					tiles[x - 5][y - 3] = true;
+					tiles[x - 5][y - 5] = true;
+					tiles[x - 6][y - 3] = true;
+					tiles[x - 6][y - 4] = true;
+					tiles[x - 6][y - 5] = true;
+
+					que.add(new Point(x - 4, y + 6));
+				}
+				break;
+
+			case 5:
+				if (x + 5 < width && y - 2 > 0 && y + 7 < height) {
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 2][y - 2] = true;
+					tiles[x + 2][y - 3] = true;
+					tiles[x + 2][y - 4] = true;
+					tiles[x + 1][y - 1] = true;
+					tiles[x + 1][y - 2] = true;
+					tiles[x + 1][y - 3] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 1] = true;
+					tiles[x + 0][y - 2] = true;
+					tiles[x - 1][y - 1] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 2][y - 3] = true;
+					tiles[x - 2][y - 4] = true;
+					tiles[x - 3][y - 1] = true;
+					tiles[x - 3][y - 4] = true;
+					tiles[x - 4][y - 1] = true;
+					tiles[x - 4][y - 4] = true;
+					tiles[x - 5][y - 1] = true;
+					tiles[x - 5][y - 4] = true;
+					tiles[x - 5][y - 5] = true;
+					tiles[x - 6][y - 1] = true;
+					tiles[x - 6][y - 2] = true;
+					tiles[x - 6][y - 3] = true;
+					tiles[x - 6][y - 4] = true;
+					tiles[x - 7][y - 3] = true;
+
+					que.add(new Point(x + 5, y + 5));
+				}
+				break;
+			case 6:
+				if (x + 2 < width && y - 0 > 0 && y + 6 < height) {
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 1] = true;
+					tiles[x - 1][y - 1] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+					tiles[x - 3][y + 0] = true;
+					tiles[x - 4][y + 0] = true;
+					tiles[x - 4][y - 1] = true;
+					tiles[x - 4][y - 2] = true;
+					tiles[x - 5][y + 0] = true;
+					tiles[x - 6][y + 0] = true;
+					tiles[x - 6][y - 1] = true;
+
+					que.add(new Point(x + 4, y + 2));
+				}
+				break;
+
+			case 7:
+				if (x + 2 < width && y - 5 > 0 && y + 2 < height) {
+					tiles[x + 5][y + 0] = true;
+					tiles[x + 5][y - 1] = true;
+					tiles[x + 5][y - 2] = true;
+					tiles[x + 4][y + 0] = true;
+					tiles[x + 3][y + 0] = true;
+					tiles[x + 3][y - 1] = true;
+					tiles[x + 2][y - 1] = true;
+					tiles[x + 1][y - 1] = true;
+					tiles[x + 0][y + 0] = true;
+					tiles[x + 0][y - 1] = true;
+					tiles[x - 1][y - 1] = true;
+					tiles[x - 2][y + 0] = true;
+					tiles[x - 2][y - 1] = true;
+
+					que.add(new Point(x - 5, y + 2));
+				}
+				break;
+
+				}
 			
 			if(cycles>100){
 				System.out.println("reached end of pullNewMazePreset cycle");
