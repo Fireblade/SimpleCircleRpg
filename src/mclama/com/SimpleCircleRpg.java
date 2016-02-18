@@ -20,6 +20,7 @@ import org.newdawn.slick.font.effects.ColorEffect;
 
 import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
+import mclama.com.level.Level;
 import mclama.com.util.Artist;
 
 import static mclama.com.util.Artist.*;
@@ -50,6 +51,7 @@ public class SimpleCircleRpg {
 	boolean vsync;
 	private Monster monst=null;
 	private double mouseX, mouseY;
+	private Level currentLevel=null;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -179,6 +181,10 @@ public class SimpleCircleRpg {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
+				if (Keyboard.getEventKey() == Keyboard.KEY_L) {
+					//new level
+					currentLevel = new Level(128,128,1,gen.nextLong());
+				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 					if (gameIsRunning) {
 						int[] rarerolls = {0,0,0,0,0,0,0};
@@ -384,9 +390,32 @@ public class SimpleCircleRpg {
 		
 		ttf.drawString(10, 64, "mx: " + mouseX, Color.orange);
 		ttf.drawString(10, 74, "my: " + mouseY, Color.orange);
+		
+		
 
 		glDisable(GL_TEXTURE_2D);
-		
+		glColor3f(1.0f, 0.5f, 0.5f);
+		try {
+			
+			
+			if(currentLevel != null){
+				int gap=3;
+				//ystem.out.println(currentLevel.getTiles().length-1);
+				boolean[][] tiles = currentLevel.getTiles();
+				for(int x=0; x<tiles[0].length; x++){
+					for(int y=0; y<tiles.length; y++){
+						if(x>0 && x<tiles[0].length && y>0 && y<tiles.length)
+						{
+							if(tiles[x][y]==true){
+								DrawPoint(200+(x*gap), 200+(y*gap));
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 
