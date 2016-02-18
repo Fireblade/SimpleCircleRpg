@@ -183,7 +183,7 @@ public class SimpleCircleRpg {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_L) {
 					//new level
-					currentLevel = new Level(128,128,1,gen.nextLong());
+					currentLevel = new Level(128,32,1,gen.nextLong());
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 					if (gameIsRunning) {
@@ -400,15 +400,13 @@ public class SimpleCircleRpg {
 			
 			if(currentLevel != null){
 				int gap=3;
-				//ystem.out.println(currentLevel.getTiles().length-1);
 				boolean[][] tiles = currentLevel.getTiles();
-				for(int x=0; x<tiles[0].length; x++){
-					for(int y=0; y<tiles.length; y++){
-						if(x>0 && x<tiles[0].length && y>0 && y<tiles.length)
-						{
-							if(tiles[x][y]==true){
-								DrawPoint(200+(x*gap), 200+(y*gap));
-							}
+				for(int x=0; x<tiles.length; x++){
+					for(int y=0; y<tiles[0].length; y++){
+						//System.out.println(tiles[0].length);
+						//System.out.println("x:" + x + " y:" + y);
+						if(tiles[x][y]==true){
+							DrawPoint(150+(x*gap), 150+(y*gap));
 						}
 					}
 				}
