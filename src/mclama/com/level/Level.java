@@ -39,7 +39,7 @@ public class Level {
 		
 		Queue<Point> que = new LinkedList<Point>();
 		
-		spawnX=2;
+		spawnX = 2;
 		spawnY = (height/2);
 		
 		tiles[spawnX][spawnY]=true;
@@ -48,48 +48,71 @@ public class Level {
 		
 		boolean finished=false;
 		que.add(new Point(locX, locY));
-		while(que.size()>0){
-			Point pnt = que.poll();
+		
+		
+		
+		int levelTypeRoll = levelGen.nextInt(100);
+		if (levelTypeRoll < cMaze) {
+			// maze
 			
-			try {
-				finished = LevelsMaze.pullNewPreset(tiles, width, height, pnt, que, levelGen);
-			} catch (Exception e) {
-				e.printStackTrace();
+			while(que.size()>0){
+				Point pnt = que.poll();
+				
+				try {
+					finished = LevelsMaze.pullNewPreset(tiles, width, height, pnt, que, levelGen);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(finished){
+					break;
+				}
 			}
-			if(finished){
-				break;
+			
+			
+		} else if (levelTypeRoll < cLine) {
+			// Line
+			while(que.size()>0){
+				Point pnt = que.poll();
+				
+				try {
+					finished = LevelsLine.pullNewPreset(tiles, width, height, pnt, que, levelGen);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(finished){
+					break;
+				}
+			}
+		} else if (levelTypeRoll < cNoise) {
+			// noise
+			while(que.size()>0){
+				Point pnt = que.poll();
+				
+				try {
+					finished = LevelsNoise.pullNewPreset(tiles, width, height, pnt, que, levelGen);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(finished){
+					break;
+				}
+			}
+		} else {
+			// Broad
+			while(que.size()>0){
+				Point pnt = que.poll();
+				
+				try {
+					finished = LevelsBroad.pullNewPreset(tiles, width, height, pnt, que, levelGen);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(finished){
+					break;
+				}
 			}
 		}
 		System.out.println("level created + " + (que.size()>0));
-		
-//		int levelTypeRoll = levelGen.nextInt(100);
-//		if (levelTypeRoll < cMaze) {
-//			// maze
-//			spawnX=2;
-//			spawnY = (height/2);
-//			
-//			tiles[spawnX][spawnY]=false;
-//			int locX=spawnX+1;
-//			int locY=spawnY;
-//			
-//			que.add(new Point(locX, locY));
-//			while(que.size()>0){
-//				Point pnt = que.poll();
-//				boolean finished = pullNewMazePreset(pnt, que, levelGen);
-//			}
-//			
-//			
-//		} else if (levelTypeRoll < cLine) {
-//			// Line
-//			
-//		} else if (levelTypeRoll < cNoise) {
-//			// noise
-//			
-//		} else {
-//			// Broad
-//			
-//		}
-		
 		
 		
 		
