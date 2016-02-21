@@ -11,16 +11,31 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Entity {
 	
-	protected int id, level;
+	protected int width=32, height=32;
+	protected Texture texture;
+	
+	protected Entity target;
+	protected double moveX, moveY;
+	
+	
+	
+	protected int id, level, strength=10, dexterity=10, intelligence=10;
 	protected double x=64, y=64;
 	protected float size=1;
 	public double speed=0.15f, xVelocity, yVelocity;
 	protected int attackRange=48;
 	
 	protected double health = 10;
+	protected double maxHealth = 10;
+	protected double armor=0;
+	protected double evasion = 0;
+	protected double shield = 0;
 	
-	protected int width=32, height=32;
-	protected Texture texture;
+	protected float chanceToDodge=0;
+	protected float chanceToHit=90.0f;
+	protected float chanceToCriticalStrike=5f;
+	
+	
 	
 	protected boolean alive=false;
 	protected boolean hasDied=true;
@@ -28,9 +43,7 @@ public class Entity {
 	
 	protected boolean isAttacking=false;
 	
-	protected Entity target;
 	
-	protected double moveX, moveY;
 	
 	
 	public void tick(int delta){
