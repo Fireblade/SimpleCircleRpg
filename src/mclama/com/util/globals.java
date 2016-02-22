@@ -24,5 +24,9 @@ public class globals {
 	
 	
 	public static Player myPlayer=new Player();
+	
+	public static float gBaseSpeed = 0.15f;
+	public static float gStrengthHealthBonus = 2.0f;
+	public static float gIntelligenceShieldBonus = 0.2f;
 
 }

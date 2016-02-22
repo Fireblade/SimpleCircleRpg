@@ -19,7 +19,7 @@ public class Entity {
 	
 	
 	
-	protected int id, level, strength=10, dexterity=10, intelligence=10;
+	protected int id, level, strength=5, dexterity=5, intelligence=5;
 	protected double x=64, y=64;
 	protected float size=1;
 	public double speed=0.15f, xVelocity, yVelocity;
@@ -30,6 +30,7 @@ public class Entity {
 	protected double armor=0;
 	protected double evasion = 0;
 	protected double shield = 0;
+	protected double maxShield = 0;
 	
 	protected float chanceToDodge=0;
 	protected float chanceToHit=90.0f;
@@ -43,7 +44,22 @@ public class Entity {
 	
 	protected boolean isAttacking=false;
 	
-	
+	public void calculateInfo(){
+		//gear = get gear
+		
+		//str, dex, int etc
+		
+		//do static information 
+		maxHealth = (strength * gStrengthHealthBonus);
+		maxShield = (intelligence * gIntelligenceShieldBonus);
+		
+		
+		
+		//do percentile information
+		
+		
+		
+	}
 	
 	
 	public void tick(int delta){
