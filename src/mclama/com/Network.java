@@ -46,7 +46,6 @@ public class Network {
 	
 	public static class AddCharacter {
 		public Character character;
-		public int myId;
 	}
 	
 	public static class MoveCharacter {

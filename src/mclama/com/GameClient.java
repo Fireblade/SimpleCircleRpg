@@ -13,6 +13,7 @@ import mclama.com.Network.AddCharacter;
 import mclama.com.Network.Login;
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
+import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.sendPlayersCharacter;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
@@ -88,6 +89,10 @@ public class GameClient {
 					}
 				}
 				
+				if (object instanceof RemoveCharacter){
+					deleteCharacter(((RemoveCharacter) object).id);
+				}
+					
 			}
 
 			public void disconnected (Connection connection) {
@@ -108,6 +113,15 @@ public class GameClient {
 			// Server communication after connection can go here, or in Listener#connected().
 		} catch (IOException ex) {
 			ex.printStackTrace();
+		}
+	}
+	
+	public static void deleteCharacter(int id){
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			if(plyr.getId()==id){
+				GameClient.characters.remove(i);
+			}
 		}
 	}
 	
