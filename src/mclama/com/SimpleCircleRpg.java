@@ -17,6 +17,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.opengl.Texture;
 
 import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
@@ -25,6 +26,8 @@ import mclama.com.util.Artist;
 
 import static mclama.com.util.Artist.*;
 import static mclama.com.util.globals.*;
+import static mclama.com.util.DebugGlobals.*;
+
 
 public class SimpleCircleRpg {
 
@@ -33,8 +36,6 @@ public class SimpleCircleRpg {
 	public static GameClient client;
 	public static GameServer server;
 
-	public static int game_width = 720;
-	public static int game_height = 480;
 
 	private UnicodeFont ttf;
 	private UnicodeFont ttfMon;
@@ -51,7 +52,8 @@ public class SimpleCircleRpg {
 	boolean vsync;
 	private Monster monst=null;
 	private double mouseX, mouseY;
-	private Level currentLevel=null;
+	
+	private Texture background2;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -140,6 +142,7 @@ public class SimpleCircleRpg {
 
 	public void initialize() {
 		Artist.createCircleLibrary();
+		background2 = LoadTexture("res/images/background2.png", "PNG");
 		
 		
 		ttf = new UnicodeFont(new java.awt.Font("Verdana", java.awt.Font.PLAIN, 12));
@@ -168,6 +171,27 @@ public class SimpleCircleRpg {
 
 	public void update(int delta) {
 		// rotate quad
+		if(D_FREELOOKCAM){
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+				camX+=5;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+				camX-=5;
+			}
+			
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)){
+				camY+=5;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+				camY-=5;
+			}
+		} else {
+			camX = myPlayer.getX() - WIDTH/2;
+			camX = -camX;
+			camY = myPlayer.getY() - HEIGHT/2;
+			camY = -camY;
+		}
+		
 		mouseX = Mouse.getX() - camX;
 		mouseY = HEIGHT - Mouse.getY() - 1 - camY;
 		
@@ -383,9 +407,32 @@ public class SimpleCircleRpg {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		// R,G,B,A Set The Color To Blue One Time Only
-		glColor3f(0.5f, 0.5f, 1.0f);
+		glColor4f(1f, 1f, 1f, 1f);
 
+		
+		float xOff = (float) Math.floor(camX/1024) * 1024;
+		xOff = -xOff;
+		float yOff = (float) Math.floor(camY/1024) * 1024;
+		yOff = -yOff;
+		
+		//top 3
+		DrawQuadTex(background2, -512 + xOff, -512  + yOff, 1024, 1024);
+		DrawQuadTex(background2, 1536 + xOff, -512 + yOff, 1024, 1024);
+		DrawQuadTex(background2, 512 + xOff, -512 + yOff, 1024, 1024);
+		//middle 3
+		DrawQuadTex(background2, -512 + xOff, 512 + yOff, 1024, 1024);
+		DrawQuadTex(background2, 1536 + xOff, 512 + yOff, 1024, 1024);
+		DrawQuadTex(background2, 512 + xOff, 512 + yOff, 1024, 1024);
+		//bottom 3
+		DrawQuadTex(background2, -512 + xOff, 1536 + yOff, 1024, 1024);
+		DrawQuadTex(background2, 1536 + xOff, 1536 + yOff, 1024, 1024);
+		DrawQuadTex(background2, 512 + xOff, 1536 + yOff, 1024, 1024);
+
+		
+		if(currentLevel!=null){
+			currentLevel.renderLevel();
+		}
+		
 		// draw quad
 //		glPushMatrix();
 //		glTranslatef(x, y, 0);
@@ -417,7 +464,14 @@ public class SimpleCircleRpg {
 			Player plyr = GameClient.characters.get(i);
 			plyr.draw();
 		}
-
+		
+		glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
+		
+		
+		glDisable(GL_TEXTURE_2D);
+		DrawQuad(0, 0, 112, 128);
+		
+		glColor4f(1.0f, 1.0f, 1.0f, 1f);
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)
 			ttf.drawString(10, 24, "Connections: " + server.connectedClients(), Color.orange);
@@ -428,8 +482,8 @@ public class SimpleCircleRpg {
 		ttf.drawString(10, 74, "my: " + mouseY, Color.orange);
 		
 		
-
 		glDisable(GL_TEXTURE_2D);
+		
 		glColor3f(1.0f, 0.5f, 0.5f);
 		try {
 			
@@ -446,6 +500,9 @@ public class SimpleCircleRpg {
 						}
 					}
 				}
+				glColor3f(1f, 1f, 0f);
+				DrawPoint(150 + ((myPlayer.getX() / currentLevel.getTileWidth()) * gap),
+						150 + ((myPlayer.getY() / currentLevel.getTileHeight()) * gap));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

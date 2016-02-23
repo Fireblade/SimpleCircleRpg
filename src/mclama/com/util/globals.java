@@ -8,8 +8,12 @@ import com.esotericsoftware.kryonet.Server;
 import mclama.com.GameClient;
 import mclama.com.GameServer;
 import mclama.com.entity.Player;
+import mclama.com.level.Level;
 
 public class globals {
+	
+	public static int game_width = 720;
+	public static int game_height = 480;
 	
 	public static boolean gameIsRunning = false;
 	public static boolean gameIsHosting = false;
@@ -30,5 +34,7 @@ public class globals {
 	public static float gBaseSpeed = 0.15f;
 	public static float gStrengthHealthBonus = 2.0f;
 	public static float gIntelligenceShieldBonus = 0.2f;
+	
+	public static Level currentLevel=null;
 
 }

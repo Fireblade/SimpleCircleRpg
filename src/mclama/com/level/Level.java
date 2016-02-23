@@ -1,9 +1,15 @@
 package mclama.com.level;
 
+import static mclama.com.util.Artist.DrawQuadTex;
+import static mclama.com.util.Artist.LoadTexture;
+import static mclama.com.util.Artist.onScreen;
+
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
+
+import org.newdawn.slick.opengl.Texture;
 
 public class Level {
 	
@@ -12,8 +18,12 @@ public class Level {
 	private int height, width, size=1;
 	private int spawnX=2, spawnY=2;
 	
+	private int tileWidth=128, tileHeight=128;
+	
 	private boolean[][] tiles;
 	private int totalTiles=0;
+	
+	private Texture texture;
 	
 	
 	public Level(int width, int height, int size, long seed){
@@ -23,9 +33,18 @@ public class Level {
 		this.size = size;
 		
 		Random levelGen = new Random(seed);
+		//Roll theme type
+		String themeType = "grass";
+		
+		int num = levelGen.nextInt(20)+1;
+		String themeName = (num < 10 ? "0" : "") + num;
+		try {
+			texture = LoadTexture("res/images/tiles/" + themeType + "/" + themeType + themeName + ".png", "PNG");
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
 		int reRolledCount=0;
-		
-		
 		int goLength = levelGen.nextInt(10)+(levelGen.nextInt(size)*5);
 		int currLength=1;
 		
@@ -127,6 +146,20 @@ public class Level {
 		
 		
 	}
+	
+	public void renderLevel(){
+		for(int x=0; x<width; x++){
+			for(int y=0; y<height; y++){
+				if(tiles[x][y]){ //if it is a tile, we should render.
+					//Later to be replaced by a list of tiles
+					if(onScreen(x*tileWidth, y*tileHeight, tileWidth*2, tileHeight*2)){
+						
+					}
+					DrawQuadTex(texture, (x*tileWidth), (y*tileHeight),tileWidth, tileHeight);
+				}
+			}
+		}
+	}
 
 	private int getTotalTiles() {
 		int count=0;
@@ -162,6 +195,22 @@ public class Level {
 
 	public boolean[][] getTiles() {
 		return tiles;
+	}
+
+	public int getTileWidth() {
+		return tileWidth;
+	}
+
+	public void setTileWidth(int tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	public int getTileHeight() {
+		return tileHeight;
+	}
+
+	public void setTileHeight(int tileHeight) {
+		this.tileHeight = tileHeight;
 	}
 
 }
