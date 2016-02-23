@@ -55,9 +55,15 @@ public class GameClient {
 				if (object instanceof sendPlayersCharacter) {
 					System.out.println("received my character");
 					sendPlayersCharacter msg = (sendPlayersCharacter)object;
+					myPlayerId = msg.id;
 					Player plyr = getCharacter(msg.id);
-					if(plyr!= null)
+					if(plyr == null)
+						System.out.println("ERROR Player is NULL");
+					else
 						myPlayer = plyr;
+					if(myPlayer.getId()==0){ //double check valid host player.
+						System.out.println("ERROR PLAYER ID IS 0");
+					}
 				}
 				if (object instanceof AddCharacter) {
 					AddCharacter msg = (AddCharacter)object;

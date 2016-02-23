@@ -26,11 +26,13 @@ public class Player extends Entity{
 			System.out.println("null playr click");
 		}
 		
-		MoveClickOrder moveOrder = new MoveClickOrder();
-		moveOrder.id = id;
-		moveOrder.x = moveX;
-		moveOrder.y = moveY;
-		gClient.sendUDP(moveOrder);
+		if(gameIsRunning){
+			MoveClickOrder moveOrder = new MoveClickOrder();
+			moveOrder.id = id;
+			moveOrder.x = moveX;
+			moveOrder.y = moveY;
+			gClient.sendUDP(moveOrder);
+		}
 		
 	}
 	

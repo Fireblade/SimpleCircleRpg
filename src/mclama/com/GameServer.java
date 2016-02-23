@@ -146,7 +146,7 @@ public class GameServer {
 	void loggedIn (CharacterConnection c, Character character) {
 		c.character = character;
 		character.id = setCharacterID();
-
+		
 		// Add existing characters to new logged in connection.
 		for (Character other : loggedIn) {
 			AddCharacter addCharacter = new AddCharacter();
@@ -160,6 +160,7 @@ public class GameServer {
 		// Add logged in character to all connections.
 		AddCharacter addCharacter = new AddCharacter();
 		addCharacter.character = character;
+		//addCharacter.myId = character.id;
 		
 		server.sendToAllTCP(addCharacter);
 		
@@ -175,6 +176,7 @@ public class GameServer {
 			{
 				other.x = plyr.getX();
 				other.y = plyr.getY();
+				other.id = plyr.getId();
 			}
 		}
 		return other;

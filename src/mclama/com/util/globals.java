@@ -14,6 +14,8 @@ public class globals {
 	public static boolean gameIsRunning = false;
 	public static boolean gameIsHosting = false;
 	
+	public static int myPlayerId=0;
+	
 	public static Random gen = new Random(System.nanoTime());
 	
 	public static Client gClient;

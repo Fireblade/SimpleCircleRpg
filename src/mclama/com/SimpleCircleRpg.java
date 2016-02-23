@@ -57,35 +57,55 @@ public class SimpleCircleRpg {
 		
 		System.out.println("Starting");
 		
-		Scanner reader = new Scanner(System.in);
-		System.out.println("Host or name: ");
-		String text = reader.next();
+//		Scanner reader = new Scanner(System.in);
+//		System.out.println("Host or name: ");
+//		String text = reader.next();
 
 		// Log.DEBUG();
 		
-		if (text.equals("host"))
-		{
-			System.out.println("What is your name: ");
-			text = reader.next();
-			gameIsHosting = true;
-			try {
-				server = new GameServer();
-				client = new GameClient(text);
-				myPlayer.name = text;
-				gameIsRunning = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else
-		{
-			client = new GameClient(text);
-			myPlayer.name = text;
-			gameIsRunning = true;
-		}
+//		if (text.equals("host"))
+//		{
+//			System.out.println("What is your name: ");
+//			text = reader.next();
+//			gameIsHosting = true;
+//			try {
+//				server = new GameServer();
+//				client = new GameClient(text);
+//				myPlayer.name = text;
+//				gameIsRunning = true;
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		} else
+//		{
+//			client = new GameClient(text);
+//			myPlayer.name = text;
+//			gameIsRunning = true;
+//		}
 		
 		SimpleCircleRpg game = new SimpleCircleRpg();
 		game.start();
 
+	}
+	
+	public void startHost(String name){
+		gameIsHosting = true;
+		try {
+			server = new GameServer();
+			client = new GameClient(name);
+			myPlayer.name = name;
+			gameIsRunning = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void joinHost(String name){
+		if(!gameIsRunning){
+			client = new GameClient(name);
+			myPlayer.name = name;
+			gameIsRunning = true;
+		}
 	}
 
 	public void start() {
@@ -165,12 +185,28 @@ public class SimpleCircleRpg {
 			myPlayer.setY(myPlayer.getY() + 0.35f * delta);
 
 		
+		if (Keyboard.isKeyDown(Keyboard.KEY_B)){
+			startHost("name " + gen.nextInt(2000));
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_N)){
+			joinHost("name " + gen.nextInt(2000));
+		}
 		
 		while (Mouse.next()){
 		    if (Mouse.getEventButtonState()) {
 		        if (Mouse.getEventButton() == 0) {
 		        	if(myPlayer==null) System.out.println("null player");
-		        	else myPlayer.playerClicked(mouseX,mouseY);
+		        	else {
+		        		if(myPlayer.getId()==0 && gameIsRunning){
+		        			if(myPlayerId != 0){
+		        				Player plyr = gameClient.getCharacter(myPlayerId);
+		    					if(plyr != null){
+		    						myPlayer = plyr;
+		    					}
+		        			}
+		        		}
+		        		myPlayer.playerClicked(mouseX,mouseY);
+		        	}
 		        }
 		    }else {
 		        if (Mouse.getEventButton() == 0) {
