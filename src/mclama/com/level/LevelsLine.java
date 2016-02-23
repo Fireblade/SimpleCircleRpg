@@ -35,7 +35,7 @@ public class LevelsLine {
 					tiles[x + 5][y + 1] = true;
 					tiles[x + 6][y + 1] = true;
 
-					que.add(new Point(x + 6, y + 1));
+					que.add(new Point(x + 7, y + 1));
 					return false;
 				}
 
@@ -60,7 +60,7 @@ public class LevelsLine {
 					tiles[x + 0][y + 0] = true;
 					tiles[x + 1][y + 0] = true;
 
-					que.add(new Point(x + 6, y - 5));
+					que.add(new Point(x + 7, y - 5));
 					return false;
 				}
 
@@ -84,7 +84,7 @@ public class LevelsLine {
 					tiles[x + 4][y + 4] = true;
 					tiles[x + 5][y + 4] = true;
 
-					que.add(new Point(x + 6, y + 0));
+					que.add(new Point(x + 7, y + 0));
 					return false;
 				}
 
@@ -111,7 +111,7 @@ public class LevelsLine {
 					tiles[x + 4][y + 6] = true;
 					tiles[x + 5][y + 6] = true;
 
-					que.add(new Point(x + 5, y + 6));
+					que.add(new Point(x + 6, y + 6));
 					return false;
 				}
 
@@ -128,7 +128,7 @@ public class LevelsLine {
 					tiles[x + 2][y + 1] = true;
 					tiles[x + 3][y + 1] = true;
 
-					que.add(new Point(x + 5, y - 2));
+					que.add(new Point(x + 6, y - 2));
 					return false;
 				}
 
@@ -155,7 +155,7 @@ public class LevelsLine {
 					tiles[x + 1][y + 2] = true;
 					tiles[x + 2][y + 2] = true;
 
-					que.add(new Point(x + 5, y + 0));
+					que.add(new Point(x + 6, y + 0));
 					return false;
 				}
 
@@ -229,7 +229,7 @@ public class LevelsLine {
 					tiles[x + 10][y + 3] = true;
 					tiles[x + 11][y + 3] = true;
 
-					que.add(new Point(x + 15, y - 1));
+					que.add(new Point(x + 16, y - 1));
 					return false;
 				}
 
@@ -247,7 +247,7 @@ public class LevelsLine {
 					tiles[x + 4][y - 1] = true;
 					tiles[x + 0][y + 0] = true;
 
-					que.add(new Point(x + 5, y - 3));
+					que.add(new Point(x + 6, y - 3));
 					return false;
 				}
 

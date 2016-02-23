@@ -32,7 +32,7 @@ public class LevelsMaze {
 					tiles[x + 0][y + 2] = true;
 					tiles[x + 1][y + 2] = true;
 
-					que.add(new Point(x + 2, y - 2));
+					que.add(new Point(x + 3, y - 2));
 					return false;
 				}
 
@@ -48,7 +48,7 @@ public class LevelsMaze {
 					tiles[x + 1][y + 2] = true;
 					tiles[x + 2][y + 2] = true;
 
-					que.add(new Point(x + 2, y + 2));
+					que.add(new Point(x + 3, y + 2));
 					return false;
 				}
 
@@ -70,7 +70,7 @@ public class LevelsMaze {
 					tiles[x + 0][y + 2] = true;
 					tiles[x + 1][y + 2] = true;
 
-					que.add(new Point(x + 2, y - 6));
+					que.add(new Point(x + 3, y - 6));
 					return false;
 				}
 
@@ -92,7 +92,7 @@ public class LevelsMaze {
 					tiles[x + 1][y + 7] = true;
 					tiles[x + 2][y + 7] = true;
 
-					que.add(new Point(x + 2, y + 7));
+					que.add(new Point(x + 3, y + 7));
 					return false;
 				}
 
@@ -153,7 +153,7 @@ public class LevelsMaze {
 					tiles[x + 6][y + 6] = true;
 					tiles[x + 7][y + 6] = true;
 
-					que.add(new Point(x + 8, y - 4));
+					que.add(new Point(x + 9, y - 4));
 					return false;
 				}
 
@@ -198,7 +198,7 @@ public class LevelsMaze {
 					tiles[x + 6][y + 6] = true;
 					tiles[x + 7][y + 6] = true;
 
-					que.add(new Point(x + 7, y + 6));
+					que.add(new Point(x + 8, y + 6));
 					return false;
 				}
 
@@ -221,7 +221,7 @@ public class LevelsMaze {
 					tiles[x + 1][y + 4] = true;
 					tiles[x + 2][y + 4] = true;
 
-					que.add(new Point(x + 3, y + 0));
+					que.add(new Point(x + 4, y + 0));
 					return false;
 				}
 
@@ -242,7 +242,7 @@ public class LevelsMaze {
 					tiles[x + 1][y + 4] = true;
 					tiles[x + 2][y + 4] = true;
 
-					que.add(new Point(x + 3, y + 2));
+					que.add(new Point(x + 4, y + 2));
 					return false;
 				}
 

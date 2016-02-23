@@ -78,7 +78,7 @@ public class LevelsBroad {
 					tiles[x + 5][y + 5] = true;
 					tiles[x + 2][y + 6] = true;
 
-					que.add(new Point(x + 6, y + 1));
+					que.add(new Point(x + 7, y + 1));
 					return false;
 				}
 			case 1:
@@ -120,7 +120,7 @@ public class LevelsBroad {
 					tiles[x + 2][y + 5] = true;
 					tiles[x + 4][y + 5] = true;
 
-					que.add(new Point(x + 5, y + 1));
+					que.add(new Point(x + 6, y + 1));
 					return false;
 				}
 
@@ -157,7 +157,7 @@ public class LevelsBroad {
 					tiles[x + 4][y + 0] = true;
 					tiles[x + 5][y + 0] = true;
 
-					que.add(new Point(x + 6, y - 4));
+					que.add(new Point(x + 7, y - 4));
 					return false;
 				}
 
@@ -237,7 +237,7 @@ public class LevelsBroad {
 					tiles[x + 4][y + 7] = true;
 					tiles[x + 5][y + 7] = true;
 
-					que.add(new Point(x + 8, y + 6));
+					que.add(new Point(x + 9, y + 6));
 					return false;
 				}
 
@@ -277,7 +277,7 @@ public class LevelsBroad {
 					tiles[x + 6][y + 3] = true;
 					tiles[x + 0][y + 4] = true;
 
-					que.add(new Point(x + 6, y + 1));
+					que.add(new Point(x + 7, y + 1));
 					return false;
 				}
 
@@ -319,7 +319,7 @@ public class LevelsBroad {
 					tiles[x + 2][y + 3] = true;
 					tiles[x + 0][y + 4] = true;
 
-					que.add(new Point(x + 6, y - 2));
+					que.add(new Point(x + 7, y - 2));
 					return false;
 				}
 
@@ -378,7 +378,7 @@ public class LevelsBroad {
 					tiles[x + 1][y + 6] = true;
 					tiles[x + 2][y + 6] = true;
 
-					que.add(new Point(x + 5, y + 0));
+					que.add(new Point(x + 6, y + 0));
 					return false;
 				}
 
@@ -409,7 +409,7 @@ public class LevelsBroad {
 					tiles[x + 4][y + 3] = true;
 					tiles[x + 5][y + 3] = true;
 
-					que.add(new Point(x + 5, y + 0));
+					que.add(new Point(x + 6, y + 0));
 					return false;
 				}
 

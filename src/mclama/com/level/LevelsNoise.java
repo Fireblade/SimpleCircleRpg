@@ -79,7 +79,7 @@ public class LevelsNoise {
 					tiles[x + 4][y + 6] = true;
 					tiles[x + 5][y + 6] = true;
 
-					que.add(new Point(x + 5, y - 1));
+					que.add(new Point(x + 6, y - 1));
 					return false;
 				}
 
@@ -133,7 +133,7 @@ public class LevelsNoise {
 					tiles[x + 4][y + 6] = true;
 					tiles[x + 5][y + 6] = true;
 
-					que.add(new Point(x + 5, y + 6));
+					que.add(new Point(x + 6, y + 6));
 					return false;
 				}
 
@@ -189,7 +189,7 @@ public class LevelsNoise {
 					tiles[x + 2][y + 6] = true;
 					tiles[x + 3][y + 6] = true;
 
-					que.add(new Point(x + 5, y - 5));
+					que.add(new Point(x + 6, y - 5));
 					return false;
 				}
 
@@ -299,7 +299,7 @@ public class LevelsNoise {
 					tiles[x + 9][y + 6] = true;
 					tiles[x + 11][y + 6] = true;
 
-					que.add(new Point(x + 11, y - 1));
+					que.add(new Point(x + 12, y - 1));
 					return false;
 				}
 
@@ -400,7 +400,7 @@ public class LevelsNoise {
 					tiles[x + 9][y + 6] = true;
 					tiles[x + 10][y + 6] = true;
 
-					que.add(new Point(x + 11, y + 1));
+					que.add(new Point(x + 12, y + 1));
 					return false;
 				}
 
@@ -493,7 +493,7 @@ public class LevelsNoise {
 					tiles[x + 8][y + 6] = true;
 					tiles[x + 11][y + 6] = true;
 
-					que.add(new Point(x + 11, y + 0));
+					que.add(new Point(x + 12, y + 0));
 					return false;
 				}
 
@@ -569,7 +569,7 @@ public class LevelsNoise {
 					tiles[x + 12][y + 3] = true;
 					tiles[x + 13][y + 3] = true;
 
-					que.add(new Point(x + 14, y + 0));
+					que.add(new Point(x + 15, y + 0));
 					return false;
 				}
 
@@ -624,7 +624,7 @@ public class LevelsNoise {
 					tiles[x + 7][y + 7] = true;
 					tiles[x + 8][y + 7] = true;
 
-					que.add(new Point(x + 8, y + 5));
+					que.add(new Point(x + 9, y + 5));
 					return false;
 				}
 
