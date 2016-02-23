@@ -1,6 +1,6 @@
 package mclama.com.level;
 
-import static mclama.com.util.Artist.DrawQuadTex;
+import static mclama.com.util.Artist.DrawQuadTexNormal;
 import static mclama.com.util.Artist.LoadTexture;
 import static mclama.com.util.Artist.onScreen;
 
@@ -90,6 +90,7 @@ public class Level {
 			
 		} else if (levelTypeRoll < cLine) {
 			// Line
+			//TODO make chance of straight map being thicker tiles.
 			while(que.size()>0){
 				Point pnt = que.poll();
 				
@@ -145,6 +146,7 @@ public class Level {
 		
 		
 		
+		
 	}
 	
 	public void renderLevel(){
@@ -155,7 +157,7 @@ public class Level {
 					if(onScreen(x*tileWidth, y*tileHeight, tileWidth*2, tileHeight*2)){
 						
 					}
-					DrawQuadTex(texture, (x*tileWidth), (y*tileHeight),tileWidth, tileHeight);
+					DrawQuadTexNormal(texture, (x*tileWidth), (y*tileHeight),tileWidth, tileHeight);
 				}
 			}
 		}
@@ -211,6 +213,40 @@ public class Level {
 
 	public void setTileHeight(int tileHeight) {
 		this.tileHeight = tileHeight;
+	}
+
+	public boolean validWalkable(double x, double y) {
+//		x -= tileWidth/2;
+//		y -= tileHeight/2;
+		int tileX = (int) Math.floor(x / tileWidth);
+		int tileY = (int) Math.floor(y / tileHeight);
+		
+		tileX = Math.min(tileX, width);
+		tileX = Math.max(tileX, 0);
+		
+		tileY = Math.min(tileY, height);
+		tileY = Math.max(tileY, 0);
+		
+		if (tiles[tileX][tileY]) {
+			return true;
+		}
+		return false;
+	}
+	
+	public int getSpawnX() {
+		return spawnX;
+	}
+
+	public int getSpawnY() {
+		return spawnY;
+	}
+
+	public int getSpawnXLoc() {
+		return ((spawnX+1)*tileWidth) - (tileWidth/2);
+	}
+
+	public int getSpawnYLoc() {
+		return ((spawnY+1)*tileHeight) - (tileHeight/2);
 	}
 
 }

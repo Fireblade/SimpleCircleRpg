@@ -50,6 +50,7 @@ public class SimpleCircleRpg {
 
 	/** is VSync Enabled */
 	boolean vsync;
+	
 	private Monster monst=null;
 	private double mouseX, mouseY;
 	
@@ -241,9 +242,16 @@ public class SimpleCircleRpg {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_L) {
+				if (Keyboard.getEventKey() == Keyboard.KEY_L && gameIsHosting) {
 					//new level
-					currentLevel = new Level(128,32,1,gen.nextLong());
+					Long lvlSeed = gen.nextLong();
+					currentLevel = new Level(128,32,1,lvlSeed);
+					//send seed and level gen to others.
+				}
+				if (Keyboard.getEventKey() == Keyboard.KEY_P && currentLevel != null){
+					//Entered place.
+					myPlayer.setX(currentLevel.getSpawnXLoc());
+					myPlayer.setY(currentLevel.getSpawnYLoc());
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 					if (gameIsRunning) {

@@ -71,8 +71,23 @@ public class Entity {
 					|| (isAttacking && distance(x,y,target.getX(),target.getY()) < attackRange)) {
 				moveToLoc = false;
 			} else { // so the player doesn't move and then stop
-				x += xVelocity * speed * delta;
-				y += yVelocity * speed * delta;
+				try {
+//					x += xVelocity * speed * delta;
+//					y += yVelocity * speed * delta;
+					if(currentLevel.validWalkable(x +(xVelocity * speed * delta), y + (yVelocity * speed * delta))){
+						x += xVelocity * speed * delta;
+						y += yVelocity * speed * delta;
+					}
+					else{
+						moveToLoc=false;
+						System.out.println("x:" +(int) Math.floor((x +(xVelocity * speed * delta))/128));
+						System.out.println("y:" +(int) Math.floor((y +(yVelocity * speed * delta))/128));
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				
 				if(this instanceof Player){
 					if(gameIsHosting){

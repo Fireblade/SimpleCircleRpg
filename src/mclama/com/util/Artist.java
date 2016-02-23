@@ -85,6 +85,23 @@ public class Artist {
 		glLoadIdentity();
 	}
 	
+	public static void DrawQuadTexNormal(Texture tex, double x, double y, float width,float height) {
+		tex.bind();
+		glTranslated(camX,camY,0);
+		glTranslated(x,y,0);
+		glBegin(GL_QUADS);
+			glTexCoord2d(0, 0);
+			glVertex2d(0, 0);
+			glTexCoord2d(1, 0);
+			glVertex2d(width, 0);
+			glTexCoord2d(1, 1);
+			glVertex2d(width, height);
+			glTexCoord2d(0, 1);
+			glVertex2d(0, height);
+		glEnd();
+		glLoadIdentity();
+	}
+	
 	public static void DrawQuadTexRot(Texture tex, float x, float y, float width, float height, float angle) {
 		tex.bind();
 		glTranslatef(x + (tex.getImageWidth()/2), y + (tex.getImageHeight()/2), 0);
