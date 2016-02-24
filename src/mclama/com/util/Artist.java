@@ -151,8 +151,10 @@ public class Artist {
 		return tex;
 	}
 	
-	public static boolean onScreen(float x, float y, float xOff, float yOff){
+	
+	public static boolean onScreen(double x, double y, double xOff, double yOff){
 		if(x+1024>camX-xOff && -(x+1024)<camX+xOff && y>camY-yOff && (-y)<camY + yOff){
+		//if(x>camX-xOff && x < camX+xOff+720 && y>camY-yOff && y < camY+yOff+480){
 		//if(Math.abs(x)>Math.abs(camX)-xOff && Math.abs(x)<Math.abs(camX)+xOff ){
 		//if (Math.abs(x+1024) > Math.abs(camX) - xOff && -Math.abs(x+1024) < Math.abs(camX) + xOff
 		//		&& Math.abs(y) > Math.abs(camY) - yOff && -Math.abs(y) < Math.abs(camY) + yOff) {
