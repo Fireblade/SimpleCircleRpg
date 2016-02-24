@@ -23,7 +23,9 @@ public class Network {
 		kryo.register(MoveCharacter.class);
 		kryo.register(Character.class);
 		kryo.register(MoveClickOrder.class);
-		kryo.register(sendPlayersCharacter.class);
+		kryo.register(SendPlayersCharacter.class);
+		kryo.register(PlayerRequestNewLevel.class);
+		kryo.register(SendNewLevelSeed.class);
 	}
 	
 	public static class Login {
@@ -57,8 +59,17 @@ public class Network {
 		public double x, y;
 	}
 	
-	public static class sendPlayersCharacter{
+	public static class SendPlayersCharacter{
 		public int id;
+	}
+	
+	public static class PlayerRequestNewLevel{
+		
+	}
+	
+	public static class SendNewLevelSeed{
+		long seed;
+		int id;
 	}
 
 }

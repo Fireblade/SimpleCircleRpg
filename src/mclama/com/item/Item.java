@@ -3,7 +3,7 @@ package mclama.com.item;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 
 public class Item {
 	

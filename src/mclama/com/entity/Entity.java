@@ -6,7 +6,7 @@ import mclama.com.GameServer;
 
 import static mclama.com.util.DebugGlobals.*;
 import static mclama.com.util.Artist.*;
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Entity {
@@ -64,7 +64,7 @@ public class Entity {
 	
 	public void tick(int delta){
 		
-		if (moveToLoc) {
+		if (moveToLoc && currentLevel != null) {
 			//System.out.println("moveloc");
 			calculateDirection(moveX, moveY);
 			if (distance(x, y, moveX, moveY) < (speed * delta) 

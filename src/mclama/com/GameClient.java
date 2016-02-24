@@ -14,11 +14,13 @@ import mclama.com.Network.Login;
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
-import mclama.com.Network.sendPlayersCharacter;
+import mclama.com.Network.SendNewLevelSeed;
+import mclama.com.Network.SendPlayersCharacter;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
+import mclama.com.level.Level;
 
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 import static mclama.com.util.Artist.*;
 
 public class GameClient {
@@ -32,7 +34,10 @@ public class GameClient {
 	
 	//public static HashMap<Integer, Player> characters = new HashMap();
 	public static ArrayList<Player> characters = new ArrayList<Player>();
+	//public ArrayList<Level> gameLevels = new ArrayList<Level>();
 	
+	public int queGenerateNewLevelId=0;
+	public long queGenerateNewLevelSeed=0;
 	
 	public GameClient (String name) {
 		client = new Client();
@@ -50,12 +55,19 @@ public class GameClient {
 			}
 
 			public void received (Connection connection, Object object) {
+				if (object instanceof SendNewLevelSeed) {
+					SendNewLevelSeed msg = (SendNewLevelSeed) object;
+					//currentLevel = generateNewLevel(msg.id, msg.seed);
+					queGenerateNewLevelId = msg.id;
+					queGenerateNewLevelSeed = msg.seed;
+//					System.out.println("set new que level... " + msg.id + " .. " + msg.seed);
+				}
 				if (object instanceof OtherClient) {
 					System.out.println(((OtherClient) object).name + " has connected with userID: " + ((OtherClient) object).id);
 				}
-				if (object instanceof sendPlayersCharacter) {
+				if (object instanceof SendPlayersCharacter) {
 					System.out.println("received my character");
-					sendPlayersCharacter msg = (sendPlayersCharacter)object;
+					SendPlayersCharacter msg = (SendPlayersCharacter)object;
 					myPlayerId = msg.id;
 					Player plyr = getCharacter(msg.id);
 					if(plyr == null)
@@ -116,7 +128,7 @@ public class GameClient {
 		}
 	}
 	
-	public static void deleteCharacter(int id){
+	public void deleteCharacter(int id){
 		for(int i=0; i<GameClient.characters.size(); i++){
 			Player plyr = GameClient.characters.get(i);
 			if(plyr.getId()==id){
@@ -125,7 +137,7 @@ public class GameClient {
 		}
 	}
 	
-	public static Player getCharacter(int id){
+	public Player getCharacter(int id){
 		for(int i=0; i<GameClient.characters.size(); i++){
 			Player plyr = GameClient.characters.get(i);
 			if(plyr.getId()==id){
@@ -133,6 +145,12 @@ public class GameClient {
 			}
 		}
 		return null;
+	}
+	
+	public Level generateNewLevel(int id, long seed){
+		Level newLevel = new Level(id, seed);
+		//gameLevels.add(newLevel);
+		return newLevel;
 	}
 
 }

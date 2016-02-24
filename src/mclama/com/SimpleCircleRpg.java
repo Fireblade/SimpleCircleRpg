@@ -25,7 +25,7 @@ import mclama.com.level.Level;
 import mclama.com.util.Artist;
 
 import static mclama.com.util.Artist.*;
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.*;
 
 
@@ -217,6 +217,8 @@ public class SimpleCircleRpg {
 			joinHost("name " + gen.nextInt(2000));
 		}
 		
+		
+		
 		while (Mouse.next()){
 		    if (Mouse.getEventButtonState()) {
 		        if (Mouse.getEventButton() == 0) {
@@ -243,10 +245,8 @@ public class SimpleCircleRpg {
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
 				if (Keyboard.getEventKey() == Keyboard.KEY_L && gameIsHosting) {
-					//new level
-					Long lvlSeed = gen.nextLong();
-					currentLevel = new Level(128,32,1,lvlSeed);
-					//send seed and level gen to others.
+					//System.out.println("call new host map");
+					int newLevelId = gameServer.createNewLevel();
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_P && currentLevel != null){
 					//Entered place.
@@ -257,9 +257,9 @@ public class SimpleCircleRpg {
 					if (gameIsRunning) {
 						int[] rarerolls = {0,0,0,0,0,0,0};
 						//System.out.println("send");
-						for(int count=0; count<=10000; count++)
+						for(int count=0; count<=100; count++)
 						{
-							monst = new Monster(0,  1, 1, 64,64);
+							monst = new Monster(0, 1, 64,64);
 							monst.die(myPlayer);
 							
 							for(int i=0; i<monst.getItem_drops().size(); i++){
@@ -290,12 +290,29 @@ public class SimpleCircleRpg {
 			}
 		}//end of keyboard
 		
-		//myPlayer.tick(delta);
-
-		for(int i=0; i<GameClient.characters.size(); i++){
-			Player plyr = GameClient.characters.get(i);
-			plyr.tick(delta);
-		}
+		if(gameIsRunning){
+			if(gameClient.queGenerateNewLevelId!=0){
+				System.out.println("gen new currlevel");
+				currentLevel = gameClient.generateNewLevel(gameClient.queGenerateNewLevelId, gameClient.queGenerateNewLevelSeed);
+				gameClient.queGenerateNewLevelId=0;
+				
+//				myPlayer.setX(currentLevel.getSpawnXLoc());
+//				myPlayer.setY(currentLevel.getSpawnYLoc());
+				
+				for(int i=0; i<GameClient.characters.size(); i++){
+					Player plyr = GameClient.characters.get(i);
+					plyr.setX(currentLevel.getSpawnXLoc());
+					plyr.setY(currentLevel.getSpawnYLoc());
+				}
+			}
+			
+			//myPlayer.tick(delta);
+	
+			for(int i=0; i<GameClient.characters.size(); i++){
+				Player plyr = GameClient.characters.get(i);
+				plyr.tick(delta);
+			}
+	}
 		
 
 		updateFPS(); // update FPS Counter
@@ -467,10 +484,11 @@ public class SimpleCircleRpg {
 		
 		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
 		
-		
-		for(int i=0; i<GameClient.characters.size(); i++){
-			Player plyr = GameClient.characters.get(i);
-			plyr.draw();
+		if(gameIsRunning){
+			for(int i=0; i<GameClient.characters.size(); i++){
+				Player plyr = GameClient.characters.get(i);
+				plyr.draw();
+			}
 		}
 		
 		glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
@@ -504,7 +522,7 @@ public class SimpleCircleRpg {
 						//System.out.println(tiles[0].length);
 						//System.out.println("x:" + x + " y:" + y);
 						if(tiles[x][y]==true){
-							DrawPoint(150+(x*gap), 150+(y*gap));
+							DrawPoint(150+(x*gap), 150+(y*gap), 2f);
 						}
 					}
 				}

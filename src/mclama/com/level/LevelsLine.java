@@ -19,7 +19,7 @@ public class LevelsLine {
 			int presetRoll = levelGen.nextInt(mazePresets);
 
 			switch (presetRoll) {
-
+			
 			case 0:
 				if (x + 6 < width - 1 && y - 2 > 0 && y + 1 < height - 1) {
 					tiles[x + 2][y - 2] = true;

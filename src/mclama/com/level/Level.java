@@ -3,8 +3,12 @@ package mclama.com.level;
 import static mclama.com.util.Artist.DrawQuadTexNormal;
 import static mclama.com.util.Artist.LoadTexture;
 import static mclama.com.util.Artist.onScreen;
+import static mclama.com.util.Globals.*;
+
+import mclama.com.entity.Monster;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -14,6 +18,7 @@ import org.newdawn.slick.opengl.Texture;
 public class Level {
 	
 	private long levelSeed=0;
+	private int levelId=0;
 	
 	private int height, width, size=1;
 	private int spawnX=2, spawnY=2;
@@ -21,12 +26,18 @@ public class Level {
 	private int tileWidth=128, tileHeight=128;
 	
 	private boolean[][] tiles;
-	private int totalTiles=0;
+	private int totalTiles=0, totalMonsters=0;
 	
 	private Texture texture;
 	
+	private ArrayList<Monster> monsters = new ArrayList<Monster>();
 	
-	public Level(int width, int height, int size, long seed){
+	public Level(int levelId, long seed){
+		Level(levelId, 128, 32, 1, seed);
+	}
+	
+	public void Level(int levelId, int width, int height, int size, long seed){
+		this.levelId = levelId;
 		this.height = height;
 		this.width = width;
 		this.levelSeed = seed;
@@ -41,6 +52,7 @@ public class Level {
 		try {
 			texture = LoadTexture("res/images/tiles/" + themeType + "/" + themeType + themeName + ".png", "PNG");
 		} catch (Exception e1) {
+			System.out.println("Fail on level texture load: res/images/tiles/" + themeType + "/" + themeType + themeName + ".png");
 			e1.printStackTrace();
 		}
 		
@@ -135,19 +147,37 @@ public class Level {
 		System.out.println("level created + " + (que.size()>0));
 		
 		
-		
-		
 		totalTiles = getTotalTiles();
 		
-		//To-Do add list of open points to list.
-		//add more open points where needed.
-		//change open points to walls if cannot progress
-		//create path in length to end point. 
+		// Now generate monsters through level
+		float packSpawnChance = gLGBaseMonsterPacks;
+		// modify pack spawn chance here
+		float packSize = gLGBaseMonsterPackSize;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				if (tiles[x][y]) { // if it is a tile
+					if (distance(spawnX, x, spawnY, y) > 3) {
+						float spawnChance = levelGen.nextFloat();
+						if (spawnChance < packSpawnChance) {
+							// then spawn monsters.
+
+							int addMons = (int) Math.floor((packSize / 2) + (levelGen.nextFloat() * packSize));
+
+							for (int i = 0; i < addMons; i++) {
+								totalMonsters++;
+								monsters.add(new Monster(totalMonsters, 1,
+										x + (tileWidth / 4) + ((levelGen.nextFloat() * tileWidth) / 2),
+										y + (tileHeight / 4) + ((levelGen.nextFloat() * tileHeight) / 2)));
+							}
+						}
+					}
+				}
+			}
+		}
 		
 		
-		
-		
-	}
+	} //End of level generation
+	
 	
 	public void renderLevel(){
 		for(int x=0; x<width; x++){
@@ -193,6 +223,12 @@ public class Level {
 			}
 		}
 		return msg;
+	}
+	
+	protected double distance(double x1, double y1, double x2, double y2) {
+		double xDistanceFromTarget = Math.abs(x1 - x2);
+		double yDistanceFromTarget = Math.abs(y1 - y2);
+		return xDistanceFromTarget + yDistanceFromTarget;
 	}
 
 	public boolean[][] getTiles() {

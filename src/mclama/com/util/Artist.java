@@ -128,6 +128,16 @@ public class Artist {
         glEnd();
         //glPopMatrix();
 	}
+	
+	public static void DrawPoint(double x, double y, float size){
+		//glPushMatrix();
+		glPointSize(size);
+		glBegin(GL_POINTS);
+	        glVertex2d(x, y);
+        glEnd();
+        //glPopMatrix();
+	}
+	
 
 	public static Texture LoadTexture(String path, String fileType){
 		Texture tex = null;

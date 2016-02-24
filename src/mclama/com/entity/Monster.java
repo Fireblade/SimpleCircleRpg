@@ -1,6 +1,7 @@
 package mclama.com.entity;
 
 import static mclama.com.util.Artist.tex_circle;
+import static mclama.com.util.Globals.gGHighestPlayerLevel;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,10 +21,10 @@ public class Monster extends Entity{
 	private ArrayList<Item> item_drops = new ArrayList<Item>();
 	
 	
-	public Monster(int id, float size, int level, double x, double y){
+	public Monster(int id, float size, double x, double y){
 		this.id = id;
 		this.size = size;
-		this.level = level;
+		this.level = gGHighestPlayerLevel;
 		this.x = x;
 		this.y = y;
 		texture = tex_circle;

@@ -7,17 +7,11 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-import mclama.com.Network.AddCharacter;
-import mclama.com.Network.Login;
-import mclama.com.Network.MoveCharacter;
-import mclama.com.Network.MoveClickOrder;
-import mclama.com.Network.OtherClient;
-import mclama.com.Network.RemoveCharacter;
-import mclama.com.Network.UpdateCharacter;
-import mclama.com.Network.sendPlayersCharacter;
+import mclama.com.Network.*;
 import mclama.com.entity.Player;
+import mclama.com.level.Level;
 
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 
 public class GameServer {
 	
@@ -25,6 +19,7 @@ public class GameServer {
 	private HashSet<Character> loggedIn = new HashSet();
 	
 	private int total_users_connected = 0;
+	private int total_levels_created = 0;
 
 	
 	public GameServer () throws IOException {
@@ -126,6 +121,23 @@ public class GameServer {
 		server.start();
 	}
 	
+	public int createNewLevel(){
+		return createNewLevel(gen.nextLong());
+	}
+	
+	public int createNewLevel(long seed){
+		total_levels_created++;
+		
+		
+		SendNewLevelSeed newLevelSeed = new SendNewLevelSeed();
+		System.out.println("sent seed with " + seed);
+		newLevelSeed.seed = seed;
+		newLevelSeed.id = total_levels_created;
+		server.sendToAllUDP(newLevelSeed);
+		
+		return total_levels_created;
+	}
+	
 
 	protected int setCharacterID() {
 		total_users_connected++ ;
@@ -164,7 +176,7 @@ public class GameServer {
 		
 		server.sendToAllTCP(addCharacter);
 		
-		sendPlayersCharacter sendChar = new sendPlayersCharacter();
+		SendPlayersCharacter sendChar = new SendPlayersCharacter();
 		sendChar.id = character.id;
 		c.sendUDP(sendChar);
 	}

@@ -1,6 +1,6 @@
 package mclama.com.entity;
 
-import static mclama.com.util.globals.*;
+import static mclama.com.util.Globals.*;
 import static mclama.com.util.Artist.*;
 
 import mclama.com.Network.MoveClickOrder;
