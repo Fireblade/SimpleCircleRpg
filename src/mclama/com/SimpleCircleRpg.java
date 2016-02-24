@@ -473,13 +473,12 @@ public class SimpleCircleRpg {
 //		glPopMatrix();
 
 		glEnable(GL_TEXTURE_2D);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		if(monst!=null){
-			monst.draw();
-			glColor3f(1.0f, 0.0f, 0.0f);
-			DrawPoint(monst.getX(), monst.getY());
-			DrawPoint(32, 32);
+		//glColor3f(1.0f, 0f, 0f);
+		//draw enemies
+		if(currentLevel!=null){
+			currentLevel.renderMonsters();
 		}
+		
 		glColor3f(1.0f, 1.0f, 1.0f);
 		
 		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
@@ -506,6 +505,8 @@ public class SimpleCircleRpg {
 		
 		ttf.drawString(10, 64, "mx: " + mouseX, Color.orange);
 		ttf.drawString(10, 74, "my: " + mouseY, Color.orange);
+		
+		ttf.drawString(10, 84, "monsters: " + D_MonstersOnScreen, Color.orange);
 		
 		
 		glDisable(GL_TEXTURE_2D);

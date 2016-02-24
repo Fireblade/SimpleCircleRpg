@@ -94,7 +94,7 @@ public class GameClient {
 				
 				if (object instanceof MoveClickOrder){
 					MoveClickOrder clickOrder = ((MoveClickOrder) object);
-					System.out.println("Move order received by: " + clickOrder.id);
+					//System.out.println("Move order received by: " + clickOrder.id);
 					if(!(((MoveClickOrder) object).id==myPlayer.getId())){ //if not self.
 						getCharacter(clickOrder.id).movingClickOrder(clickOrder.x, clickOrder.y);
 						

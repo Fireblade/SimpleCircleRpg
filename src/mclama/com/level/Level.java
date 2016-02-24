@@ -4,6 +4,7 @@ import static mclama.com.util.Artist.DrawQuadTexNormal;
 import static mclama.com.util.Artist.LoadTexture;
 import static mclama.com.util.Artist.onScreen;
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.DebugGlobals.*;
 
 import mclama.com.entity.Monster;
 
@@ -156,7 +157,7 @@ public class Level {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (tiles[x][y]) { // if it is a tile
-					if (distance(spawnX, x, spawnY, y) > 3) {
+					if (distance(spawnX, spawnY, x, y) > 3) {
 						float spawnChance = levelGen.nextFloat();
 						if (spawnChance < packSpawnChance) {
 							// then spawn monsters.
@@ -166,14 +167,17 @@ public class Level {
 							for (int i = 0; i < addMons; i++) {
 								totalMonsters++;
 								monsters.add(new Monster(totalMonsters, 1,
-										x + (tileWidth / 4) + ((levelGen.nextFloat() * tileWidth) / 2),
-										y + (tileHeight / 4) + ((levelGen.nextFloat() * tileHeight) / 2)));
+										(x*tileWidth) + (tileWidth / 4) + ((levelGen.nextFloat() * tileWidth) / 2),
+										(y*tileHeight) + (tileHeight / 4) + ((levelGen.nextFloat() * tileHeight) / 2)));
 							}
 						}
 					}
 				}
 			}
 		}
+		//end of monster generation
+		
+		System.out.println("Generated level with " + totalMonsters + " monsters");
 		
 		
 	} //End of level generation
@@ -189,6 +193,21 @@ public class Level {
 					}
 					DrawQuadTexNormal(texture, (x*tileWidth), (y*tileHeight),tileWidth, tileHeight);
 				}
+			}
+		}
+	}
+	
+	public void renderMonsters() {
+		int monstersOnScreen=0;
+		for(int i=0; i<monsters.size(); i++){
+			Monster mons = monsters.get(i);
+			//System.out.println(mons.getX() + "," + mons.getY());
+			//if(onScreen(mons.getX(),mons.getY(), mons.getWidth()*2, mons.getHeight()*2))
+			if (Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < 4
+					&& Math.abs((mons.getY() / tileHeight) - (myPlayer.getY() / tileHeight)) < 4) {
+				mons.draw();
+				monstersOnScreen++;
+				D_MonstersOnScreen = monstersOnScreen;
 			}
 		}
 	}
@@ -284,5 +303,7 @@ public class Level {
 	public int getSpawnYLoc() {
 		return ((spawnY+1)*tileHeight) - (tileHeight/2);
 	}
+
+
 
 }
