@@ -22,37 +22,15 @@ import org.newdawn.slick.util.ResourceLoader;
 import mclama.com.SimpleCircleRpg;
 
 public class Artist {
-
-	//public static final int WIDTH = 1280/2, HEIGHT = 960/2;
-	//public static final int WIDTH = (int) (1920/1.5), HEIGHT = (int) (1080/1.5);
-	public static final int WIDTH = 720, HEIGHT = 480;
+	
 	public static double camX=0, camY=0;
 	
-	
 	public static Texture tex_circle;
+	
+	//public static Texture[] tex_tile_grass; //maybe store tiles in the future
 
 	public static void createCircleLibrary(){
 		tex_circle = LoadTexture("res/images/circles/circle.png", "PNG");
-	}
-	
-	public static void BeginSession(){
-		Display.setTitle("MY GAME");
-		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.create();
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
-		//Prepare game
-		
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0, WIDTH, HEIGHT, 0, 1, -1);
-		glMatrixMode(GL_MODELVIEW);
-		glEnable(GL_TEXTURE_2D);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
 	}
 	
 	public static void DrawQuad(float x, float y, float width, float height){

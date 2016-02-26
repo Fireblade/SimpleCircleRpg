@@ -36,6 +36,63 @@ public class Player extends Entity{
 		
 	}
 	
+	public void tick(int delta) {
+		if(attackCooldownTicks>0) attackCooldownTicks--;
+		
+		if(isAttacking && target!= null){
+			if(!target.isAlive()){ //target must have died.
+				isAttacking=false;
+				target = null;
+			}
+			else if(distance(x, y, target.getX(), target.getY()) > attackRange)
+			{ //If out of range, move to range.
+				double angle = getAngle(target.getX(), target.getY());
+				double distance = distance(x, y, target.getX(), target.getY());
+				moveX = x + distanceX(distance - attackRange, angle);
+				moveY = y + distanceY(distance - attackRange, angle);
+				
+				moveToLoc=true;
+			}
+			else if(attackCooldownTicks<1){ //if we can attack
+				attackCooldownTicks = (int) (attackCooldownRate*targetFPS);
+				
+				//calculate damage
+				double[] damage = {gen.nextInt(4)+4}; //add minimum damage, while rolling the seperated damage
+				
+				((Monster) target).takeDamage(damage, this);
+				
+			}
+				
+		}
+
+		if (moveToLoc && currentLevel != null) {
+			// System.out.println("moveloc");
+			calculateDirection(moveX, moveY);
+			if (distance(x, y, moveX, moveY) < (speed * delta)
+					|| (isAttacking && distance(x, y, target.getX(), target.getY()) < attackRange)) {
+				moveToLoc = false;
+			} else { // so the player doesn't move and then stop
+				try {
+					if (currentLevel.validWalkable(x + (xVelocity * speed * delta), y + (yVelocity * speed * delta))) {
+						x += xVelocity * speed * delta;
+						y += yVelocity * speed * delta;
+					} else {
+						moveToLoc = false;
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				if (gameIsHosting) {
+					gameServer.updateCharacter(id, x, y);
+				}
+
+			}
+
+		}
+	}
+	
 	public void movingClickOrder(double x, double y){
 		moveX = x;
 		moveY = y;

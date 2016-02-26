@@ -55,6 +55,9 @@ public class SimpleCircleRpg {
 	private double mouseX, mouseY;
 	
 	private Texture background2;
+	
+	private boolean leftclickHeld=false;
+	private boolean leftclickMoving;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -95,7 +98,7 @@ public class SimpleCircleRpg {
 		gameIsHosting = true;
 		try {
 			server = new GameServer();
-			client = new GameClient(name);
+			client = new GameClient(name, "localhost");
 			myPlayer.name = name;
 			gameIsRunning = true;
 		} catch (IOException e) {
@@ -105,7 +108,7 @@ public class SimpleCircleRpg {
 	
 	public void joinHost(String name){
 		if(!gameIsRunning){
-			client = new GameClient(name);
+			client = new GameClient(name, "localhost");
 			myPlayer.name = name;
 			gameIsRunning = true;
 		}
@@ -133,7 +136,7 @@ public class SimpleCircleRpg {
 			renderGL();
 
 			Display.update();
-			Display.sync(60); // cap fps to 60fps
+			Display.sync(targetFPS); // cap fps to 60fps
 		}
 
 		Display.destroy();
@@ -187,14 +190,19 @@ public class SimpleCircleRpg {
 				camY-=5;
 			}
 		} else {
-			camX = myPlayer.getX() - WIDTH/2;
+			camX = myPlayer.getX() - game_width/2;
 			camX = -camX;
-			camY = myPlayer.getY() - HEIGHT/2;
+			camY = myPlayer.getY() - game_height/2;
 			camY = -camY;
 		}
 		
 		mouseX = Mouse.getX() - camX;
-		mouseY = HEIGHT - Mouse.getY() - 1 - camY;
+		mouseY = game_height - Mouse.getY() - 1 - camY;
+		
+		//get active monsters and issue their tick method.
+		if(currentLevel!= null){
+			gameClient.activeMonsters = currentLevel.getActiveMonsters(delta);
+		}
 		
 //		float mx = Mouse.getX() - camX;
 //		float my = HEIGHT - Mouse.getY() - 1 - camY;
@@ -221,23 +229,44 @@ public class SimpleCircleRpg {
 		
 		while (Mouse.next()){
 		    if (Mouse.getEventButtonState()) {
-		        if (Mouse.getEventButton() == 0) {
-		        	if(myPlayer==null) System.out.println("null player");
-		        	else {
-		        		if(myPlayer.getId()==0 && gameIsRunning){
-		        			if(myPlayerId != 0){
-		        				Player plyr = gameClient.getCharacter(myPlayerId);
-		    					if(plyr != null){
-		    						myPlayer = plyr;
-		    					}
-		        			}
-		        		}
-		        		myPlayer.playerClicked(mouseX,mouseY);
+		        if (Mouse.getEventButton() == 0) { //left click
+		        	Monster monClicked = getMonsterClickedOn();
+		        	if(monClicked!= null){
+		        		//System.out.println("clicked on monster");
+		        		myPlayer.setTarget(monClicked);
+		        		myPlayer.setAttacking(true);
+		        	}
+		        	else //if check for items
+		        	//{
+		        		//Pick up item.
+		        	//}
+		        	//else
+		        	{
+			        	if(myPlayer==null) System.out.println("null player");
+			        	else {
+			        		//fix invalid player
+			        		if(myPlayer.getId()==0 && gameIsRunning){
+			        			if(myPlayerId != 0){
+			        				Player plyr = gameClient.getCharacter(myPlayerId);
+			    					if(plyr != null){
+			    						myPlayer = plyr;
+			    					}
+			        			}
+			        		} //move player
+			        		leftclickHeld=true;
+			        		leftclickMoving=true;
+			        		
+			        		myPlayer.setTarget(null);
+			        		myPlayer.setAttacking(false);
+			        		//myPlayer.playerClicked(mouseX,mouseY);
+			        	}
 		        	}
 		        }
 		    }else {
 		        if (Mouse.getEventButton() == 0) {
 		            //System.out.println("Left button released");
+		        	leftclickHeld=false;
+		        	leftclickMoving=false;
 		        }
 		    }
 		}
@@ -291,6 +320,10 @@ public class SimpleCircleRpg {
 		}//end of keyboard
 		
 		if(gameIsRunning){
+			if(leftclickHeld && leftclickMoving){
+				myPlayer.playerClicked(mouseX,mouseY);
+			}
+			
 			if(gameClient.queGenerateNewLevelId!=0){
 				System.out.println("gen new currlevel");
 				currentLevel = gameClient.generateNewLevel(gameClient.queGenerateNewLevelId, gameClient.queGenerateNewLevelSeed);
@@ -316,6 +349,22 @@ public class SimpleCircleRpg {
 		
 
 		updateFPS(); // update FPS Counter
+	}
+	/**
+	 * Returns the monster that was clicked under the cursor.
+	 * 
+	 * @return Monster
+	 */
+
+	private Monster getMonsterClickedOn() {
+		for(int i=0; i<gameClient.activeMonsters.size(); i++){
+			Monster mons = gameClient.activeMonsters.get(i);
+			
+			if(mons.inBounds(mouseX, mouseY)){
+				return mons;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -411,7 +460,7 @@ public class SimpleCircleRpg {
 	 */
 	public void updateFPS() {
 		if (getTime() - lastFPS > 1000) {
-			Display.setTitle("FPS: " + fps);
+			Display.setTitle("SimpleCircleRPG FPS: " + fps);
 			fps = 0;
 			lastFPS += 1000;
 		}
@@ -503,8 +552,8 @@ public class SimpleCircleRpg {
 		if (gameIsRunning && client.myCharacter != null)
 			ttf.drawString(10, 38, "Name: " + client.myCharacter.name, Color.orange);
 		
-		ttf.drawString(10, 64, "mx: " + mouseX, Color.orange);
-		ttf.drawString(10, 74, "my: " + mouseY, Color.orange);
+		ttf.drawString(10, 64, "mx: " + (int) mouseX, Color.orange);
+		ttf.drawString(10, 74, "my: " + (int) mouseY, Color.orange);
 		
 		ttf.drawString(10, 84, "monsters: " + D_MonstersOnScreen, Color.orange);
 		

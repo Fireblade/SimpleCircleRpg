@@ -34,7 +34,7 @@ public class Level {
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
 	
 	public Level(int levelId, long seed){
-		Level(levelId, 128, 32, 1, seed);
+		Level(levelId, 96, 32, 1, seed);
 	}
 	
 	public void Level(int levelId, int width, int height, int size, long seed){
@@ -197,18 +197,27 @@ public class Level {
 		}
 	}
 	
-	public void renderMonsters() {
+	public ArrayList<Monster> getActiveMonsters(int delta) {
+		ArrayList<Monster> activeMonsters = new ArrayList<Monster>();
 		int monstersOnScreen=0;
 		for(int i=0; i<monsters.size(); i++){
 			Monster mons = monsters.get(i);
-			//System.out.println(mons.getX() + "," + mons.getY());
-			//if(onScreen(mons.getX(),mons.getY(), mons.getWidth()*2, mons.getHeight()*2))
-			if (Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < 4
-					&& Math.abs((mons.getY() / tileHeight) - (myPlayer.getY() / tileHeight)) < 4) {
-				mons.draw();
+			if (Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < ((game_width*0.5)/tileWidth)+1
+					&& Math.abs((mons.getY() / tileHeight) - (myPlayer.getY() / tileHeight)) < ((game_height*0.5)/tileHeight)+1) {
+				activeMonsters.add(mons);
+				mons.tick(delta);
 				monstersOnScreen++;
 				D_MonstersOnScreen = monstersOnScreen;
 			}
+		}
+		return activeMonsters;
+	}
+
+	
+	public void renderMonsters() {
+		for(int i=0; i<gameClient.activeMonsters.size(); i++){
+			Monster mons = gameClient.activeMonsters.get(i);
+			mons.draw();
 		}
 	}
 
@@ -229,16 +238,6 @@ public class Level {
 		for(int x=0; x<width; x++){
 			for(int y=0; y<height; y++){
 				msg[x][y] = false;
-			}
-		}
-		return msg;
-	}
-
-	private Tile[][] createTilesBase2() {
-		Tile[][] msg = null;
-		for(int x=0; x<width; x++){
-			for(int y=0; y<height; y++){
-				msg[x][y] = new Tile("blank");
 			}
 		}
 		return msg;

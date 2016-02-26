@@ -15,8 +15,10 @@ public class Globals {
 	public static int game_width = 720;
 	public static int game_height = 480;
 	
-//	public static int game_width = 1280; //doesnt work yet, hmmm
+//	public static int game_width = 1280;
 //	public static int game_height = 720;
+	
+	public static int targetFPS=60;
 	
 	public static boolean gameIsRunning = false;
 	public static boolean gameIsHosting = false;

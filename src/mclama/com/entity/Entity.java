@@ -24,6 +24,8 @@ public class Entity {
 	protected float size=1;
 	public double speed=0.15f, xVelocity, yVelocity;
 	protected int attackRange=48;
+	protected int attackCooldownTicks=0;
+	protected float attackCooldownRate = 1.5f; //.66 attacks/second base
 	
 	protected double health = 10;
 	protected double maxHealth = 10;
@@ -38,8 +40,8 @@ public class Entity {
 	
 	
 	
-	protected boolean alive=false;
-	protected boolean hasDied=true;
+	protected boolean alive=true;
+	protected boolean hasDied=false;
 	protected boolean moveToLoc=false;
 	
 	protected boolean isAttacking=false;
@@ -63,6 +65,7 @@ public class Entity {
 	
 	
 	public void tick(int delta){
+		if(attackCooldownTicks>0) attackCooldownTicks--;
 		
 		if (moveToLoc && currentLevel != null) {
 			//System.out.println("moveloc");
@@ -80,8 +83,8 @@ public class Entity {
 					}
 					else{
 						moveToLoc=false;
-						System.out.println("x:" +(int) Math.floor((x +(xVelocity * speed * delta))/128));
-						System.out.println("y:" +(int) Math.floor((y +(yVelocity * speed * delta))/128));
+//						System.out.println("x:" +(int) Math.floor((x +(xVelocity * speed * delta))/128));
+//						System.out.println("y:" +(int) Math.floor((y +(yVelocity * speed * delta))/128));
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -109,7 +112,8 @@ public class Entity {
 	public void draw(){
 		
 		if(texture!=null){
-			DrawQuadTex(texture, x, y, width, height);
+			if(alive)
+				DrawQuadTex(texture, x, y, width, height);
 		} else texture = LoadTexture("res/images/circles/circle.png", "PNG");
 		
 		if(moveToLoc && D_PlayerShowMoveToLine){
@@ -150,10 +154,10 @@ public class Entity {
 			yVelocity *= -1;
 	}
 	
-	public double getAngle(float x2, float y2) {
+	public double getAngle(double d, double e) {
 		double angle = Math.toDegrees(Math.atan2(
-				(x2 - x),
-				(y2 - y)
+				(d - x),
+				(e - y)
 				));
 		//angle += 90;
 		//float angle = (float) ((float) Math.atan2(x2 - (x + width/2),y2 - (y + height/2)) * 180 / 3.14);
@@ -168,11 +172,11 @@ public class Entity {
 		return xDistanceFromTarget + yDistanceFromTarget;
 	}
 	
-	protected float distanceX(float distance, double angle){
-		return (float) (distance * Math.sin(Math.toRadians(angle)));
+	protected float distanceX(double d, double angle){
+		return (float) (d * Math.sin(Math.toRadians(angle)));
 		//return (float) (distance * Math.cos(angle));
 	}
-	protected float distanceY(float distance, double angle){
+	protected float distanceY(double distance, double angle){
 		return (float) (distance * Math.cos(Math.toRadians(angle)));
 		//return (float) (distance * Math.sin(angle));
 	}
@@ -291,6 +295,26 @@ public class Entity {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+
+	public Entity getTarget() {
+		return target;
+	}
+
+
+	public void setTarget(Entity target) {
+		this.target = target;
+	}
+
+
+	public boolean isAttacking() {
+		return isAttacking;
+	}
+
+
+	public void setAttacking(boolean isAttacking) {
+		this.isAttacking = isAttacking;
 	}
 
 }

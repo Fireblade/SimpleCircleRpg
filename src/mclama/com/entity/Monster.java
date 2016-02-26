@@ -1,7 +1,10 @@
 package mclama.com.entity;
 
 import static mclama.com.util.Artist.tex_circle;
+import static mclama.com.util.Globals.currentLevel;
 import static mclama.com.util.Globals.gGHighestPlayerLevel;
+import static mclama.com.util.Globals.gameIsHosting;
+import static mclama.com.util.Globals.gameServer;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -29,9 +32,47 @@ public class Monster extends Entity{
 		this.y = y;
 		texture = tex_circle;
 	}
-	
+
+	public void tick(int delta) {
+
+		if (moveToLoc && currentLevel != null) {
+			// System.out.println("moveloc");
+			calculateDirection(moveX, moveY);
+			if (distance(x, y, moveX, moveY) < (speed * delta)
+					|| (isAttacking && distance(x, y, target.getX(), target.getY()) < attackRange)) {
+				moveToLoc = false;
+			} else {
+				try {
+					// x += xVelocity * speed * delta;
+					// y += yVelocity * speed * delta;
+					if (currentLevel.validWalkable(x + (xVelocity * speed * delta), y + (yVelocity * speed * delta))) {
+						x += xVelocity * speed * delta;
+						y += yVelocity * speed * delta;
+					} else {
+						moveToLoc = false;
+						System.out.println("x:" + (int) Math.floor((x + (xVelocity * speed * delta)) / 128));
+						System.out.println("y:" + (int) Math.floor((y + (yVelocity * speed * delta)) / 128));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+			}
+
+		}
+
+		if (target != null) {
+			if (!target.isAlive()) { // target must have died.
+				isAttacking = false;
+				target = null;
+			}
+		}
+	}
 	
 	public void takeDamage(double[] damage, Player damagedBy){
+		//resistances blah blah
+		//0 = physical
+		health -= damage[0];
 		
 		if(health <1){
 			die(damagedBy);
@@ -39,6 +80,9 @@ public class Monster extends Entity{
 	}
 	
 	public void die(Player killedBy){
+		alive=false;
+		hasDied=true;
+		
 		int quantity = killedBy.getIncr_quantity() + quantity_bonus + (Math.min(level, 100));
 		int rarity   = killedBy.getIncr_rarity() + rarity_bonus + (int) (Math.min(level, 200)/2);
 		
@@ -68,6 +112,15 @@ public class Monster extends Entity{
 
 	public ArrayList<Item> getItem_drops() {
 		return item_drops;
+	}
+
+	public boolean inBounds(double mouseX, double mouseY) {
+		if(mouseX < x - (width/2)) return false;
+		if(mouseX > x + (width/2)) return false;
+		
+		if(mouseY < y - (height/2)) return false;
+		if(mouseY > y + (height/2)) return false;
+		return true;
 	}
 
 }

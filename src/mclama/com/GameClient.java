@@ -16,6 +16,7 @@ import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.SendNewLevelSeed;
 import mclama.com.Network.SendPlayersCharacter;
+import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
 import mclama.com.level.Level;
@@ -34,12 +35,13 @@ public class GameClient {
 	
 	//public static HashMap<Integer, Player> characters = new HashMap();
 	public static ArrayList<Player> characters = new ArrayList<Player>();
+	public static ArrayList<Monster> activeMonsters = new ArrayList<Monster>();
 	//public ArrayList<Level> gameLevels = new ArrayList<Level>();
 	
 	public int queGenerateNewLevelId=0;
 	public long queGenerateNewLevelSeed=0;
 	
-	public GameClient (String name) {
+	public GameClient (String name, String hostAddr) {
 		client = new Client();
 	    client.start();
 	    
@@ -113,7 +115,7 @@ public class GameClient {
 		}));
 		
 		try {
-			client.connect(5000, "localhost", Network.TCPport, Network.UDPport);
+			client.connect(5000, hostAddr, Network.TCPport, Network.UDPport);
 			
 			Login login = new Login();
 			login.name = name;
