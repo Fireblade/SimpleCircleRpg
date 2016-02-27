@@ -288,7 +288,7 @@ public class SimpleCircleRpg {
 						//System.out.println("send");
 						for(int count=0; count<=100; count++)
 						{
-							monst = new Monster(0, 1, 64,64);
+							monst = new Monster(0, 1, mouseX+16,mouseY+16);
 							monst.die(myPlayer);
 							
 							for(int i=0; i<monst.getItem_drops().size(); i++){
@@ -359,9 +359,11 @@ public class SimpleCircleRpg {
 	private Monster getMonsterClickedOn() {
 		for(int i=0; i<gameClient.activeMonsters.size(); i++){
 			Monster mons = gameClient.activeMonsters.get(i);
-			
-			if(mons.inBounds(mouseX, mouseY)){
-				return mons;
+			if(mons.isAlive())
+			{
+				if(mons.inBounds(mouseX, mouseY)){
+					return mons;
+				}
 			}
 		}
 		return null;
@@ -525,6 +527,7 @@ public class SimpleCircleRpg {
 		//glColor3f(1.0f, 0f, 0f);
 		//draw enemies
 		if(currentLevel!=null){
+			currentLevel.renderItemDroplets(); //show under monsters
 			currentLevel.renderMonsters();
 		}
 		
@@ -572,13 +575,13 @@ public class SimpleCircleRpg {
 						//System.out.println(tiles[0].length);
 						//System.out.println("x:" + x + " y:" + y);
 						if(tiles[x][y]==true){
-							DrawPoint(150+(x*gap), 150+(y*gap), 2f);
+							DrawPoint(120+(x*gap), 4+(y*gap), 2f);
 						}
 					}
 				}
 				glColor3f(1f, 1f, 0f);
-				DrawPoint(150 + ((myPlayer.getX() / currentLevel.getTileWidth()) * gap),
-						150 + ((myPlayer.getY() / currentLevel.getTileHeight()) * gap));
+				DrawPoint(120 + ((myPlayer.getX() / currentLevel.getTileWidth()) * gap),
+						4 + ((myPlayer.getY() / currentLevel.getTileHeight()) * gap));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

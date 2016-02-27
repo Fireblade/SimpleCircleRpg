@@ -7,6 +7,8 @@ import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.*;
 
 import mclama.com.entity.Monster;
+import mclama.com.item.Item;
+import mclama.com.item.ItemDrop;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class Level {
 	private Texture texture;
 	
 	private ArrayList<Monster> monsters = new ArrayList<Monster>();
+	private ArrayList<ItemDrop> itemDrops = new ArrayList<ItemDrop>();
 	
 	public Level(int levelId, long seed){
 		Level(levelId, 96, 32, 1, seed);
@@ -220,6 +223,17 @@ public class Level {
 			mons.draw();
 		}
 	}
+	
+	public void renderItemDroplets(){
+		for(int i=0; i<itemDrops.size(); i++){
+			ItemDrop iDrop = itemDrops.get(i);
+			if (Math.abs((iDrop.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < ((game_width*0.5)/tileWidth)+1
+					&& Math.abs((iDrop.getY() / tileHeight) - (myPlayer.getY() / tileHeight)) < ((game_height*0.5)/tileHeight)+1) {
+				
+				iDrop.draw();
+			}
+		}
+	}
 
 	private int getTotalTiles() {
 		int count=0;
@@ -248,6 +262,38 @@ public class Level {
 		double yDistanceFromTarget = Math.abs(y1 - y2);
 		return xDistanceFromTarget + yDistanceFromTarget;
 	}
+	
+	public boolean validWalkable(double x, double y) {
+//		x -= tileWidth/2;
+//		y -= tileHeight/2;
+		int tileX = (int) Math.floor(x / tileWidth);
+		int tileY = (int) Math.floor(y / tileHeight);
+		
+		tileX = Math.min(tileX, width);
+		tileX = Math.max(tileX, 0);
+		
+		tileY = Math.min(tileY, height);
+		tileY = Math.max(tileY, 0);
+		
+		if (tiles[tileX][tileY]) {
+			return true;
+		}
+		return false;
+	}
+	
+
+	public void sendDamageDealt(int monId, double[] damage, int damagedByPlayer) {
+		for(int i=0; i<monsters.size(); i++){
+			Monster mons = monsters.get(i);
+			if(mons.getId()==monId){
+				mons.takeDamage(damage, gameClient.getCharacter(damagedByPlayer));
+			}
+		}
+	}
+	
+	public void addNewItemDrop(Item item, double x, double y){
+		itemDrops.add(new ItemDrop(item, x, y));
+	}
 
 	public boolean[][] getTiles() {
 		return tiles;
@@ -269,24 +315,6 @@ public class Level {
 		this.tileHeight = tileHeight;
 	}
 
-	public boolean validWalkable(double x, double y) {
-//		x -= tileWidth/2;
-//		y -= tileHeight/2;
-		int tileX = (int) Math.floor(x / tileWidth);
-		int tileY = (int) Math.floor(y / tileHeight);
-		
-		tileX = Math.min(tileX, width);
-		tileX = Math.max(tileX, 0);
-		
-		tileY = Math.min(tileY, height);
-		tileY = Math.max(tileY, 0);
-		
-		if (tiles[tileX][tileY]) {
-			return true;
-		}
-		return false;
-	}
-	
 	public int getSpawnX() {
 		return spawnX;
 	}
@@ -302,16 +330,4 @@ public class Level {
 	public int getSpawnYLoc() {
 		return ((spawnY+1)*tileHeight) - (tileHeight/2);
 	}
-
-	public void sendDamageDealt(int monId, double[] damage, int damagedByPlayer) {
-		for(int i=0; i<monsters.size(); i++){
-			Monster mons = monsters.get(i);
-			if(mons.getId()==monId){
-				mons.takeDamage(damage, gameClient.getCharacter(damagedByPlayer));
-			}
-		}
-	}
-
-
-
 }

@@ -26,11 +26,16 @@ public class Artist {
 	public static double camX=0, camY=0;
 	
 	public static Texture tex_circle;
+	public static Texture tex_circle_ring_outer;
 	
 	//public static Texture[] tex_tile_grass; //maybe store tiles in the future
+	
+	public static Texture tex_item_droplet_melee;
 
 	public static void createCircleLibrary(){
 		tex_circle = LoadTexture("res/images/circles/circle.png", "PNG");
+		tex_circle_ring_outer = LoadTexture("res/images/circles/ring_outer.png", "PNG");
+		tex_item_droplet_melee = LoadTexture("res/images/items/droplet/melee.png", "PNG");
 	}
 	
 	public static void DrawQuad(float x, float y, float width, float height){

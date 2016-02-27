@@ -114,7 +114,13 @@ public class Entity {
 		if(texture!=null){
 			if(alive){
 				if(this instanceof Player) glColor4f(0f, 1f, 0f, 1f);
-				DrawQuadTex(texture, x, y, width, height);
+				if(this==myPlayer) glColor4f(0f, 1f, 1f, 1f);
+				if(this instanceof Monster) glColor4f(1f, 0.8f, 0.8f, 1f);
+				DrawQuadTex(texture, x, y, width-1, height-1);
+				if(this instanceof Player) {
+					glColor4f(0.5f, 0.8f, 0f, 0.6f);
+					DrawQuadTex(tex_circle_ring_outer, x, y, width, height);
+				}
 			}
 		} else texture = LoadTexture("res/images/circles/circle.png", "PNG");
 		
