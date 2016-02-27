@@ -87,6 +87,8 @@ public class Player extends Entity{
 			calculateDirection(moveX, moveY);
 			if (distance(x, y, moveX, moveY) < (speed * delta)
 					|| (isAttacking && distance(x, y, target.getX(), target.getY()) < attackRange)) {
+				x = moveX;
+				y = moveY;
 				moveToLoc = false;
 			} else { // so the player doesn't move and then stop
 				try {
