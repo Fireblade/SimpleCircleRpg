@@ -14,6 +14,7 @@ import mclama.com.Network.Login;
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
+import mclama.com.Network.SendDamageDealt;
 import mclama.com.Network.SendNewLevelSeed;
 import mclama.com.Network.SendPlayersCharacter;
 import mclama.com.entity.Monster;
@@ -57,6 +58,11 @@ public class GameClient {
 			}
 
 			public void received (Connection connection, Object object) {
+				if (object instanceof SendDamageDealt) {
+					SendDamageDealt msg = (SendDamageDealt) object;
+					
+					currentLevel.sendDamageDealt(msg.monId, msg.damage, msg.damagedByPlayer);
+				}
 				if (object instanceof SendNewLevelSeed) {
 					SendNewLevelSeed msg = (SendNewLevelSeed) object;
 					//currentLevel = generateNewLevel(msg.id, msg.seed);

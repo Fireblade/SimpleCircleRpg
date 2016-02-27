@@ -303,6 +303,15 @@ public class Level {
 		return ((spawnY+1)*tileHeight) - (tileHeight/2);
 	}
 
+	public void sendDamageDealt(int monId, double[] damage, int damagedByPlayer) {
+		for(int i=0; i<monsters.size(); i++){
+			Monster mons = monsters.get(i);
+			if(mons.getId()==monId){
+				mons.takeDamage(damage, gameClient.getCharacter(damagedByPlayer));
+			}
+		}
+	}
+
 
 
 }

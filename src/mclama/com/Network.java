@@ -26,6 +26,8 @@ public class Network {
 		kryo.register(SendPlayersCharacter.class);
 		kryo.register(PlayerRequestNewLevel.class);
 		kryo.register(SendNewLevelSeed.class);
+		kryo.register(SendDamageDealt.class);
+		kryo.register(double[].class);
 	}
 	
 	public static class Login {
@@ -68,8 +70,15 @@ public class Network {
 	}
 	
 	public static class SendNewLevelSeed{
-		long seed;
-		int id;
+		public long seed;
+		public int id;
+	}
+	
+	public static class SendDamageDealt{
+		public int monId;
+		//public int levelId;
+		public double[] damage;
+		public int damagedByPlayer;
 	}
 
 }

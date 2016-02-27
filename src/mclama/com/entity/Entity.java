@@ -112,8 +112,10 @@ public class Entity {
 	public void draw(){
 		
 		if(texture!=null){
-			if(alive)
+			if(alive){
+				if(this instanceof Player) glColor4f(0f, 1f, 0f, 1f);
 				DrawQuadTex(texture, x, y, width, height);
+			}
 		} else texture = LoadTexture("res/images/circles/circle.png", "PNG");
 		
 		if(moveToLoc && D_PlayerShowMoveToLine){

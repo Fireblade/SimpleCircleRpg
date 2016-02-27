@@ -36,6 +36,12 @@ public class GameServer {
 				CharacterConnection connection = (CharacterConnection)c;
 				Character character = connection.character;
 
+				if (object instanceof SendDamageDealt) {
+					SendDamageDealt msg = (SendDamageDealt) object;
+					//return
+					server.sendToAllUDP(msg);
+				}
+				
 				if (object instanceof OtherClient){
 					((OtherClient)object).id = setCharacterID();
 					server.sendToAllTCP(object);

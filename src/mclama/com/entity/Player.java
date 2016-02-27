@@ -2,6 +2,7 @@ package mclama.com.entity;
 
 import static mclama.com.util.Globals.*;
 import static mclama.com.util.Artist.*;
+import static mclama.com.Network.SendDamageDealt;
 
 import mclama.com.Network.MoveClickOrder;
 
@@ -51,6 +52,14 @@ public class Player extends Entity{
 				moveX = x + distanceX(distance - attackRange, angle);
 				moveY = y + distanceY(distance - attackRange, angle);
 				
+				if(gameIsRunning){
+					MoveClickOrder moveOrder = new MoveClickOrder();
+					moveOrder.id = id;
+					moveOrder.x = moveX;
+					moveOrder.y = moveY;
+					gClient.sendUDP(moveOrder);
+				}
+				
 				moveToLoc=true;
 			}
 			else if(attackCooldownTicks<1){ //if we can attack
@@ -59,7 +68,15 @@ public class Player extends Entity{
 				//calculate damage
 				double[] damage = {gen.nextInt(4)+4}; //add minimum damage, while rolling the seperated damage
 				
-				((Monster) target).takeDamage(damage, this);
+				SendDamageDealt damageMsg = new SendDamageDealt();
+				//damageMsg.levelId = currentLevel.getId();
+				damageMsg.monId = target.getId();
+				damageMsg.damage = damage;
+				damageMsg.damagedByPlayer = id;
+				
+				gClient.sendUDP(damageMsg);
+				
+				//((Monster) target).takeDamage(damage, this);
 				
 			}
 				
