@@ -48,6 +48,15 @@ public class ItemDrop {
 		} else
 			texture = LoadTexture("res/images/items/droplet/base.png", "PNG");
 	}
+	
+	public boolean inBounds(double mouseX, double mouseY) {
+		if(mouseX < x - (width/2)) return false;
+		if(mouseX > x + (width/2)) return false;
+		
+		if(mouseY < y - (height/2)) return false;
+		if(mouseY > y + (height/2)) return false;
+		return true;
+	}
 
 	public Item getItem() {
 		return item;

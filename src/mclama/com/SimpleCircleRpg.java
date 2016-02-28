@@ -21,6 +21,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
+import mclama.com.item.ItemDrop;
 import mclama.com.level.Level;
 import mclama.com.util.Artist;
 
@@ -231,16 +232,17 @@ public class SimpleCircleRpg {
 		    if (Mouse.getEventButtonState()) {
 		        if (Mouse.getEventButton() == 0) { //left click
 		        	Monster monClicked = getMonsterClickedOn();
+		        	ItemDrop iDrop;
 		        	if(monClicked!= null){
 		        		//System.out.println("clicked on monster");
 		        		myPlayer.setTarget(monClicked);
 		        		myPlayer.setAttacking(true);
 		        	}
-		        	else //if check for items
-		        	//{
-		        		//Pick up item.
-		        	//}
-		        	//else
+		        	else if((iDrop = getItemDropletClickedOn()) != null)
+		        	{
+		        		System.out.println(iDrop.getItem().getName());
+		        	}
+		        	else
 		        	{
 			        	if(myPlayer==null) System.out.println("null player");
 			        	else {
@@ -364,6 +366,18 @@ public class SimpleCircleRpg {
 				if(mons.inBounds(mouseX, mouseY)){
 					return mons;
 				}
+			}
+		}
+		return null;
+	}
+	
+	private ItemDrop getItemDropletClickedOn() {
+		for(int i=0; i<currentLevel.getItemDrops().size(); i++){
+			ItemDrop iDrop = currentLevel.getItemDrops().get(i);
+
+			if (iDrop.inBounds(mouseX, mouseY)) {
+				return iDrop;
+
 			}
 		}
 		return null;

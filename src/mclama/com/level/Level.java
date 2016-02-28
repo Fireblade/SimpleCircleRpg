@@ -330,4 +330,8 @@ public class Level {
 	public int getSpawnYLoc() {
 		return ((spawnY+1)*tileHeight) - (tileHeight/2);
 	}
+
+	public ArrayList<ItemDrop> getItemDrops() {
+		return itemDrops;
+	}
 }
