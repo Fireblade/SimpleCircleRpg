@@ -12,11 +12,11 @@ import mclama.com.level.Level;
 
 public class Globals {
 	
-	public static int game_width = 720;
-	public static int game_height = 480;
+//	public static int game_width = 720;
+//	public static int game_height = 480;
 	
-//	public static int game_width = 1280;
-//	public static int game_height = 720;
+	public static int game_width = 1280;
+	public static int game_height = 720;
 	
 	public static int targetFPS=60;
 	
@@ -33,6 +33,7 @@ public class Globals {
 	public static GameClient gameClient;
 	public static GameServer gameServer;
 	
+	public static boolean gShowInventory=true;
 	
 	public static Player myPlayer=new Player();
 	public static int gGHighestPlayerLevel=1;

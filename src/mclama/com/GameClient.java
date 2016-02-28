@@ -42,6 +42,8 @@ public class GameClient {
 	public int queGenerateNewLevelId=0;
 	public long queGenerateNewLevelSeed=0;
 	
+	private Item playerInventory[][] = new Item[10][8];
+	
 	public GameClient (String name, String hostAddr) {
 		client = new Client();
 	    client.start();
@@ -127,6 +129,8 @@ public class GameClient {
 			login.name = name;
 			client.sendTCP(login);
 			
+			createPlayerInventory();
+			
 //			OtherClient oc = new OtherClient();
 //			oc.name = name;
 //			client.sendTCP(oc);
@@ -136,6 +140,69 @@ public class GameClient {
 		}
 	}
 	
+	
+	private void createPlayerInventory() {
+		for(int x=0; x<10; x++){
+			for(int y=0; y<8; y++){
+				playerInventory[x][y] = null;
+			}
+		}
+	}
+	
+	public void renderInventory(){
+		for(int x=0; x<10; x++){
+			for(int y=0; y<8; y++){
+				if(playerInventory[x][y] != null){
+					//System.out.println(playerInventory[x][y].getItemLevel());
+					DrawQuadTex(tex_item_droplet_melee, 200, 200, 32, 32);
+					//DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * Adds an item to inventory.
+	 * @param item
+	 * @return True if the item was added to list.
+	 */
+	public boolean addItemToInventory(Item item){
+		if(isInventoryFull()) return false;
+		for(int x=0; x<10; x++){
+			for(int y=0; y<8; y++){
+				if(playerInventory[x][y] == null){
+					playerInventory[x][y] = item;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Checks to see if the inventory is full.
+	 * @return True if the inventory is full.
+	 */
+	public boolean isInventoryFull(){
+		for(int x=0; x<10; x++){
+			for(int y=0; y<8; y++){
+				if(playerInventory[x][y] == null) return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * returns item at given x and y.
+	 * @param x
+	 * @param y
+	 * @return item
+	 */
+	public Item getInventoryItemAt(int x, int y){
+		return playerInventory[x][y];
+	}
+
 	public void deleteCharacter(int id){
 		for(int i=0; i<GameClient.characters.size(); i++){
 			Player plyr = GameClient.characters.get(i);
@@ -159,6 +226,16 @@ public class GameClient {
 		Level newLevel = new Level(id, seed);
 		//gameLevels.add(newLevel);
 		return newLevel;
+	}
+
+
+	public Item[][] getPlayerInventory() {
+		return playerInventory;
+	}
+
+
+	public void setPlayerInventory(Item[][] playerInventory) {
+		this.playerInventory = playerInventory;
 	}
 
 }

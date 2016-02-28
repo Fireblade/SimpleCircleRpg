@@ -59,6 +59,8 @@ public class SimpleCircleRpg {
 	
 	private boolean leftclickHeld=false;
 	private boolean leftclickMoving;
+	private int screenX;
+	private int screenY;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -197,6 +199,9 @@ public class SimpleCircleRpg {
 			camY = -camY;
 		}
 		
+		screenX = Mouse.getX();
+		screenY = game_height - Mouse.getY() - 1;
+		
 		mouseX = Mouse.getX() - camX;
 		mouseY = game_height - Mouse.getY() - 1 - camY;
 		
@@ -241,6 +246,7 @@ public class SimpleCircleRpg {
 		        	else if((iDrop = getItemDropletClickedOn()) != null)
 		        	{
 		        		System.out.println(iDrop.getItem().getName());
+		        		gameClient.addItemToInventory(iDrop.getItem());
 		        	}
 		        	else
 		        	{
@@ -554,11 +560,13 @@ public class SimpleCircleRpg {
 				Player plyr = GameClient.characters.get(i);
 				plyr.draw();
 			}
+			//glEnable(GL_TEXTURE_2D);
+			glColor4f(1f, 1f, 1f, 1f);
+			gameClient.renderInventory();
 		}
 		
+		//draw some background to the dev info
 		glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
-		
-		
 		glDisable(GL_TEXTURE_2D);
 		DrawQuad(0, 0, 112, 128);
 		
