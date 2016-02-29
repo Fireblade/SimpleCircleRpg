@@ -33,6 +33,9 @@ public class Globals {
 	public static GameClient gameClient;
 	public static GameServer gameServer;
 	
+	public static int gInvWidth=10;
+	public static int gInvHeight=8;
+	
 	public static boolean gShowInventory=true;
 	
 	public static Player myPlayer=new Player();

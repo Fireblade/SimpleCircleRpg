@@ -144,16 +144,16 @@ public class GameClient {
 	
 	
 	private void createPlayerInventory() {
-		for(int x=0; x<10; x++){
-			for(int y=0; y<8; y++){
+		for(int y=0; y<gInvHeight; y++){
+			for(int x=0; x<gInvWidth; x++){
 				playerInventory[x][y] = null;
 			}
 		}
 	}
 	
 	public void renderInventory(){
-		for(int x=0; x<10; x++){
-			for(int y=0; y<8; y++){
+		for(int y=0; y<gInvHeight; y++){
+			for(int x=0; x<gInvWidth; x++){
 				if(playerInventory[x][y] != null){
 					//DrawQuadTex(tex_item_droplet_melee, 200, 200, 32, 32);
 					DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
@@ -170,8 +170,8 @@ public class GameClient {
 	 */
 	public boolean addItemToInventory(Item item){
 		if(isInventoryFull()) return false;
-		for(int x=0; x<10; x++){
-			for(int y=0; y<8; y++){
+		for(int y=0; y<gInvHeight; y++){
+			for(int x=0; x<gInvWidth; x++){
 				if(playerInventory[x][y] == null){
 					playerInventory[x][y] = item;
 					return true;
@@ -186,8 +186,8 @@ public class GameClient {
 	 * @return True if the inventory is full.
 	 */
 	public boolean isInventoryFull(){
-		for(int x=0; x<10; x++){
-			for(int y=0; y<8; y++){
+		for(int y=0; y<gInvHeight; y++){
+			for(int x=0; x<gInvWidth; x++){
 				if(playerInventory[x][y] == null) return false;
 			}
 		}

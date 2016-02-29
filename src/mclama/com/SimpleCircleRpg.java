@@ -553,9 +553,7 @@ public class SimpleCircleRpg {
 					Player plyr = GameClient.characters.get(i);
 					plyr.draw();
 				}
-				glEnable(GL_TEXTURE_2D);
 				glColor4f(1f, 1f, 1f, 1f);
-				DrawQuadTex(tex_circle, 200, 200, 32, 32);
 				renderInventory(); // y u no work
 			}
 		} catch (Exception e1) {
@@ -610,23 +608,16 @@ public class SimpleCircleRpg {
 	}
 	
 	public void renderInventory(){
-		//Texture tex = LoadTexture("res/images/circles/circle.png", "PNG");
-		Texture tex = tex_item_droplet_melee;
 		try {
 			Item[][] inventory = gameClient.getPlayerInventory();
-			for(int x=0; x<10; x++){
-				for(int y=0; y<8; y++){
+			for(int y=0; y<gInvHeight; y++){
+				for(int x=0; x<gInvWidth; x++){
 					if(inventory[x][y] != null){
-						glDisable(GL_TEXTURE_2D);
-						DrawQuad(200, 200, 32, 32);
-						glEnable(GL_TEXTURE_2D);
-						DrawQuadTex(tex, 200-32, 200-32, 32, 32);
-						DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
+						DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32) - camX, (game_height - 330) + (y * 32) - camY, 32, 32);
 					}
 				}
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
