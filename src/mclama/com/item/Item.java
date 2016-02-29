@@ -52,10 +52,7 @@ public class Item {
 		
 		
 	}
-	
-	
 
-	
 	/*
 	 * 1-handed melee weapon
 	 * 2-handed melee weapon
@@ -74,8 +71,8 @@ public class Item {
 	 * Gloves
 	 * Boots
 	 * 
-	 * Relic(2)                      (effects)
-	 * Symbol                        (Skill mod)
+	 * Relic(2)                      (Passive boosts)
+	 * Symbol                        (Skill boosts)
 	 * 
 	 * //61, 9, 23, 7,1 
 	//9d4, 1d6, 3d8, 1d10, 1d12

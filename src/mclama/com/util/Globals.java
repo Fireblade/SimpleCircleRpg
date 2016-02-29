@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Server;
 import mclama.com.GameClient;
 import mclama.com.GameServer;
 import mclama.com.entity.Player;
+import mclama.com.item.Item;
 import mclama.com.level.Level;
 
 public class Globals {
@@ -37,6 +38,23 @@ public class Globals {
 	public static int gInvHeight=8;
 	
 	public static boolean gShowInventory=true;
+	
+	public static Item[] gInventoryGear = {null,null,null,null,null,null,null,null,null,null,null,null,null,null};
+	
+	public static final int GEAR_WEAPON=0;
+	public static final int GEAR_OFFHAND=1;
+	public static final int GEAR_RING=2;
+	public static final int GEAR_RING2=3;
+	public static final int GEAR_AMULET=4;
+	public static final int GEAR_HEAD=5;
+	public static final int GEAR_CHEST=6;
+	public static final int GEAR_BELT=7;
+	public static final int GEAR_PANTS=8;
+	public static final int GEAR_GLOVES=9;
+	public static final int GEAR_BOOTS=10;
+	public static final int GEAR_RELIC=11;
+	public static final int GEAR_RELIC2=12;
+	public static final int GEAR_SYMBOL=13;
 	
 	public static Player myPlayer=new Player();
 	public static int gGHighestPlayerLevel=1;

@@ -9,6 +9,8 @@ import static mclama.com.util.Artist.*;
 import static mclama.com.util.Globals.*;
 import static org.lwjgl.opengl.GL11.*;
 
+import java.util.ArrayList;
+
 public class Entity {
 	
 	protected int width=32, height=32;
@@ -46,10 +48,18 @@ public class Entity {
 	
 	protected boolean isAttacking=false;
 	
+	private ArrayList<String> mods = new ArrayList<String>();
+	
 	public void calculateInfo(){
 		//gear = get gear
+		calculateGear();
 		
 		//str, dex, int etc
+		strength = 5 + (int) getGearStat("strength", false);
+		intelligence = 5 + (int) getGearStat("intelligence", false);
+		//percentile str/dex/int
+		strength *= (1+(getGearStat("strength", true)/100));
+		intelligence *= (1+(getGearStat("intelligence", true)/100));
 		
 		//do static information 
 		maxHealth = (strength * gStrengthHealthBonus);
@@ -63,7 +73,75 @@ public class Entity {
 		
 	}
 	
-	
+	/**
+	 * Get a statistic from a specified string. 
+	 * @param string
+	 * @param findPercentile true if looking for a percentage based stat.
+	 * @return
+	 */
+	private float getGearStat(String string, boolean findPercentile) {
+		for(int i=0; i<mods.size(); i++){      //Example mod: "25 increased strength"
+			String modStr = mods.get(i);
+			if(modStr.contains(string)){ //then dig deeper
+				String[] modInfo = modStr.split("  ");//double space
+				String[] modStat = modInfo[1].split(" "); 
+			
+				if(modInfo[0].contains("%") && findPercentile){
+					break;
+				}
+				return Float.parseFloat(modInfo[0].replace("%",  "")); 
+				// TODO May need to change this in the future when item mods are more developed.
+			}
+			
+		}
+		return 0;
+	}
+
+
+	private void calculateGear() {
+		for(int i=0; i<gInventoryGear.length; i++){
+			ArrayList<String> gearMods = gInventoryGear[i].getMods();
+			for(int j=0; j<gearMods.size(); j++){
+				addMods(gearMods.get(j));
+			}
+			
+		}
+	}
+
+
+	private void addMods(String string) {
+		String[] strInfo = string.split("  ");
+		String[] strStat = string.split(" ");
+		boolean found=false;
+		//check to see if mod is added to the list.
+		for(int i=0; i<mods.size(); i++){      //Example mod: "25 increased strength"
+			String modStr = mods.get(i);
+			String[] modInfo = modStr.split("  ");//double space
+			String[] modStat = modInfo[1].split(" "); 
+			
+			if(modInfo[0].equals(strInfo[0])){
+				//Both are increased or reduced if equal.
+				if (strInfo[0].contains("%") && modInfo[0].contains("%")) {
+					// both are percentile
+					modStr = (Float.parseFloat(strInfo[0].replace("%", ""))
+							+ Float.parseFloat(modInfo[0].replace("%", ""))) + "%  " + modInfo[1];
+					found = true;
+					break;
+				}
+				if (!strInfo[0].contains("%") && !modInfo[0].contains("%")) {
+					// both are NOT percentile
+					modStr = (Integer.parseInt(strInfo[0]) + Integer.parseInt(modInfo[0])) + "  " + modInfo[1];
+					found = true;
+					break;
+				}
+			}
+		}
+		//Did not find mod, so add mod to the list.
+		if(!found)
+			mods.add(string);
+	}
+
+
 	public void tick(int delta){
 		if(attackCooldownTicks>0) attackCooldownTicks--;
 		
