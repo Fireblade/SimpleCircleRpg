@@ -1,5 +1,6 @@
 package mclama.com;
 
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
+import mclama.com.item.Item;
 import mclama.com.item.ItemDrop;
 import mclama.com.level.Level;
 import mclama.com.util.Artist;
@@ -494,14 +496,19 @@ public class SimpleCircleRpg {
 		glLoadIdentity();
 		glOrtho(0, game_width, game_height, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	}
 
 	public void renderGL() {
 		// Clear The Screen And The Depth Buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		
 		glColor4f(1f, 1f, 1f, 1f);
 
@@ -525,28 +532,11 @@ public class SimpleCircleRpg {
 		DrawQuadTex(background2, 512 + xOff, 1536 + yOff, 1024, 1024);
 
 		
-		if(currentLevel!=null){
-			currentLevel.renderLevel();
-		}
-		
-		// draw quad
-//		glPushMatrix();
-//		glTranslatef(x, y, 0);
-//		glRotatef(rotation, 0f, 0f, 1f);
-//		glTranslatef(-x, -y, 0);
-//
-//		glBegin(GL_QUADS);
-//		glVertex2f(x - 50, y - 50);
-//		glVertex2f(x + 50, y - 50);
-//		glVertex2f(x + 50, y + 50);
-//		glVertex2f(x - 50, y + 50);
-//		glEnd();
-//		glPopMatrix();
 
 		glEnable(GL_TEXTURE_2D);
-		//glColor3f(1.0f, 0f, 0f);
-		//draw enemies
+		
 		if(currentLevel!=null){
+			currentLevel.renderLevel();
 			currentLevel.renderItemDroplets(); //show under monsters
 			currentLevel.renderMonsters();
 		}
@@ -555,14 +545,22 @@ public class SimpleCircleRpg {
 		
 		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
 		
-		if(gameIsRunning){
-			for(int i=0; i<GameClient.characters.size(); i++){
-				Player plyr = GameClient.characters.get(i);
-				plyr.draw();
+		
+		
+		try {
+			if(gameIsRunning){
+				for(int i=0; i<GameClient.characters.size(); i++){
+					Player plyr = GameClient.characters.get(i);
+					plyr.draw();
+				}
+				glEnable(GL_TEXTURE_2D);
+				glColor4f(1f, 1f, 1f, 1f);
+				DrawQuadTex(tex_circle, 200, 200, 32, 32);
+				renderInventory(); // y u no work
 			}
-			//glEnable(GL_TEXTURE_2D);
-			glColor4f(1f, 1f, 1f, 1f);
-			gameClient.renderInventory();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		
 		//draw some background to the dev info
@@ -610,5 +608,26 @@ public class SimpleCircleRpg {
 		}
 		
 	}
-
-}
+	
+	public void renderInventory(){
+		//Texture tex = LoadTexture("res/images/circles/circle.png", "PNG");
+		Texture tex = tex_item_droplet_melee;
+		try {
+			Item[][] inventory = gameClient.getPlayerInventory();
+			for(int x=0; x<10; x++){
+				for(int y=0; y<8; y++){
+					if(inventory[x][y] != null){
+						glDisable(GL_TEXTURE_2D);
+						DrawQuad(200, 200, 32, 32);
+						glEnable(GL_TEXTURE_2D);
+						DrawQuadTex(tex, 200-32, 200-32, 32, 32);
+						DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}//

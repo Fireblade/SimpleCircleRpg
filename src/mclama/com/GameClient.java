@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.newdawn.slick.opengl.Texture;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -52,6 +54,7 @@ public class GameClient {
 	    gameClient=this;
 	    
 	    this.name = name;
+	    createPlayerInventory();
 		
 		Network.register(client);
 		
@@ -129,7 +132,6 @@ public class GameClient {
 			login.name = name;
 			client.sendTCP(login);
 			
-			createPlayerInventory();
 			
 //			OtherClient oc = new OtherClient();
 //			oc.name = name;
@@ -153,9 +155,8 @@ public class GameClient {
 		for(int x=0; x<10; x++){
 			for(int y=0; y<8; y++){
 				if(playerInventory[x][y] != null){
-					//System.out.println(playerInventory[x][y].getItemLevel());
-					DrawQuadTex(tex_item_droplet_melee, 200, 200, 32, 32);
-					//DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
+					//DrawQuadTex(tex_item_droplet_melee, 200, 200, 32, 32);
+					DrawQuadTex(tex_item_droplet_melee, (game_width - 330) + (x * 32), (game_height - 330) + (y * 32), 32, 32);
 				}
 			}
 		}
