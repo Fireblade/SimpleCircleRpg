@@ -291,6 +291,11 @@ public class SimpleCircleRpg {
 					//Entered place.
 					myPlayer.setX(currentLevel.getSpawnXLoc());
 					myPlayer.setY(currentLevel.getSpawnYLoc());
+					try {
+						myPlayer.calculateInfo();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 					if (gameIsRunning) {
@@ -554,7 +559,9 @@ public class SimpleCircleRpg {
 					plyr.draw();
 				}
 				glColor4f(1f, 1f, 1f, 1f);
-				renderInventory(); // y u no work
+				if(gShowInventory){
+					renderInventory();
+				}
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -564,7 +571,7 @@ public class SimpleCircleRpg {
 		//draw some background to the dev info
 		glColor4f(0.2f, 0.2f, 0.2f, 0.8f);
 		glDisable(GL_TEXTURE_2D);
-		DrawQuad(0, 0, 112, 128);
+		DrawQuad(0, 0, 112, 196);
 		
 		glColor4f(1.0f, 1.0f, 1.0f, 1f);
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
@@ -577,6 +584,12 @@ public class SimpleCircleRpg {
 		ttf.drawString(10, 74, "my: " + (int) mouseY, Color.orange);
 		
 		ttf.drawString(10, 84, "monsters: " + D_MonstersOnScreen, Color.orange);
+		
+		try {
+			ttf.drawString(10, 112, "HP: " + (int) myPlayer.getHealth(), Color.orange);
+			ttf.drawString(64, 112, " / " + (int) myPlayer.getMaxHealth(), Color.orange);
+		} catch (Exception e1) {
+		}
 		
 		
 		glDisable(GL_TEXTURE_2D);
@@ -620,5 +633,26 @@ public class SimpleCircleRpg {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//equipped gear 
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 170) - camX, (game_height - 560) - camY, 32, 32); //head
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 170) - camX, (game_height - 520) - camY, 32, 32); //chest
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 170) - camX, (game_height - 480) - camY, 32, 32); //belt
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 170) - camX, (game_height - 440) - camY, 32, 32); //pants
+		
+		
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 210) - camX, (game_height - 500) - camY, 32, 32); //MH
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 130) - camX, (game_height - 500) - camY, 32, 32); //OH
+		
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 204) - camX, (game_height - 460) - camY, 24, 24); //ring 1
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 134) - camX, (game_height - 460) - camY, 24, 24); //ring 2
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 134) - camX, (game_height - 540) - camY, 24, 24); //amulet
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 204) - camX, (game_height - 540) - camY, 24, 24); //Symbol
+		
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 210) - camX, (game_height - 420) - camY, 32, 32); //gloves
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 130) - camX, (game_height - 420) - camY, 32, 32); //boots
+		
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 240) - camX, (game_height - 560) - camY, 32, 32); //relic 1
+		DrawQuadTex(tex_item_droplet_melee, (game_width - 100) - camX, (game_height - 560) - camY, 32, 32); //relic 2
 	}
 }//

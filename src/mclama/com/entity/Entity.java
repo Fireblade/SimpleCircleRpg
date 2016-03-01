@@ -51,7 +51,7 @@ public class Entity {
 	private ArrayList<String> mods = new ArrayList<String>();
 	
 	public void calculateInfo(){
-		//gear = get gear
+		//creates the mods list for further use.
 		calculateGear();
 		
 		//str, dex, int etc
@@ -401,6 +401,86 @@ public class Entity {
 
 	public void setAttacking(boolean isAttacking) {
 		this.isAttacking = isAttacking;
+	}
+
+	public double getMoveX() {
+		return moveX;
+	}
+
+	public double getMoveY() {
+		return moveY;
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public int getDexterity() {
+		return dexterity;
+	}
+
+	public int getIntelligence() {
+		return intelligence;
+	}
+
+	public float getSize() {
+		return size;
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public int getAttackRange() {
+		return attackRange;
+	}
+
+	public int getAttackCooldownTicks() {
+		return attackCooldownTicks;
+	}
+
+	public float getAttackCooldownRate() {
+		return attackCooldownRate;
+	}
+
+	public double getMaxHealth() {
+		return maxHealth;
+	}
+
+	public double getArmor() {
+		return armor;
+	}
+
+	public double getEvasion() {
+		return evasion;
+	}
+
+	public double getShield() {
+		return shield;
+	}
+
+	public double getMaxShield() {
+		return maxShield;
+	}
+
+	public float getChanceToDodge() {
+		return chanceToDodge;
+	}
+
+	public float getChanceToHit() {
+		return chanceToHit;
+	}
+
+	public float getChanceToCriticalStrike() {
+		return chanceToCriticalStrike;
+	}
+
+	public boolean isMoveToLoc() {
+		return moveToLoc;
+	}
+
+	public ArrayList<String> getMods() {
+		return mods;
 	}
 
 }
