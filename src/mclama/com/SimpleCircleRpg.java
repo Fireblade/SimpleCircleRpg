@@ -100,15 +100,16 @@ public class SimpleCircleRpg {
 	}
 	
 	public void startHost(String name){
-		gameIsHosting = true;
-		try {
-			server = new GameServer();
-			client = new GameClient(name, "localhost");
-			myPlayer.name = name;
-			gameIsRunning = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if(!gameIsRunning)
+			gameIsHosting = true;
+			try {
+				server = new GameServer();
+				client = new GameClient(name, "localhost");
+				myPlayer.name = name;
+				gameIsRunning = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	public void joinHost(String name){
@@ -322,6 +323,10 @@ public class SimpleCircleRpg {
 						System.out.println("items: " + (rarerolls[1] + rarerolls[2] + rarerolls[3] +
 								rarerolls[4] + rarerolls[5] + rarerolls[6]));
 					}
+					
+				}
+				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
+					gShowInventory = !gShowInventory;
 				}
 				// if (Keyboard.getEventKey() == Keyboard.KEY_F) {
 				// setDisplayMode(game_width, game_height,
