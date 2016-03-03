@@ -1,6 +1,9 @@
 package mclama.com.entity;
 
 import static mclama.com.util.Globals.*;
+
+import java.util.ArrayList;
+
 import static mclama.com.util.Artist.*;
 import static mclama.com.Network.SendDamageDealt;
 
@@ -11,6 +14,8 @@ public class Player extends Entity{
 	public String name;
 
 	public int incr_quantity=0, incr_rarity=0;
+	
+	private static ArrayList<Entity> minions = new ArrayList<Entity>();
 
 	
 	public Player(){
@@ -128,6 +133,10 @@ public class Player extends Entity{
 
 	public int getIncr_rarity() {
 		return incr_rarity;
+	}
+
+	public static ArrayList<Entity> getMinions() {
+		return minions;
 	}
 	
 

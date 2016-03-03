@@ -65,7 +65,15 @@ public class Globals {
 	
 	public static Level currentLevel=null;
 	
+	public static int gMonsterLeashRange = 128;
+	
 	public static float gLGBaseMonsterPacks=0.4f; //chance of spawning a pack on a tile
 	public static float gLGBaseMonsterPackSize = 4;
+	
+	public static double distance(double x1, double y1, double x2, double y2) { //moved for now
+		double xDistanceFromTarget = Math.abs(x1 - x2);
+		double yDistanceFromTarget = Math.abs(y1 - y2);
+		return xDistanceFromTarget + yDistanceFromTarget;
+	}
 
 }

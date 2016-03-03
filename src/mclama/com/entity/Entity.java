@@ -252,11 +252,7 @@ public class Entity {
 		return angle;
 	}
 	
-	protected double distance(double x1, double y1, double x2, double y2) {
-		double xDistanceFromTarget = Math.abs(x1 - x2);
-		double yDistanceFromTarget = Math.abs(y1 - y2);
-		return xDistanceFromTarget + yDistanceFromTarget;
-	}
+
 	
 	protected float distanceX(double d, double angle){
 		return (float) (d * Math.sin(Math.toRadians(angle)));

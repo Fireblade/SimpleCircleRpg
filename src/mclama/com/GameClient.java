@@ -19,6 +19,7 @@ import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.SendDamageDealt;
 import mclama.com.Network.SendNewLevelSeed;
 import mclama.com.Network.SendPlayersCharacter;
+import mclama.com.entity.Entity;
 import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
@@ -237,6 +238,31 @@ public class GameClient {
 
 	public void setPlayerInventory(Item[][] playerInventory) {
 		this.playerInventory = playerInventory;
+	}
+
+
+	public Entity findClosestTarget(double x, double y) {
+		Entity closestTarget = null;
+		double closest = 9999;
+		double dist;
+		for(int i=0; i<GameClient.characters.size(); i++){
+			Player plyr = GameClient.characters.get(i);
+			for(int pm=0; pm<plyr.getMinions().size();pm++){
+				Entity minion = plyr.getMinions().get(pm);
+				dist = distance(x,y, minion.getX(), minion.getY());
+				if(dist<closest && dist<gMonsterLeashRange){
+					closest=dist;
+					closestTarget = minion;
+				}
+			} //end of minion check
+			dist = distance(x,y, plyr.getX(), plyr.getY());
+			if(dist<closest && dist<gMonsterLeashRange){
+				closest=dist;
+				closestTarget = plyr;
+			}
+			
+		}
+		return closestTarget;
 	}
 
 }

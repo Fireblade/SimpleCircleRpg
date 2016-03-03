@@ -1,14 +1,13 @@
 package mclama.com.entity;
 
 import static mclama.com.util.Artist.tex_circle;
-import static mclama.com.util.Globals.currentLevel;
-import static mclama.com.util.Globals.gGHighestPlayerLevel;
-import static mclama.com.util.Globals.gameIsHosting;
-import static mclama.com.util.Globals.gameServer;
+import static mclama.com.util.Globals.*;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import mclama.com.Network.MoveClickOrder;
+import mclama.com.Network.SendDamageDealt;
 import mclama.com.item.Item;
 
 public class Monster extends Entity{
@@ -34,6 +33,64 @@ public class Monster extends Entity{
 	}
 
 	public void tick(int delta) {
+		if (alive && gameIsHosting) {
+			
+			
+			if (!moveToLoc && currentLevel != null) {
+				if (target == null) {
+					target = gameClient.findClosestTarget(x, y);
+					isAttacking=true;
+					
+				}
+			}
+			
+			if(isAttacking && target!= null){
+				if(!target.isAlive()){ //target must have died.
+					isAttacking=false;
+					target = null;
+				}
+				else if(distance(x, y, target.getX(), target.getY()) > attackRange)
+				{ //If out of range, move to range.
+					double angle = getAngle(target.getX(), target.getY());
+					double distance = distance(x, y, target.getX(), target.getY());
+					moveX = x + distanceX(distance - attackRange, angle);
+					moveY = y + distanceY(distance - attackRange, angle);
+					
+					if(gameIsRunning){
+						// TODO Monster move order
+//						MoveClickOrder moveOrder = new MoveClickOrder();
+//						moveOrder.id = id;
+//						moveOrder.x = moveX;
+//						moveOrder.y = moveY;
+//						gClient.sendUDP(moveOrder);
+					}
+					
+					moveToLoc=true;
+				}
+				else if(attackCooldownTicks<1){ //if we can attack
+					attackCooldownTicks = (int) (attackCooldownRate*targetFPS);
+					
+					//calculate damage
+					double[] damage = {gen.nextInt(4)+4}; //add minimum damage, while rolling the seperated damage
+					
+					
+					//Monster damage dealt!
+//					SendDamageDealt damageMsg = new SendDamageDealt();
+//					//damageMsg.levelId = currentLevel.getId();
+//					damageMsg.monId = target.getId();
+//					damageMsg.damage = damage;
+//					damageMsg.damagedByPlayer = id;
+//					
+//					gClient.sendUDP(damageMsg);
+					
+					//((Monster) target).takeDamage(damage, this);
+					
+				}
+					
+			}
+		}
+		
+		
 
 		if (moveToLoc && currentLevel != null) {
 			// System.out.println("moveloc");
@@ -62,7 +119,11 @@ public class Monster extends Entity{
 		}
 
 		if (target != null) {
-			if (!target.isAlive()) { // target must have died.
+			if (distance(x, y, target.getX(), target.getY()) > (gMonsterLeashRange * 2)) {
+				isAttacking = false;
+				target = null;
+			}
+			else if (!target.isAlive()) { // target must have died.
 				isAttacking = false;
 				target = null;
 			}
