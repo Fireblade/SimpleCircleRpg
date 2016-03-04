@@ -13,6 +13,7 @@ import com.esotericsoftware.kryonet.Listener.ThreadedListener;
 
 import mclama.com.Network.AddCharacter;
 import mclama.com.Network.Login;
+import mclama.com.Network.MonsterAttackOrder;
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
 import mclama.com.Network.RemoveCharacter;
@@ -64,6 +65,15 @@ public class GameClient {
 			}
 
 			public void received (Connection connection, Object object) {
+				if (object instanceof MonsterAttackOrder) {
+					MonsterAttackOrder msg = (MonsterAttackOrder) object;
+					Monster monst = currentLevel.getMonsterId(msg.monId);
+					if(monst != null){
+						monst.setTarget(getCharacter(msg.playerId));
+						monst.setAttacking(true);
+						System.out.println("attacking");
+					}
+				}
 				if (object instanceof SendDamageDealt) {
 					SendDamageDealt msg = (SendDamageDealt) object;
 					

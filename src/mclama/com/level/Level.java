@@ -200,13 +200,18 @@ public class Level {
 		}
 	}
 	
+	// TODO Needs to be changed for multiplayer... Monsters far away on another
+	// player wont be checked.
 	public ArrayList<Monster> getActiveMonsters(int delta) {
 		ArrayList<Monster> activeMonsters = new ArrayList<Monster>();
-		int monstersOnScreen=0;
-		for(int i=0; i<monsters.size(); i++){
+		int monstersOnScreen = 0;
+		for (int i = 0; i < monsters.size(); i++) {
 			Monster mons = monsters.get(i);
-			if (Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < ((game_width*0.5)/tileWidth)+1
-					&& Math.abs((mons.getY() / tileHeight) - (myPlayer.getY() / tileHeight)) < ((game_height*0.5)/tileHeight)+1) {
+			if ((Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < ((game_width * 0.5) / tileWidth)
+					+ 1
+					&& Math.abs((mons.getY() / tileHeight)
+							- (myPlayer.getY() / tileHeight)) < ((game_height * 0.5) / tileHeight) + 1)
+					|| mons.getTarget() != null) { //if monster has a target, he should be active.
 				activeMonsters.add(mons);
 				mons.tick(delta);
 				monstersOnScreen++;
@@ -333,5 +338,15 @@ public class Level {
 
 	public ArrayList<ItemDrop> getItemDrops() {
 		return itemDrops;
+	}
+
+	public Monster getMonsterId(int monId) {
+		for(int i=0; i<monsters.size(); i++){
+			Monster mons = monsters.get(i);
+			if(mons.getId() == monId){
+				return mons;
+			}
+		}
+		return null;
 	}
 }

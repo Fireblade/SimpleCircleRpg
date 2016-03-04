@@ -6,8 +6,7 @@ import static mclama.com.util.Globals.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mclama.com.Network.MoveClickOrder;
-import mclama.com.Network.SendDamageDealt;
+import mclama.com.Network.*;
 import mclama.com.item.Item;
 
 public class Monster extends Entity{
@@ -33,14 +32,22 @@ public class Monster extends Entity{
 	}
 
 	public void tick(int delta) {
-		if (alive && gameIsHosting) {
-			
-			
-			if (!moveToLoc && currentLevel != null) {
-				if (target == null) {
-					target = gameClient.findClosestTarget(x, y);
-					isAttacking=true;
-					
+		if (alive) {
+			if(gameIsHosting){
+				if (!moveToLoc && currentLevel != null) {
+					if (target == null) {
+						target = gameClient.findClosestTarget(x, y);
+						if(target != null){
+							//isAttacking=true;
+							
+							MonsterAttackOrder msg = new MonsterAttackOrder();
+							msg.monId = id;
+							msg.playerId = target.getId();
+							gServer.sendToAllUDP(msg);
+							//no minions for now, so just a simple monster and player id
+							
+						}
+					}
 				}
 			}
 			
@@ -71,7 +78,7 @@ public class Monster extends Entity{
 					attackCooldownTicks = (int) (attackCooldownRate*targetFPS);
 					
 					//calculate damage
-					double[] damage = {gen.nextInt(4)+4}; //add minimum damage, while rolling the seperated damage
+//					double[] damage = {gen.nextInt(4)+4}; //add minimum damage, while rolling the seperated damage
 					
 					
 					//Monster damage dealt!
@@ -83,12 +90,16 @@ public class Monster extends Entity{
 //					
 //					gClient.sendUDP(damageMsg);
 					
+					
+					//lets not damage players yet :)
 					//((Monster) target).takeDamage(damage, this);
 					
 				}
 					
 			}
+			
 		}
+		
 		
 		
 

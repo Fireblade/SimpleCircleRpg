@@ -28,6 +28,7 @@ public class Network {
 		kryo.register(SendNewLevelSeed.class);
 		kryo.register(SendDamageDealt.class);
 		kryo.register(double[].class);
+		kryo.register(MonsterAttackOrder.class);
 	}
 	
 	public static class Login {
@@ -79,6 +80,13 @@ public class Network {
 		//public int levelId;
 		public double[] damage;
 		public int damagedByPlayer;
+	}
+	
+	public static class MonsterAttackOrder{
+		public int monId;
+		public boolean isMinion=false;
+		public int minionId;
+		public int playerId;
 	}
 
 }
