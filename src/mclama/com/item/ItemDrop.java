@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glTranslated;
 import static org.lwjgl.opengl.GL11.glVertex2d;
-
+import static org.lwjgl.opengl.GL11.glColor3f;
 import org.newdawn.slick.opengl.Texture;
 
 import mclama.com.entity.Player;
@@ -43,6 +43,26 @@ public class ItemDrop {
 	public void draw() {
 		
 		if (texture != null) {
+			switch(item.getRarity()){
+			case 1: //common
+				glColor3f(1f, 1f, 1f);
+				break;
+			case 2: //magic
+				glColor3f(0f, 0f, 1f);
+				break;
+			case 3: //rare
+				glColor3f(0f, 1f, 0f);
+				break;
+			case 4: //legendary
+				glColor3f(1f, 1f, 0f);
+				break;
+			case 5: //unique
+				glColor3f(0.75f, 0.5f, 0.25f);
+				break;
+			case 6: //cursed
+				glColor3f(0.5f, 0f, 0.5f);
+				break;
+			}
 			// set rarity color
 			DrawQuadTex(texture, x, y, width, height);
 		} else

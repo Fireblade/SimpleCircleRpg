@@ -302,9 +302,11 @@ public class SimpleCircleRpg {
 					if (gameIsRunning) {
 						int[] rarerolls = {0,0,0,0,0,0,0};
 						//System.out.println("send");
-						for(int count=0; count<=100; count++)
+						for(int count=0; count<=200; count++)
 						{
 							monst = new Monster(0, 1, mouseX+16,mouseY+16);
+							monst.setWidth(128);
+							monst.setHeight(128);
 							monst.die(myPlayer);
 							
 							for(int i=0; i<monst.getItem_drops().size(); i++){
