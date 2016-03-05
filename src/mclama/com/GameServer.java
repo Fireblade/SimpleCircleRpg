@@ -121,10 +121,15 @@ public class GameServer {
 				}
 			}
 		});
-		server.bind(Network.TCPport, Network.UDPport);
-		gServer = server;
-		gameServer=this;
-		server.start();
+		try {
+			server.bind(Network.TCPport, Network.UDPport);
+			gServer = server;
+			gameServer=this;
+			server.start();
+		} catch (Exception e) {
+			System.out.println("Server already hosting, closing.");
+			System.exit(0);
+		}
 	}
 	
 	public int createNewLevel(){

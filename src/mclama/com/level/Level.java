@@ -7,6 +7,7 @@ import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.*;
 
 import mclama.com.entity.Monster;
+import mclama.com.entity.Player;
 import mclama.com.item.Item;
 import mclama.com.item.ItemDrop;
 
@@ -207,11 +208,7 @@ public class Level {
 		int monstersOnScreen = 0;
 		for (int i = 0; i < monsters.size(); i++) {
 			Monster mons = monsters.get(i);
-			if ((Math.abs((mons.getX() / tileWidth) - (myPlayer.getX() / tileWidth)) < ((game_width * 0.5) / tileWidth)
-					+ 1
-					&& Math.abs((mons.getY() / tileHeight)
-							- (myPlayer.getY() / tileHeight)) < ((game_height * 0.5) / tileHeight) + 1)
-					|| mons.getTarget() != null) { //if monster has a target, he should be active.
+			if(mons.getTarget() != null || onScreenOfPlayers(mons)){
 				activeMonsters.add(mons);
 				mons.tick(delta);
 				monstersOnScreen++;
@@ -222,6 +219,19 @@ public class Level {
 	}
 
 	
+	private boolean onScreenOfPlayers(Monster mons) {
+		for (int i = 0; i < gameClient.characters.size(); i++) {
+			Player plyr = gameClient.characters.get(i);
+			if (Math.abs((mons.getX() / tileWidth) - (plyr.getX() / tileWidth)) < ((game_width * 0.5) / tileWidth)
+					+ 1
+					&& Math.abs((mons.getY() / tileHeight)
+							- (plyr.getY() / tileHeight)) < ((game_height * 0.5) / tileHeight) + 1)
+				return true;
+		}
+
+		return false;
+	}
+
 	public void renderMonsters() {
 		for(int i=0; i<gameClient.activeMonsters.size(); i++){
 			Monster mons = gameClient.activeMonsters.get(i);
