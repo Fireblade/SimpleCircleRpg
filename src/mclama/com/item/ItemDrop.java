@@ -20,6 +20,7 @@ import org.newdawn.slick.opengl.Texture;
 import mclama.com.entity.Player;
 
 import static mclama.com.util.Artist.*;
+import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.D_PlayerShowMoveToLine;
 
 public class ItemDrop {
@@ -29,6 +30,8 @@ public class ItemDrop {
 	private int width=8, height=8;
 	private Texture texture;
 	
+	private int effectTick=0;
+	private int effectTickMax=0;
 	
 	
 	
@@ -38,6 +41,26 @@ public class ItemDrop {
 		this.y = y;
 		
 		texture = tex_item_droplet_melee;
+		
+		switch(item.getRarity()){
+		case 2: //magic
+		case 3: //rare
+			effectTick=targetFPS*1;
+			effectTickMax=targetFPS*1;
+			break;
+		case 4: //legendary
+			effectTick=targetFPS*4;
+			effectTickMax=targetFPS*4;
+			break;
+		case 5: //unique
+			effectTick=targetFPS*7;
+			effectTickMax=targetFPS*7;
+			break;
+		case 6: //cursed
+			effectTick=targetFPS*10;
+			effectTickMax=targetFPS*10;
+			break;
+		}
 	}
 
 	public void draw() {
@@ -48,7 +71,7 @@ public class ItemDrop {
 				glColor3f(1f, 1f, 1f);
 				break;
 			case 2: //magic
-				glColor3f(0f, 0f, 1f);
+				glColor3f(0.2f, 0.4f, 1f);
 				break;
 			case 3: //rare
 				glColor3f(0f, 1f, 0f);
@@ -60,11 +83,16 @@ public class ItemDrop {
 				glColor3f(0.75f, 0.5f, 0.25f);
 				break;
 			case 6: //cursed
-				glColor3f(0.5f, 0f, 0.5f);
+				glColor3f(0.7f, 0.4f, 0.7f);
 				break;
 			}
-			// set rarity color
+			
 			DrawQuadTex(texture, x, y, width, height);
+			if (effectTick > 0) {
+				float resizeHeight = ((float) effectTick / (float) effectTickMax);
+				DrawQuadTex(tex_item_droplet_light_beam, x, y, 12, resizeHeight * 72);
+				effectTick -= 1;
+			}
 		} else
 			texture = LoadTexture("res/images/items/droplet/base.png", "PNG");
 	}

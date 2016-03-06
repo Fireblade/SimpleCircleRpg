@@ -31,11 +31,13 @@ public class Artist {
 	//public static Texture[] tex_tile_grass; //maybe store tiles in the future
 	
 	public static Texture tex_item_droplet_melee;
+	public static Texture tex_item_droplet_light_beam;
 
 	public static void createCircleLibrary(){
 		tex_circle = LoadTexture("res/images/circles/circle.png", "PNG");
 		tex_circle_ring_outer = LoadTexture("res/images/circles/ring_outer.png", "PNG");
 		tex_item_droplet_melee = LoadTexture("res/images/items/droplet/melee.png", "PNG");
+		tex_item_droplet_light_beam = LoadTexture("res/images/items/droplet/light_beam_solo.png", "PNG");
 	}
 	
 	public static void DrawQuad(float x, float y, float width, float height){
@@ -65,6 +67,26 @@ public class Artist {
 			glVertex2d(0, height);
 		glEnd();
 		glTranslated((width/2),(height/2),0);
+		glLoadIdentity();
+	}
+	
+	public static void DrawQuadTexAnimated(Texture tex, double x, double y, float width,float height, int slides) {
+		tex.bind();
+		glTranslated(camX,camY,0);
+		glTranslated(x,y,0);
+		//glTranslated(-(width/2), -(height/2), 0);
+		//glTranslatef((tex.getImageWidth()/2),(tex.getImageHeight()/2), 0);
+		glBegin(GL_QUADS);
+			glTexCoord2d(0, 0);
+			glVertex2d(0, 0);
+			glTexCoord2d(1, 0);
+			glVertex2d(width, 0);
+			glTexCoord2d(1, 1);
+			glVertex2d(width, height);
+			glTexCoord2d(0, 1);
+			glVertex2d(0, height);
+		glEnd();
+		//glTranslated((width/2),(height/2),0);
 		glLoadIdentity();
 	}
 	
