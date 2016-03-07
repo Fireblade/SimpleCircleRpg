@@ -38,6 +38,7 @@ public class Globals {
 	public static int gInvHeight=8;
 	
 	public static boolean gShowInventory=false;
+	public static boolean gShowConsole=false;
 	
 	public static Item[] gInventoryGear = {null,null,null,null,null,null,null,null,null,null,null,null,null,null};
 	

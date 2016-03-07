@@ -2,6 +2,7 @@ package mclama.com;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,6 +31,7 @@ import mclama.com.util.Artist;
 import static mclama.com.util.Artist.*;
 import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.*;
+import static mclama.com.util.Console.*;
 
 
 public class SimpleCircleRpg {
@@ -284,60 +286,76 @@ public class SimpleCircleRpg {
 		
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_L && gameIsHosting) {
-					//System.out.println("call new host map");
-					int newLevelId = gameServer.createNewLevel();
+				if (Keyboard.getEventKey() == Keyboard.KEY_GRAVE){
+					gShowConsole = !gShowConsole;
 				}
-				if (Keyboard.getEventKey() == Keyboard.KEY_P && currentLevel != null){
-					//Entered place.
-					myPlayer.setX(currentLevel.getSpawnXLoc());
-					myPlayer.setY(currentLevel.getSpawnYLoc());
-					try {
-						myPlayer.calculateInfo();
-					} catch (Exception e) {
-						e.printStackTrace();
+				if(gShowConsole){
+					if (Keyboard.getEventKey() != Keyboard.KEY_GRAVE) {
+						if (Keyboard.getEventKey() == Keyboard.KEY_BACK) {
+							conLineBackspace();
+						} else if (Keyboard.getEventKey() == 28) { //ENTER
+							conCommandEntered();
+						} else
+							conLineAddChar(Keyboard.getEventCharacter());
 					}
 				}
-				if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
-					if (gameIsRunning) {
-						int[] rarerolls = {0,0,0,0,0,0,0};
-						//System.out.println("send");
-						for(int count=0; count<=200; count++)
-						{
-							monst = new Monster(0, 1, mouseX+16,mouseY+16);
-							monst.setWidth(128);
-							monst.setHeight(128);
-							monst.die(myPlayer);
-							
-							for(int i=0; i<monst.getItem_drops().size(); i++){
-								rarerolls[monst.getItem_drops().get(i).getRarity()]++;
+				else 
+				{ // Start of not showing console
+					if (Keyboard.getEventKey() == Keyboard.KEY_L && gameIsHosting) {
+						//System.out.println("call new host map");
+						int newLevelId = gameServer.createNewLevel();
+					}
+					if (Keyboard.getEventKey() == Keyboard.KEY_P && currentLevel != null){
+						//Entered place.
+						myPlayer.setX(currentLevel.getSpawnXLoc());
+						myPlayer.setY(currentLevel.getSpawnYLoc());
+						try {
+							myPlayer.calculateInfo();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
+						if (gameIsRunning) {
+							int[] rarerolls = {0,0,0,0,0,0,0};
+							//System.out.println("send");
+							for(int count=0; count<=200; count++)
+							{
+								monst = new Monster(0, 1, mouseX+16,mouseY+16);
+								monst.setWidth(128);
+								monst.setHeight(128);
+								monst.die(myPlayer);
+								
+								for(int i=0; i<monst.getItem_drops().size(); i++){
+									rarerolls[monst.getItem_drops().get(i).getRarity()]++;
+								}
 							}
+							
+							System.out.println("0: " + rarerolls[0]);
+							System.out.println("1: " + rarerolls[1]);
+							System.out.println("2: " + rarerolls[2]);
+							System.out.println("3: " + rarerolls[3]);
+							System.out.println("4: " + rarerolls[4]);
+							System.out.println("5: " + rarerolls[5]);
+							System.out.println("6: " + rarerolls[6]);
+							
+							System.out.println("items: " + (rarerolls[1] + rarerolls[2] + rarerolls[3] +
+									rarerolls[4] + rarerolls[5] + rarerolls[6]));
 						}
 						
-						System.out.println("0: " + rarerolls[0]);
-						System.out.println("1: " + rarerolls[1]);
-						System.out.println("2: " + rarerolls[2]);
-						System.out.println("3: " + rarerolls[3]);
-						System.out.println("4: " + rarerolls[4]);
-						System.out.println("5: " + rarerolls[5]);
-						System.out.println("6: " + rarerolls[6]);
-						
-						System.out.println("items: " + (rarerolls[1] + rarerolls[2] + rarerolls[3] +
-								rarerolls[4] + rarerolls[5] + rarerolls[6]));
 					}
-					
-				}
-				if (Keyboard.getEventKey() == Keyboard.KEY_I) {
-					gShowInventory = !gShowInventory;
-				}
-				// if (Keyboard.getEventKey() == Keyboard.KEY_F) {
-				// setDisplayMode(game_width, game_height,
-				// !Display.isFullscreen());
-				// }
-				// else if (Keyboard.getEventKey() == Keyboard.KEY_V) {
-				// vsync = !vsync;
-				// Display.setVSyncEnabled(vsync);
-				// }
+					if (Keyboard.getEventKey() == Keyboard.KEY_I) {
+						gShowInventory = !gShowInventory;
+					}
+					// if (Keyboard.getEventKey() == Keyboard.KEY_F) {
+					// setDisplayMode(game_width, game_height,
+					// !Display.isFullscreen());
+					// }
+					// else if (Keyboard.getEventKey() == Keyboard.KEY_V) {
+					// vsync = !vsync;
+					// Display.setVSyncEnabled(vsync);
+					// }
+				} //end of !gShowConsole
 			}
 		}//end of keyboard
 		
@@ -596,6 +614,16 @@ public class SimpleCircleRpg {
 			ttf.drawString(10, 112, "HP: " + (int) myPlayer.getHealth(), Color.orange);
 			ttf.drawString(64, 112, " / " + (int) myPlayer.getMaxHealth(), Color.orange);
 		} catch (Exception e1) {
+		}
+		
+		if(gShowConsole){
+			ArrayList<String> logs = conGetConsole();
+			for(int i = 0; i<logs.size(); i++){
+				String line = logs.get(i);
+				
+				ttf.drawString(12, game_height - 32 - (i * 12), line, Color.orange);
+			}
+			ttf.drawString(12, game_height - 16, conGetConsoleLine(), Color.orange);
 		}
 		
 		
