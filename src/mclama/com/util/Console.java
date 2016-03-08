@@ -1,6 +1,7 @@
 package mclama.com.util;
 
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.DebugGlobals.*;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,20 @@ public class Console {
 				isCommand=true;
 			}else additional = "- (1|0) toggles a small developer console view";
 			break;
+
+		case "db_freemove":
+			if (D_DEBUG) {
+				if (command.length == 2) {
+					if (command[1].matches("0|false")) {
+						D_FREEMOVEMENT = false;
+					} else if (command[1].matches("1|true")) {
+						D_FREEMOVEMENT = true;
+					}
+					isCommand = true;
+				}
+			}
 		}
+		
 		logs.add(" > " + consoleLine + " " + additional);
 		consoleLine = "";
 		return isCommand;

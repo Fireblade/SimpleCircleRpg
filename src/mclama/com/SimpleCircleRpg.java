@@ -218,16 +218,17 @@ public class SimpleCircleRpg {
 //		float mx = Mouse.getX() - camX;
 //		float my = HEIGHT - Mouse.getY() - 1 - camY;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_A))
-			myPlayer.setX(myPlayer.getX() - 0.35f * delta);
-		if (Keyboard.isKeyDown(Keyboard.KEY_D))
-			myPlayer.setX(myPlayer.getX() + 0.35f * delta);
+		if(D_FREEMOVEMENT && !gShowConsole){
+			if (Keyboard.isKeyDown(Keyboard.KEY_A))
+				myPlayer.setX(myPlayer.getX() - 0.5f * delta);
+			if (Keyboard.isKeyDown(Keyboard.KEY_D))
+				myPlayer.setX(myPlayer.getX() + 0.5f * delta);
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_W))
-			myPlayer.setY(myPlayer.getY() - 0.35f * delta);
-		if (Keyboard.isKeyDown(Keyboard.KEY_S))
-			myPlayer.setY(myPlayer.getY() + 0.35f * delta);
-
+			if (Keyboard.isKeyDown(Keyboard.KEY_W))
+				myPlayer.setY(myPlayer.getY() - 0.5f * delta);
+			if (Keyboard.isKeyDown(Keyboard.KEY_S))
+				myPlayer.setY(myPlayer.getY() + 0.5f * delta);
+		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)){
 			startHost("name " + gen.nextInt(2000));
@@ -347,6 +348,7 @@ public class SimpleCircleRpg {
 					if (Keyboard.getEventKey() == Keyboard.KEY_I) {
 						gShowInventory = !gShowInventory;
 					}
+					
 					// if (Keyboard.getEventKey() == Keyboard.KEY_F) {
 					// setDisplayMode(game_width, game_height,
 					// !Display.isFullscreen());
@@ -617,6 +619,9 @@ public class SimpleCircleRpg {
 		}
 		
 		if(gShowConsole){
+			glDisable(GL_TEXTURE_2D);
+			glColor4f(0f, 0f, 0f, 0.35f);
+			DrawQuad(0, 0, game_width, game_height);
 			ArrayList<String> logs = conGetConsole();
 			for(int i = 0; i<logs.size(); i++){
 				String line = logs.get(i);
