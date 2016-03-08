@@ -2,6 +2,7 @@ package mclama.com.entity;
 
 import static mclama.com.util.Artist.tex_circle;
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.Console.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -172,10 +173,9 @@ public class Monster extends Entity{
 			else if(is_magical) {items_drop += gen.nextFloat(); quantity +=20; rarity+= 40; whites =0.45f;}
 			if(is_aura)    {items_drop += gen.nextFloat(); quantity +=10; rarity+= 10; whites -=0.1f;}
 			
-			System.out.println("drop: " + items_drop + ", Quantity: " + quantity + ", Rarity: " + rarity);
-			
 			items_drop = (int) Math.floor((items_drop * size) * (1+(quantity/100)));
-			System.out.println("items Dropped: " + (int) items_drop);
+			
+			System.out.println("drop: " + items_drop + ", Quantity: " + quantity + ", Rarity: " + rarity);
 			
 			for (int i = 0; i < items_drop; i++) {
 				//item_drops.add(new Item("noname", level, rarity, whites)); //Test rolls
@@ -183,6 +183,8 @@ public class Monster extends Entity{
 				currentLevel.addNewItemDrop(iDrop, (x - width) + (gen.nextInt(width)),
 						(y - height) + (gen.nextInt(height)));
 			}
+			
+			conAdd("Monster killed by " + killedBy.getId() + " and dropped " + (int) items_drop + " items.");
 		}
 		
 		hasDied=true; //set monster to have died before, Incase zombification!

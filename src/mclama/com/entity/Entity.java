@@ -100,9 +100,13 @@ public class Entity {
 
 	private void calculateGear() {
 		for(int i=0; i<gInventoryGear.length; i++){
-			ArrayList<String> gearMods = gInventoryGear[i].getMods();
-			for(int j=0; j<gearMods.size(); j++){
-				addMods(gearMods.get(j));
+			try {
+				ArrayList<String> gearMods = gInventoryGear[i].getMods();
+				for(int j=0; j<gearMods.size(); j++){
+					addMods(gearMods.get(j));
+				}
+			} catch (Exception e) {
+				// No item equipped if exception.
 			}
 			
 		}

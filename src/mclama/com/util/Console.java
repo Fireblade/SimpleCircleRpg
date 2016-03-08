@@ -1,6 +1,10 @@
 package mclama.com.util;
 
+import static mclama.com.util.Globals.*;
+
 import java.util.ArrayList;
+
+import mclama.com.item.Item;
 
 public class Console {
 	
@@ -12,7 +16,7 @@ public class Console {
 	private static String consoleLine = "";
 	
 	
-	public static void con(String text){
+	public static void conAdd(String text){
 		logs.add(text);
 	}
 	
@@ -27,15 +31,52 @@ public class Console {
 	}
 	
 	public static boolean conCommandEntered(){
-		// Check if command, if command return true.
-		logs.add(" > " + consoleLine);
+		boolean isCommand=false;
+		String[] command = consoleLine.split(" ");
+		String additional = "";
+		switch(command[0].toLowerCase()){
+		case "filter":
+			if(command.length>1){
+				setFilter(consoleLine.replace("filter " , ""));
+			}
+			else setFilter("");
+			isCommand=true;
+			break;
+		case "give":
+			if(command.length==2){
+				if (command[1].equals("itemdrop")) {
+					Item iDrop = new Item("noname", myPlayer.getLevel(), 0, 1.0f);
+					currentLevel.addNewItemDrop(iDrop, myPlayer.getX(), myPlayer.getY());
+					
+				}
+				isCommand = true;
+				
+			}
+			break;
+		case "developer":
+			if(command.length==2){
+				if(command[1].matches("0|false")){
+					gShowDeveloperConsole = false;
+				}
+				else if(command[1].matches("1|true")){
+					gShowDeveloperConsole = true;
+				}
+				isCommand=true;
+			}else additional = "- (1|0) toggles a small developer console view";
+			break;
+		}
+		logs.add(" > " + consoleLine + " " + additional);
 		consoleLine = "";
-		return false;
+		return isCommand;
 	}
 	
 	public static ArrayList<String> conGetConsole(){
+		return conGetConsole(show_lines);
+	}
+	
+	public static ArrayList<String> conGetConsole(int count){
 		ArrayList<String> logView = new ArrayList<String>();
-		int Remaining = show_lines;
+		int Remaining = count;
 		for(int i=logs.size()-1; i>(-1); i--){
 			String line = logs.get(i);
 			
@@ -53,9 +94,9 @@ public class Console {
 
 	private static boolean filteredLine(String line) {
 		if(filter.equals("")) return true;
-		String[] textFilter = line.split(",");
+		String[] textFilter = filter.split(",");
 		for(int i=0; i<textFilter.length; i++){
-			if(line.contains(textFilter[i]))
+			if(line.toLowerCase().contains(textFilter[i].toLowerCase()))
 				return true;
 		}
 		

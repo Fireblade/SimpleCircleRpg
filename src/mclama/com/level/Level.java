@@ -4,6 +4,7 @@ import static mclama.com.util.Artist.DrawQuadTexNormal;
 import static mclama.com.util.Artist.LoadTexture;
 import static mclama.com.util.Artist.onScreen;
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.Console.*;
 import static mclama.com.util.DebugGlobals.*;
 
 import mclama.com.entity.Monster;
@@ -38,10 +39,10 @@ public class Level {
 	private ArrayList<ItemDrop> itemDrops = new ArrayList<ItemDrop>();
 	
 	public Level(int levelId, long seed){
-		Level(levelId, 96, 32, 1, seed);
+		this(levelId, 96, 32, 1, seed);
 	}
 	
-	public void Level(int levelId, int width, int height, int size, long seed){
+	public Level(int levelId, int width, int height, int size, long seed){
 		this.levelId = levelId;
 		this.height = height;
 		this.width = width;
@@ -149,7 +150,7 @@ public class Level {
 				}
 			}
 		}
-		System.out.println("level created + " + (que.size()>0));
+		//conAdd("level created + " + (que.size()>0));
 		
 		
 		totalTiles = getTotalTiles();
@@ -181,8 +182,7 @@ public class Level {
 		}
 		//end of monster generation
 		
-		System.out.println("Generated level with " + totalMonsters + " monsters");
-		
+		conAdd("Level Generated with " + totalMonsters + " monsters");
 		
 	} //End of level generation
 	

@@ -34,23 +34,32 @@ public class Item {
 	
 	
 	public Item(String name, int foundLevel, int drop_rarity, float whites){
+		this(name, foundLevel, drop_rarity, whites,0);
+
+	}
+	
+	public Item(String name, int foundLevel, int drop_rarity, float whites, int createRarity){
 		this.name = name;
 		this.foundLevel=foundLevel;
 		
 		Random gen = new Random();
 		
-		int item1Rarity = rollItemRarity(whites);
-		while(gen.nextFloat()*100 <= (1+(drop_rarity/100))*1.0f){
-			int item2Rarity = rollItemRarity(whites);
-			System.out.println("rolled bonus..." + item1Rarity + " vs " + item2Rarity);
-			item1Rarity = Math.max(item1Rarity, item2Rarity); //use the higher rarity of the 2.
+		int item1Rarity;
+		if(createRarity>0){ // 0 means item creation, so roll.
+			item1Rarity = rollItemRarity(whites);
+			while(gen.nextFloat()*100 <= (1+(drop_rarity/100))*1.0f){
+				int item2Rarity = rollItemRarity(whites);
+				System.out.println("rolled bonus..." + item1Rarity + " vs " + item2Rarity);
+				item1Rarity = Math.max(item1Rarity, item2Rarity); //use the higher rarity of the 2.
+			}
+		} else
+		{
+			item1Rarity = createRarity;
 		}
 		
 		
 		rarity = item1Rarity;
 		itemLevel += item1Rarity - 1;
-		
-		
 	}
 
 	/*

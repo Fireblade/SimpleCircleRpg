@@ -623,7 +623,16 @@ public class SimpleCircleRpg {
 				
 				ttf.drawString(12, game_height - 32 - (i * 12), line, Color.orange);
 			}
-			ttf.drawString(12, game_height - 16, conGetConsoleLine(), Color.orange);
+			ttf.drawString(12, game_height - 16, ">" + conGetConsoleLine(), Color.orange);
+		}
+		else
+		if(gShowDeveloperConsole){
+			ArrayList<String> logs = conGetConsole(5);
+			for(int i = 0; i<logs.size(); i++){
+				String line = logs.get(i);
+				
+				ttf.drawString(12, game_height - 288 - (i * 12), line, Color.orange);
+			}
 		}
 		
 		
