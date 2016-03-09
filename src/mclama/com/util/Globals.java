@@ -71,6 +71,8 @@ public class Globals {
 	
 	public static float gLGBaseMonsterPacks=0.4f; //chance of spawning a pack on a tile
 	public static float gLGBaseMonsterPackSize = 4;
+	public static float gLGBaseMonsterMagicChance = 0.15f;
+	public static float gLGBaseMonsterRareChance = 0.01f;
 	
 	public static double distance(double x1, double y1, double x2, double y2) { //moved for now
 		double xDistanceFromTarget = Math.abs(x1 - x2);

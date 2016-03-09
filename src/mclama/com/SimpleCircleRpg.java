@@ -263,7 +263,13 @@ public class SimpleCircleRpg {
 			        			if(myPlayerId != 0){
 			        				Player plyr = gameClient.getCharacter(myPlayerId);
 			    					if(plyr != null){
-			    						myPlayer = plyr;
+			    						myPlayer = gameClient.loadPlayerCharacter();
+			    						myPlayer.setId(plyr.getId());
+			    						myPlayer.setX(plyr.getX());
+			    						myPlayer.setY(plyr.getY());
+			    						myPlayer.name = plyr.name;
+			    						plyr = myPlayer;
+			    						gameClient.characters.add(myPlayer); 
 			    					}
 			        			}
 			        		} //move player

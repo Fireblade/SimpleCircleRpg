@@ -15,6 +15,8 @@ public class Player extends Entity{
 
 	public int incr_quantity=0, incr_rarity=0;
 	
+	private double experience=0;
+	
 	private static ArrayList<Entity> minions = new ArrayList<Entity>();
 
 	
@@ -104,7 +106,6 @@ public class Player extends Entity{
 						moveToLoc = false;
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -115,6 +116,11 @@ public class Player extends Entity{
 			}
 
 		}
+	}
+	
+	public void gainedExperience(double xp){
+		experience += xp;
+		// TODO check leveled up
 	}
 	
 	public void movingClickOrder(double x, double y){

@@ -28,6 +28,8 @@ public class Entity {
 	protected int attackRange=48;
 	protected int attackCooldownTicks=0;
 	protected float attackCooldownRate = 1.5f; //.66 attacks/second base
+	protected int attackMovePenaltyTicks=0;
+	protected float attackMovePenaltyRate = 0.2f;
 	
 	protected double health = 10;
 	protected double maxHealth = 10;
@@ -70,7 +72,9 @@ public class Entity {
 		//do percentile information
 		
 		
-		
+		//finish
+		health = maxHealth;
+		shield = maxShield;
 	}
 	
 	/**
@@ -197,7 +201,6 @@ public class Entity {
 			if(alive){
 				if(this instanceof Player) glColor4f(0f, 1f, 0f, 1f);
 				if(this==myPlayer) glColor4f(0f, 1f, 1f, 1f);
-				if(this instanceof Monster) glColor4f(1f, 0.8f, 0.8f, 1f);
 				DrawQuadTex(texture, x, y, width-1, height-1);
 				if(this instanceof Player) {
 					glColor4f(0.5f, 0.8f, 0f, 0.6f);

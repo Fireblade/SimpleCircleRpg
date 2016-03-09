@@ -159,6 +159,7 @@ public class Level {
 		float packSpawnChance = gLGBaseMonsterPacks;
 		// modify pack spawn chance here
 		float packSize = gLGBaseMonsterPackSize;
+		boolean isMagic=false, isRare=false;
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				if (tiles[x][y]) { // if it is a tile
@@ -168,12 +169,28 @@ public class Level {
 							// then spawn monsters.
 
 							int addMons = (int) Math.floor((packSize / 2) + (levelGen.nextFloat() * packSize));
-
+							float magicChance = levelGen.nextFloat();
+							if(magicChance < gLGBaseMonsterMagicChance)
+								isMagic=true;
+							else isMagic=false;
+							
+							float packMonsterSize = 0.75f + (levelGen.nextFloat() * 0.5f);
 							for (int i = 0; i < addMons; i++) {
 								totalMonsters++;
-								monsters.add(new Monster(totalMonsters, 1,
-										(x*tileWidth) + (tileWidth / 4) + ((levelGen.nextFloat() * tileWidth) / 2),
-										(y*tileHeight) + (tileHeight / 4) + ((levelGen.nextFloat() * tileHeight) / 2)));
+								Monster monst = new Monster(totalMonsters, packMonsterSize,
+										(x * tileWidth) + (tileWidth / 4) + ((levelGen.nextFloat() * tileWidth) / 2),
+										(y * tileHeight) + (tileHeight / 4)
+												+ ((levelGen.nextFloat() * tileHeight) / 2));
+								if(isMagic){
+									monst.is_magical = true;
+								}
+								else {
+									if(levelGen.nextFloat() < gLGBaseMonsterRareChance){
+										monst.is_boss = true;
+									}
+								}
+								
+								monsters.add(monst);
 							}
 						}
 					}

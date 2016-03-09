@@ -27,6 +27,7 @@ public class Artist {
 	
 	public static Texture tex_circle;
 	public static Texture tex_circle_ring_outer;
+	public static Texture tex_circle_ring_outer_thick;
 	
 	//public static Texture[] tex_tile_grass; //maybe store tiles in the future
 	
@@ -36,6 +37,8 @@ public class Artist {
 	public static void createCircleLibrary(){
 		tex_circle = LoadTexture("res/images/circles/circle.png", "PNG");
 		tex_circle_ring_outer = LoadTexture("res/images/circles/ring_outer.png", "PNG");
+		tex_circle_ring_outer_thick = LoadTexture("res/images/circles/ring_outer_thick.png", "PNG");
+		
 		tex_item_droplet_melee = LoadTexture("res/images/items/droplet/melee.png", "PNG");
 		tex_item_droplet_light_beam = LoadTexture("res/images/items/droplet/light_beam_solo.png", "PNG");
 	}

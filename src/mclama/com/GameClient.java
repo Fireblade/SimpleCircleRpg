@@ -94,10 +94,23 @@ public class GameClient {
 					SendPlayersCharacter msg = (SendPlayersCharacter)object;
 					myPlayerId = msg.id;
 					Player plyr = getCharacter(msg.id);
+					deleteCharacter(msg.id);
+					myPlayer = loadPlayerCharacter();
 					if(plyr == null)
 						System.out.println("ERROR Player is NULL");
 					else
-						myPlayer = plyr;
+					{
+						//myPlayer = plyr;
+						myPlayer.setId(plyr.getId());
+						myPlayer.setX(plyr.getX());
+						myPlayer.setY(plyr.getY());
+						myPlayer.name = plyr.name;
+						plyr = myPlayer;
+						characters.add(myPlayer);
+						if(myPlayer==null){
+							System.out.println("error 777");
+						}
+					}
 					if(myPlayer.getId()==0){ //double check valid host player.
 						System.out.println("ERROR PLAYER ID IS 0");
 					}
@@ -154,6 +167,11 @@ public class GameClient {
 	}
 	
 	
+	protected Player loadPlayerCharacter() {
+		return new Player();
+	}
+
+
 	private void createPlayerInventory() {
 		for(int y=0; y<gInvHeight; y++){
 			for(int x=0; x<gInvWidth; x++){
