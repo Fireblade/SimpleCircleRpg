@@ -231,10 +231,12 @@ public class SimpleCircleRpg {
 		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)){
-			startHost("name " + gen.nextInt(2000));
+			if(!gameIsRunning)
+				startHost("name " + gen.nextInt(2000));
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_N)){
-			joinHost("name " + gen.nextInt(2000));
+			if(!gameIsRunning)
+				joinHost("name " + gen.nextInt(2000));
 		}
 		
 		
@@ -290,24 +292,26 @@ public class SimpleCircleRpg {
 		        }
 		    }
 		}
-		
+
 		while (Keyboard.next()) {
 			if (Keyboard.getEventKeyState()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_GRAVE){
+				if (Keyboard.getEventKey() == Keyboard.KEY_GRAVE) {
 					gShowConsole = !gShowConsole;
 				}
-				if(gShowConsole){
+				if (gShowConsole) {
 					if (Keyboard.getEventKey() != Keyboard.KEY_GRAVE) {
 						if (Keyboard.getEventKey() == Keyboard.KEY_BACK) {
 							conLineBackspace();
-						} else if (Keyboard.getEventKey() == 28) { //ENTER
+						} else if (Keyboard.getEventKey() == 28) { // ENTER
 							conCommandEntered();
-						} else
+						} else if ((Keyboard.getEventCharacter() + "").matches("[a-zA-Z0-9,.;:_']")) {
 							conLineAddChar(Keyboard.getEventCharacter());
+						}
 					}
-				}
-				else 
-				{ // Start of not showing console
+					if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
+						conLineUpArrow();
+					}
+				} else { // Start of not showing console
 					if (Keyboard.getEventKey() == Keyboard.KEY_L && gameIsHosting) {
 						//System.out.println("call new host map");
 						int newLevelId = gameServer.createNewLevel();

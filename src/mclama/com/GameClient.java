@@ -191,6 +191,19 @@ public class GameClient {
 		}
 	}
 	
+	public void equipItem(Item item){
+		if(gInventoryGear[GEAR_CHEST]==null){
+			gInventoryGear[GEAR_CHEST]=item;
+		}
+		else {
+			addItemToInventory(gInventoryGear[GEAR_CHEST]);
+			gInventoryGear[GEAR_CHEST]=item;
+		}
+		String hpto = myPlayer.getMaxHealth() + " ";
+		myPlayer.calculateInfo();
+		hpto += myPlayer.getMaxHealth() + "";
+		System.out.println(hpto);
+	}
 	
 	/**
 	 * Adds an item to inventory.

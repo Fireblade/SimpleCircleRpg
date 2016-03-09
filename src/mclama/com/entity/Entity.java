@@ -7,6 +7,7 @@ import mclama.com.GameServer;
 import static mclama.com.util.DebugGlobals.*;
 import static mclama.com.util.Artist.*;
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.Console.*;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.util.ArrayList;
@@ -86,6 +87,10 @@ public class Entity {
 	private float getGearStat(String string, boolean findPercentile) {
 		for(int i=0; i<mods.size(); i++){      //Example mod: "25 increased strength"
 			String modStr = mods.get(i);
+			if(!modStr.contains("  ")){
+				conAdd("ERROR Item does not contain split string double space.");
+				break;
+			}
 			if(modStr.contains(string)){ //then dig deeper
 				String[] modInfo = modStr.split("  ");//double space
 				String[] modStat = modInfo[1].split(" "); 

@@ -15,6 +15,7 @@ public class Console {
 	private static String filter = "";
 	
 	private static String consoleLine = "";
+	private static String lastUserInput = "";
 	
 	
 	public static void conAdd(String text){
@@ -31,7 +32,13 @@ public class Console {
 		}
 	}
 	
+	public static void conLineUpArrow(){
+		consoleLine = lastUserInput;
+	}
+	
 	public static boolean conCommandEntered(){
+		if(!consoleLine.equals(""))
+			lastUserInput = consoleLine;
 		boolean isCommand=false;
 		String[] command = consoleLine.split(" ");
 		String additional = "";
@@ -74,10 +81,29 @@ public class Console {
 					} else if (command[1].matches("1|true")) {
 						D_FREEMOVEMENT = true;
 					}
-					isCommand = true;
+					
 				}
 			}
+			isCommand = true;
+			break;
+		case "equip":
+			if (D_DEBUG) {
+				Item item = new Item("dev chest", 1, 0, 1f);
+				item.addMod("25  increased strength");
+				
+				gameClient.equipItem(item);
+			}
+			isCommand=true;
+			break;
+		case "db_":
+			if (D_DEBUG) {
+				
+			}
+			isCommand=true;
+			break;
+		
 		}
+	
 		
 		logs.add(" > " + consoleLine + " " + additional);
 		consoleLine = "";

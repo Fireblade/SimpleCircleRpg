@@ -8,6 +8,7 @@ import static mclama.com.util.Artist.*;
 import static mclama.com.Network.SendDamageDealt;
 
 import mclama.com.Network.MoveClickOrder;
+import mclama.com.item.Item;
 
 public class Player extends Entity{
 	
@@ -117,6 +118,7 @@ public class Player extends Entity{
 
 		}
 	}
+	
 	
 	public void gainedExperience(double xp){
 		experience += xp;

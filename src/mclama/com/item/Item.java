@@ -101,6 +101,7 @@ public class Item {
 	//Helm, Chest, Gloves, Boots, Pants
 	//Ring, Ring, Amulet, Relic
 	*/
+
 	
 	private int rollItemRarity(float whites){
 		int itemRarity = 0;
@@ -153,7 +154,9 @@ public class Item {
 	}
 
 
-
+	public void addMod(String mod){
+		mods.add(mod);
+	}
 
 	public String getName() {
 		return name;
