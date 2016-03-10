@@ -2,6 +2,7 @@ package mclama.com.entity;
 
 import static mclama.com.util.Artist.*;
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.Utility.df;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -272,9 +273,18 @@ public class Monster extends Entity{
 				currentLevel.addNewItemDrop(iDrop, (x - width) + (gen.nextInt(width)),
 						(y - height) + (gen.nextInt(height)));
 			}
+			// Experience reward
+			double grantExp = 0;
+			grantExp = 1 + (level/2.5);
+			grantExp *= 1 + (level/10);
+			grantExp *= (size);
+			if(is_magical) grantExp *= 1.25f;
+			if(is_boss) grantExp *= 2;
 			
-			conAdd("Monster killed by " + killedBy.getId() + " and dropped " + (int) items_drop + " items.");
-		}
+			myPlayer.gainedExperience(grantExp);
+			
+			conAdd("Monster killed by " + killedBy.getId() + " and dropped " + (int) items_drop + " items. +" + df.format(grantExp) + "xp.");
+		}// end of first death
 		
 		hasDied=true; //set monster to have died before, Incase zombification!
 	}

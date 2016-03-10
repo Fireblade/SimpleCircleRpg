@@ -1,6 +1,8 @@
 package mclama.com.entity;
 
 import static mclama.com.util.Globals.*;
+import static mclama.com.util.Console.*;
+import static mclama.com.util.Utility.getNextLevel;
 
 import java.util.ArrayList;
 
@@ -122,6 +124,8 @@ public class Player extends Entity{
 	
 	public void gainedExperience(double xp){
 		experience += xp;
+		getNextLevel(1000000);
+		//conAdd("Experience gained: " + xp);
 		// TODO check leveled up
 	}
 	

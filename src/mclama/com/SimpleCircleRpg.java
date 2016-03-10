@@ -326,6 +326,25 @@ public class SimpleCircleRpg {
 							e.printStackTrace();
 						}
 					}
+					if (Keyboard.getEventKey() == Keyboard.KEY_LEFT){
+						System.out.println("=========");
+						double grantExp = 0;
+						int level = 0;
+						double reqxp = 15;
+						for(int i=1; i<=25; i++){
+//							level++;
+//							grantExp = level * level;
+//							grantExp *= 1 + (level/10);
+							//System.out.println(lvl + ": " + grantExp);
+							//System.out.println(level + ": " + grantExp);
+							//double reqxp = 15 + (25*Math.sqrt((level-1)*(level-1)*25));
+							
+							reqxp *= 1.05;
+							if(level%3==0) reqxp *= 1.4;
+							if(level%7==0) reqxp *= 1.4;
+							System.out.println(i + " .. reqXp: " + reqxp + " .. xpReward: " + (i*(i*.5)));
+						}
+					}
 					if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
 						if (gameIsRunning) {
 							int[] rarerolls = {0,0,0,0,0,0,0};
