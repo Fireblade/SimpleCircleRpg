@@ -332,7 +332,7 @@ public class SimpleCircleRpg {
 						double grantExp = 0;
 						int level = 0;
 						double reqxp = 15;
-						for(int i=1; i<=25; i++){
+						for(int i=1; i<=125; i++){
 //							level++;
 //							grantExp = level * level;
 //							grantExp *= 1 + (level/10);
@@ -345,8 +345,8 @@ public class SimpleCircleRpg {
 							//reqxp *= 1.05;
 							//if(level%3==0) reqxp *= 1.4;
 							//if(level%7==0) reqxp *= 1.4;
-							reqxp = (250 * i) * Math.pow(1.10, i);
-							double xpreward = (15 * i) * Math.pow(1.05, i);
+							reqxp = ((250 * i) * Math.pow(Math.max(1.15 - i/500, (1.05) ), i)) /* * Math.max(1,(i/5))*/;
+							double xpreward = (15 * i) * Math.pow(1.05, i + Math.floor(i/10) + Math.floor(i/21.5));
 							System.out.println(i + " .. reqXp: " + Utility.df.format(reqxp) + " .. xpReward: "
 									+ Utility.df.format(xpreward) + " div: " + Utility.df.format(reqxp/xpreward));
 						}
