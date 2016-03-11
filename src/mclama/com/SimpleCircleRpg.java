@@ -27,6 +27,7 @@ import mclama.com.item.Item;
 import mclama.com.item.ItemDrop;
 import mclama.com.level.Level;
 import mclama.com.util.Artist;
+import mclama.com.util.Utility;
 
 import static mclama.com.util.Artist.*;
 import static mclama.com.util.Globals.*;
@@ -339,10 +340,15 @@ public class SimpleCircleRpg {
 							//System.out.println(level + ": " + grantExp);
 							//double reqxp = 15 + (25*Math.sqrt((level-1)*(level-1)*25));
 							
-							reqxp *= 1.05;
-							if(level%3==0) reqxp *= 1.4;
-							if(level%7==0) reqxp *= 1.4;
-							System.out.println(i + " .. reqXp: " + reqxp + " .. xpReward: " + (i*(i*.5)));
+							// level ^ 1.05
+							
+							//reqxp *= 1.05;
+							//if(level%3==0) reqxp *= 1.4;
+							//if(level%7==0) reqxp *= 1.4;
+							reqxp = (250 * i) * Math.pow(1.10, i);
+							double xpreward = (15 * i) * Math.pow(1.05, i);
+							System.out.println(i + " .. reqXp: " + Utility.df.format(reqxp) + " .. xpReward: "
+									+ Utility.df.format(xpreward) + " div: " + Utility.df.format(reqxp/xpreward));
 						}
 					}
 					if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
