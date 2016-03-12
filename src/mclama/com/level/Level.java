@@ -175,6 +175,7 @@ public class Level {
 							else isMagic=false;
 							
 							float packMonsterSize = 0.75f + (levelGen.nextFloat() * 0.5f);
+							if(levelGen.nextFloat() < 0.035f) packMonsterSize += 0.45f;
 							for (int i = 0; i < addMons; i++) {
 								totalMonsters++;
 								Monster monst = new Monster(totalMonsters, packMonsterSize,
