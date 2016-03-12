@@ -256,12 +256,12 @@ public class Monster extends Entity{
 			Random gen = new Random();
 			
 			double items_drop = gen.nextFloat();
-			float whites = 1f;
+			float[] rarityMods = {1f, 1f, 1f, 1f, 1f, 1f};
 			if(gen.nextBoolean()) items_drop += gen.nextFloat();
 			if(gen.nextInt(10)==0) items_drop += gen.nextFloat();
-			if(is_boss) {items_drop += gen.nextFloat()*2; quantity +=50; rarity+= 100; whites =0.25f;}
-			else if(is_magical) {items_drop += gen.nextFloat(); quantity +=20; rarity+= 40; whites =0.45f;}
-			if(is_aura)    {items_drop += gen.nextFloat(); quantity +=10; rarity+= 10; whites -=0.1f;}
+			if(is_boss) {items_drop += gen.nextFloat()*2; quantity +=50; rarity+= 100; rarityMods[0] =0.25f;}
+			else if(is_magical) {items_drop += gen.nextFloat(); quantity +=20; rarity+= 40; rarityMods[0] =0.45f;}
+			if(is_aura)    {items_drop += gen.nextFloat(); quantity +=10; rarity+= 10; rarityMods[0] -=0.1f;}
 			
 			items_drop = (int) Math.floor((items_drop * size) * (1+(quantity/100)));
 			
@@ -269,7 +269,7 @@ public class Monster extends Entity{
 			
 			for (int i = 0; i < items_drop; i++) {
 				//item_drops.add(new Item("noname", level, rarity, whites)); //Test rolls
-				Item iDrop = new Item("noname", level, rarity, whites);
+				Item iDrop = new Item("noname", level, rarity, rarityMods);
 				currentLevel.addNewItemDrop(iDrop, (x - width) + (gen.nextInt(width)),
 						(y - height) + (gen.nextInt(height)));
 			}

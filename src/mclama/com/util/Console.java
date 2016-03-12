@@ -53,7 +53,7 @@ public class Console {
 		case "give":
 			if(command.length==2){
 				if (command[1].equals("itemdrop")) {
-					Item iDrop = new Item("noname", myPlayer.getLevel(), 0, 1.0f);
+					Item iDrop = new Item("noname", myPlayer.getLevel(), 0);
 					currentLevel.addNewItemDrop(iDrop, myPlayer.getX(), myPlayer.getY());
 					
 				}
@@ -88,7 +88,7 @@ public class Console {
 			break;
 		case "equip":
 			if (D_DEBUG) {
-				Item item = new Item("dev chest", 1, 0, 1f);
+				Item item = new Item("dev chest", myPlayer.getLevel(), 0);
 				item.addMod("25  increased strength");
 				
 				gameClient.equipItem(item);

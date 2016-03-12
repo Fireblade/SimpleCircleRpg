@@ -58,6 +58,13 @@ public class Globals {
 	public static final int GEAR_RELIC2=12;
 	public static final int GEAR_SYMBOL=13;
 	
+	public static final int RARITY_WHITE=0;
+	public static final int RARITY_BLUE=1;
+	public static final int RARITY_GREEN=2;
+	public static final int RARITY_YELLOW=3;
+	public static final int RARITY_ORANGE=4;
+	public static final int RARITY_PURPLE=5;
+	
 	public static Player myPlayer=new Player();
 	public static int gGHighestPlayerLevel=1;
 	

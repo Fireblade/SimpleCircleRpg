@@ -68,22 +68,22 @@ public class ItemDrop {
 		if (texture != null) {
 			switch(item.getRarity()){
 			case 1: //common
-				glColor3f(1f, 1f, 1f);
+				glColor3f(1f, 1f, 1f); //white
 				break;
 			case 2: //magic
-				glColor3f(0.2f, 0.4f, 1f);
+				glColor3f(0.2f, 0.4f, 1f); //blue
 				break;
 			case 3: //rare
-				glColor3f(0f, 1f, 0f);
+				glColor3f(0f, 1f, 0f); //green
 				break;
 			case 4: //legendary
-				glColor3f(1f, 1f, 0f);
+				glColor3f(1f, 1f, 0f); //yellow
 				break;
 			case 5: //unique
-				glColor3f(0.75f, 0.5f, 0.25f);
+				glColor3f(0.75f, 0.5f, 0.25f); //orange
 				break;
 			case 6: //cursed
-				glColor3f(0.7f, 0.4f, 0.7f);
+				glColor3f(0.7f, 0.4f, 0.7f); //purple
 				break;
 			}
 			

@@ -32,13 +32,16 @@ public class Item {
 	
 	private ArrayList<String> mods = new ArrayList<String>(); //like 20 increased damage /n 10 increased armor
 	
+	public Item(String name, int foundLevel, int drop_rarity) {
+		this(name, foundLevel, drop_rarity, new float[] {1f, 1f, 1f, 1f, 1f, 1f} ,0);
+	}
 	
-	public Item(String name, int foundLevel, int drop_rarity, float whites){
-		this(name, foundLevel, drop_rarity, whites,0);
+	public Item(String name, int foundLevel, int drop_rarity, float[] rarityMods){
+		this(name, foundLevel, drop_rarity, rarityMods,0);
 
 	}
 	
-	public Item(String name, int foundLevel, int drop_rarity, float whites, int createRarity){
+	public Item(String name, int foundLevel, int drop_rarity, float[] rarityMods, int createRarity){
 		this.name = name;
 		this.foundLevel=foundLevel;
 		
@@ -46,9 +49,9 @@ public class Item {
 		
 		int item1Rarity;
 		if(createRarity>0){ // 0 means item creation, so roll.
-			item1Rarity = rollItemRarity(whites);
+			item1Rarity = rollItemRarity(rarityMods);
 			while(gen.nextFloat()*100 <= (1+(drop_rarity/100))*1.0f){
-				int item2Rarity = rollItemRarity(whites);
+				int item2Rarity = rollItemRarity(rarityMods);
 				System.out.println("rolled bonus..." + item1Rarity + " vs " + item2Rarity);
 				item1Rarity = Math.max(item1Rarity, item2Rarity); //use the higher rarity of the 2.
 			}
@@ -103,7 +106,9 @@ public class Item {
 	*/
 
 	
-	private int rollItemRarity(float whites){
+
+
+	private int rollItemRarity(float[] rarityMods){
 		int itemRarity = 0;
 		// base item rarity rolls
 		int rNormal = 20000;         //1
@@ -113,7 +118,12 @@ public class Item {
 		int rUnique = 32;             //5
 		int rCursed = 3;              //6
 		
-		rNormal *= whites;
+		rNormal *= rarityMods[RARITY_WHITE];
+		rMagic *= rarityMods[RARITY_BLUE];
+		rRare *= rarityMods[RARITY_GREEN];
+		rLeg *= rarityMods[RARITY_YELLOW];
+		rUnique *= rarityMods[RARITY_ORANGE];
+		rCursed *= rarityMods[RARITY_PURPLE];
 
 		float NormalMultiplier = 1;
 		float MagicMultiplier = 1;
