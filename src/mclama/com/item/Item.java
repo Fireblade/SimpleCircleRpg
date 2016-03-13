@@ -37,10 +37,18 @@ public class Item {
 	}
 	
 	public Item(String name, int foundLevel, int drop_rarity, float[] rarityMods){
-		this(name, foundLevel, drop_rarity, rarityMods,0);
+		this(name, foundLevel, drop_rarity, rarityMods, 0);
 
 	}
 	
+	/**
+	 * 
+	 * @param name - name of item
+	 * @param foundLevel - level the item was found at
+	 * @param drop_rarity - the rarity of the item, higher the more rare
+	 * @param rarityMods - modifiers for rarity types
+	 * @param createRarity - specific rarity of created item
+	 */
 	public Item(String name, int foundLevel, int drop_rarity, float[] rarityMods, int createRarity){
 		this.name = name;
 		this.foundLevel=foundLevel;
@@ -48,7 +56,8 @@ public class Item {
 		Random gen = new Random();
 		
 		int item1Rarity;
-		if(createRarity>0){ // 0 means item creation, so roll.
+		if(createRarity==0){ // 0 means item creation, so roll.
+		//if(true){
 			item1Rarity = rollItemRarity(rarityMods);
 			while(gen.nextFloat()*100 <= (1+(drop_rarity/100))*1.0f){
 				int item2Rarity = rollItemRarity(rarityMods);
@@ -107,7 +116,6 @@ public class Item {
 
 	
 
-
 	private int rollItemRarity(float[] rarityMods){
 		int itemRarity = 0;
 		// base item rarity rolls
@@ -125,20 +133,19 @@ public class Item {
 		rUnique *= rarityMods[RARITY_ORANGE];
 		rCursed *= rarityMods[RARITY_PURPLE];
 
-		float NormalMultiplier = 1;
-		float MagicMultiplier = 1;
-		float RareMultiplier = 1;
-		float LegMultiplier = 1;
-		float UniqueMultiplier = 1;
-		float CursedMultiplier = 1;
-		
-
-		rNormal *= NormalMultiplier;
-		rMagic *= MagicMultiplier;
-		rRare *= RareMultiplier;
-		rLeg *= LegMultiplier;
-		rUnique *= UniqueMultiplier;
-		rCursed *= CursedMultiplier;
+//		float NormalMultiplier = 1;
+//		float MagicMultiplier = 1;
+//		float RareMultiplier = 1;
+//		float LegMultiplier = 1;
+//		float UniqueMultiplier = 1;
+//		float CursedMultiplier = 1;
+//		
+//		rNormal *= NormalMultiplier;
+//		rMagic *= MagicMultiplier;
+//		rRare *= RareMultiplier;
+//		rLeg *= LegMultiplier;
+//		rUnique *= UniqueMultiplier;
+//		rCursed *= CursedMultiplier;
 
 		int rTotal = rNormal + rMagic + rRare + rLeg + rUnique + rCursed;
 
