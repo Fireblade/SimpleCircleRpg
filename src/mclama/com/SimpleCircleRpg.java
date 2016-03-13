@@ -220,15 +220,17 @@ public class SimpleCircleRpg {
 //		float my = HEIGHT - Mouse.getY() - 1 - camY;
 
 		if(D_FREEMOVEMENT && !gShowConsole){
+			float speed = gNoclipSpeed;
+			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) speed *= 3;
 			if (Keyboard.isKeyDown(Keyboard.KEY_A))
-				myPlayer.setX(myPlayer.getX() - 0.5f * delta);
+				myPlayer.setX(myPlayer.getX() - speed * delta);
 			if (Keyboard.isKeyDown(Keyboard.KEY_D))
-				myPlayer.setX(myPlayer.getX() + 0.5f * delta);
+				myPlayer.setX(myPlayer.getX() + speed * delta);
 
 			if (Keyboard.isKeyDown(Keyboard.KEY_W))
-				myPlayer.setY(myPlayer.getY() - 0.5f * delta);
+				myPlayer.setY(myPlayer.getY() - speed * delta);
 			if (Keyboard.isKeyDown(Keyboard.KEY_S))
-				myPlayer.setY(myPlayer.getY() + 0.5f * delta);
+				myPlayer.setY(myPlayer.getY() + speed * delta);
 		}
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)){

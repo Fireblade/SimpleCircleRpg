@@ -81,6 +81,10 @@ public class Globals {
 	public static float gLGBaseMonsterMagicChance = 0.15f;
 	public static float gLGBaseMonsterRareChance = 0.01f;
 	
+	
+	
+	public static float gNoclipSpeed=0.5f;
+	
 	public static double distance(double x1, double y1, double x2, double y2) { //moved for now
 		double xDistanceFromTarget = Math.abs(x1 - x2);
 		double yDistanceFromTarget = Math.abs(y1 - y2);
