@@ -256,28 +256,61 @@ public class Monster extends Entity{
 			Random gen = new Random();
 			
 			double items_drop = gen.nextFloat();
-			float[] rarityMods = {1f, 1f, 1f, 1f, 1f, 1f};
-			if(gen.nextBoolean()) items_drop += gen.nextFloat();
-			if(gen.nextInt(10)==0) items_drop += gen.nextFloat();
-			if(is_boss) {items_drop += gen.nextFloat()*2; quantity +=50; rarity+= 100; rarityMods[0] =0.25f;}
-			else if(is_magical) {items_drop += gen.nextFloat(); quantity +=20; rarity+= 40; rarityMods[0] =0.45f;}
-			if(is_aura)    {items_drop += gen.nextFloat(); quantity +=10; rarity+= 10; rarityMods[0] -=0.1f;}
-			
+			float[] rarityMods = { 1f, 1f, 1f, 1f, 1f, 1f };
+			ArrayList<Integer> itemIncludes = new ArrayList<Integer>();
+			if (gen.nextBoolean())
+				items_drop += gen.nextFloat();
+			if (gen.nextInt(10) == 0)
+				items_drop += gen.nextFloat();
+			if (is_boss) {
+				items_drop += (gen.nextFloat() * 2) + 1;
+				quantity += 50;
+				rarity += 100;
+				rarityMods[RARITY_WHITE] = 0.25f;
+				itemIncludes.add(RARITY_GREEN+1); // to be changed
+				System.out.println("killed monster to drop green");
+			} else if (is_magical) {
+				items_drop += gen.nextFloat();
+				quantity += 20;
+				rarity += 40;
+				rarityMods[RARITY_WHITE] = 0.45f;
+				if (gen.nextFloat() < 0.25f) {
+					items_drop += 1;
+					itemIncludes.add(RARITY_BLUE+1);
+				}
+				System.out.println("monster is magical");
+			}
+			if (is_aura) {
+				items_drop += gen.nextFloat();
+				quantity += 10;
+				rarity += 10;
+				rarityMods[RARITY_WHITE] -= 0.1f;
+			}
+
 			items_drop = (int) Math.floor((items_drop * size) * (1+(quantity/100)));
 			
 			System.out.println("drop: " + items_drop + ", Quantity: " + quantity + ", Rarity: " + rarity);
 			
 			for (int i = 0; i < items_drop; i++) {
 				//item_drops.add(new Item("noname", level, rarity, whites)); //Test rolls
-				Item iDrop = new Item("noname", level, rarity, rarityMods);
-				currentLevel.addNewItemDrop(iDrop, (x - width) + (gen.nextInt(width)),
-						(y - height) + (gen.nextInt(height)));
+				Item iDrop = null;
+				if(itemIncludes.size()>0){ //if we are to include an item with specific rarity
+					System.out.println("iteminclude");
+					iDrop = new Item("noname", level, rarity, rarityMods, itemIncludes.get(0));
+					itemIncludes.remove(0);
+				}
+				else iDrop = new Item("noname", level, rarity, rarityMods);
+				if (iDrop != null) {
+					currentLevel.addNewItemDrop(iDrop, (x - width) + (gen.nextInt(width)),
+							(y - height) + (gen.nextInt(height)));
+				}
 			}
 			// Experience reward
 			double grantExp = 0;
-			grantExp = 1 + (level/2.5);
-			grantExp *= 1 + (level/10);
-			grantExp *= (size);
+//			grantExp = 1 + (level/2.5);
+//			grantExp *= 1 + (level/10);
+//			grantExp *= (size);
+			grantExp = (15 * level) * Math.pow(1.05, level + Math.floor(level/10) + Math.floor(level/21.5));
 			if(is_magical) grantExp *= 1.25f;
 			if(is_boss) grantExp *= 2;
 			
