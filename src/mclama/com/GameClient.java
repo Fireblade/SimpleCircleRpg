@@ -29,6 +29,7 @@ import mclama.com.util.Utility;
 
 import static mclama.com.util.Globals.*;
 import static mclama.com.util.Artist.*;
+import static mclama.com.util.Utility.*;
 
 public class GameClient {
 	

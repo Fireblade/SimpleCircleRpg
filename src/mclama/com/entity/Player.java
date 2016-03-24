@@ -12,6 +12,8 @@ import mclama.com.Network.MoveClickOrder;
 import mclama.com.item.Item;
 import mclama.com.util.Utility;
 
+import static mclama.com.util.Utility.*;
+
 public class Player extends Entity{
 	
 	public String name;

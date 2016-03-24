@@ -3,6 +3,7 @@ package mclama.com.entity;
 import org.newdawn.slick.opengl.Texture;
 
 import mclama.com.GameServer;
+import mclama.com.util.Utility;
 
 import static mclama.com.util.DebugGlobals.*;
 import static mclama.com.util.Artist.*;
@@ -161,8 +162,8 @@ public class Entity {
 		if (moveToLoc && currentLevel != null) {
 			//System.out.println("moveloc");
 			calculateDirection(moveX, moveY);
-			if (distance(x, y, moveX, moveY) < (speed * delta) 
-					|| (isAttacking && distance(x,y,target.getX(),target.getY()) < attackRange)) {
+			if (Utility.distance(x, y, moveX, moveY) < (speed * delta) 
+					|| (isAttacking && Utility.distance(x,y,target.getX(),target.getY()) < attackRange)) {
 				moveToLoc = false;
 			} else { // so the player doesn't move and then stop
 				try {
@@ -262,17 +263,6 @@ public class Entity {
 		//angle -= 90;
 		//if(angle < 0) angle+=360;
 		return angle;
-	}
-	
-
-	
-	protected float distanceX(double d, double angle){
-		return (float) (d * Math.sin(Math.toRadians(angle)));
-		//return (float) (distance * Math.cos(angle));
-	}
-	protected float distanceY(double distance, double angle){
-		return (float) (distance * Math.cos(Math.toRadians(angle)));
-		//return (float) (distance * Math.sin(angle));
 	}
 
 

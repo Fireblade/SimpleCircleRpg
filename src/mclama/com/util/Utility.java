@@ -81,7 +81,7 @@ public class Utility {
 		if(file.exists()){
 			try (BufferedReader br = new BufferedReader(new FileReader(file));)
 			{
-				try { /*player.name = */System.out.println(br.readLine().split(" :: ")[1]);}catch (Exception e) {} //ignore name till further update
+				try { /*player.name = */br.readLine();}catch (Exception e) {} //ignore name till further update
 				try { player.setLevel(Integer.parseInt(br.readLine().split(" :: ")[1]));}catch (Exception e) {}
 				try { player.setExperience(Double.parseDouble(br.readLine().split(" :: ")[1]));}catch (Exception e) {}
 				try { player.setTotalExperience(Double.parseDouble(br.readLine().split(" :: ")[1]));}catch (Exception e) {}
@@ -98,6 +98,19 @@ public class Utility {
 		}
 		System.out.print( "   ...done.\n");
 		return player;
+	}
+	
+	public static double distance(double x1, double y1, double x2, double y2) {
+		double xDistanceFromTarget = Math.abs(x1 - x2);
+		double yDistanceFromTarget = Math.abs(y1 - y2);
+		return xDistanceFromTarget + yDistanceFromTarget;
+	}
+	
+	public static float distanceX(double d, double angle){
+		return (float) (d * Math.sin(Math.toRadians(angle)));
+	}
+	public static float distanceY(double distance, double angle){
+		return (float) (distance * Math.cos(Math.toRadians(angle)));
 	}
 
 }

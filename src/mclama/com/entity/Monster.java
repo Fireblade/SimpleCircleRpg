@@ -21,6 +21,7 @@ import java.util.Random;
 
 import mclama.com.Network.*;
 import mclama.com.item.Item;
+import mclama.com.util.Utility;
 
 public class Monster extends Entity{
 	
@@ -87,7 +88,7 @@ public class Monster extends Entity{
 					isAttacking=false;
 					target = null;
 				}
-				else if(distance(x, y, target.getX(), target.getY()) > attackRange)
+				else if(Utility.distance(x, y, target.getX(), target.getY()) > attackRange)
 				{ //If out of range, move to range.
 					if(attackMovePenaltyTicks>0){
 						attackMovePenaltyTicks--;
@@ -95,9 +96,9 @@ public class Monster extends Entity{
 					else
 					{
 						double angle = getAngle(target.getX(), target.getY());
-						double distance = distance(x, y, target.getX(), target.getY());
-						moveX = x + distanceX(distance - attackRange, angle);
-						moveY = y + distanceY(distance - attackRange, angle);
+						double distance = Utility.distance(x, y, target.getX(), target.getY());
+						moveX = x + Utility.distanceX(distance - attackRange, angle);
+						moveY = y + Utility.distanceY(distance - attackRange, angle);
 						
 						if(gameIsRunning){
 							// TODO Monster move order
@@ -140,8 +141,8 @@ public class Monster extends Entity{
 			if (moveToLoc && currentLevel != null) {
 				// System.out.println("moveloc");
 				calculateDirection(moveX, moveY);
-				if (distance(x, y, moveX, moveY) < (speed * delta)
-						|| (isAttacking && distance(x, y, target.getX(), target.getY()) < attackRange)) {
+				if (Utility.distance(x, y, moveX, moveY) < (speed * delta)
+						|| (isAttacking && Utility.distance(x, y, target.getX(), target.getY()) < attackRange)) {
 					x = moveX;
 					y = moveY;
 					moveToLoc = false; 
@@ -179,7 +180,7 @@ public class Monster extends Entity{
 		
 
 		if (target != null) {
-			if (distance(x, y, target.getX(), target.getY()) > (gMonsterLeashRange * 2)) {
+			if (Utility.distance(x, y, target.getX(), target.getY()) > (gMonsterLeashRange * 2)) {
 				isAttacking = false;
 				target = null;
 			}
