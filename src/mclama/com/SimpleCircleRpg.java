@@ -34,6 +34,8 @@ import static mclama.com.util.Globals.*;
 import static mclama.com.util.DebugGlobals.*;
 import static mclama.com.util.Console.*;
 
+import static mclama.com.util.Utility.df;
+
 
 public class SimpleCircleRpg {
 
@@ -154,6 +156,9 @@ public class SimpleCircleRpg {
 	}
 
 	public void initialize() {
+		Utility.directoryExists("Data");
+        Utility.directoryExists("Data/Characters");
+		
 		Artist.createCircleLibrary();
 		background2 = LoadTexture("res/images/background2.png", "PNG");
 		
@@ -176,9 +181,7 @@ public class SimpleCircleRpg {
 			e.printStackTrace();
 		}
 		
-		//myPlayer = new Player(); //created in globals
-		//myPlayer.setTexture(tex_circle);
-		//myPlayer.setId(playersConnectedID);
+		//myPlayer = Utility.loadCharacter("playersave"); //created in globals
 
 	}
 
@@ -235,11 +238,11 @@ public class SimpleCircleRpg {
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)){
 			if(!gameIsRunning)
-				startHost("name " + gen.nextInt(2000));
+				startHost("H" + gen.nextInt(2000));
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_N)){
 			if(!gameIsRunning)
-				joinHost("name " + gen.nextInt(2000));
+				joinHost("c" + gen.nextInt(2000));
 		}
 		
 		
@@ -268,7 +271,8 @@ public class SimpleCircleRpg {
 			        			if(myPlayerId != 0){
 			        				Player plyr = gameClient.getCharacter(myPlayerId);
 			    					if(plyr != null){
-			    						myPlayer = gameClient.loadPlayerCharacter();
+			    						System.out.print("Invalid player.... ");
+			    						myPlayer = Utility.loadCharacter("playersave");
 			    						myPlayer.setId(plyr.getId());
 			    						myPlayer.setX(plyr.getX());
 			    						myPlayer.setY(plyr.getY());
@@ -651,8 +655,10 @@ public class SimpleCircleRpg {
 		ttf.drawString(10, 10, "FPS: " + fps, Color.orange);
 		if (gameIsHosting)
 			ttf.drawString(10, 24, "Connections: " + server.connectedClients(), Color.orange);
-		if (gameIsRunning && client.myCharacter != null)
-			ttf.drawString(10, 38, "Name: " + client.myCharacter.name, Color.orange);
+		if (gameIsRunning && myPlayer != null){
+			ttf.drawString(10, 38, "Name: " + myPlayer.name, Color.orange);
+			
+		}
 		
 		ttf.drawString(10, 64, "mx: " + (int) mouseX, Color.orange);
 		ttf.drawString(10, 74, "my: " + (int) mouseY, Color.orange);
@@ -662,6 +668,8 @@ public class SimpleCircleRpg {
 		try {
 			ttf.drawString(10, 112, "HP: " + (int) myPlayer.getHealth(), Color.orange);
 			ttf.drawString(64, 112, " / " + (int) myPlayer.getMaxHealth(), Color.orange);
+			ttf.drawString(10, 124, "xp: " + (int) myPlayer.getExperience() + "(" + myPlayer.getLevel() + ")", Color.green);
+			ttf.drawString(24, 136, "/" + (int) Utility.experienceForNextlevel(myPlayer.getLevel()), Color.green);
 		} catch (Exception e1) {
 		}
 		

@@ -310,7 +310,9 @@ public class Monster extends Entity{
 //			grantExp = 1 + (level/2.5);
 //			grantExp *= 1 + (level/10);
 //			grantExp *= (size);
-			grantExp = (15 * level) * Math.pow(1.05, level + Math.floor(level/10) + Math.floor(level/21.5));
+//			grantExp = (15 * level) * Math.pow(1.05, level + Math.floor(level/10) + Math.floor(level/21.5));
+			grantExp = ((15 * (double) level) * Math.pow(1.05, (double) level + Math.floor((double) level/10) + Math.floor((double) level/21.5))) * Math.max((((double) level/100) * 12), 1);
+			grantExp *= size;
 			if(is_magical) grantExp *= 1.25f;
 			if(is_boss) grantExp *= 2;
 			

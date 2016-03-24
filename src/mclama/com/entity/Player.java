@@ -2,7 +2,6 @@ package mclama.com.entity;
 
 import static mclama.com.util.Globals.*;
 import static mclama.com.util.Console.*;
-import static mclama.com.util.Utility.getNextLevel;
 
 import java.util.ArrayList;
 
@@ -11,6 +10,7 @@ import static mclama.com.Network.SendDamageDealt;
 
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.item.Item;
+import mclama.com.util.Utility;
 
 public class Player extends Entity{
 	
@@ -19,6 +19,10 @@ public class Player extends Entity{
 	public int incr_quantity=0, incr_rarity=0;
 	
 	private double experience=0;
+	private double totalExperience = 0;
+	
+	private int skillPoints = 0;
+	private int totalSkillPoints=0;
 	
 	private static ArrayList<Entity> minions = new ArrayList<Entity>();
 
@@ -124,8 +128,18 @@ public class Player extends Entity{
 	
 	public void gainedExperience(double xp){
 		experience += xp;
-		getNextLevel(1000000);
+		totalExperience += xp;
 		//conAdd("Experience gained: " + xp);
+		if(experience > Utility.experienceForNextlevel(level)){
+			experience = 0 + (experience - Utility.experienceForNextlevel(level));
+			level += 1;
+			skillPoints += 3;
+			totalSkillPoints += 3;
+			conAdd("Level up! " + skillPoints + " skill points available to spend!");
+		}
+		
+		Utility.saveCharacter();
+		
 		// TODO check leveled up
 	}
 	
@@ -149,6 +163,38 @@ public class Player extends Entity{
 
 	public static ArrayList<Entity> getMinions() {
 		return minions;
+	}
+
+	public double getExperience() {
+		return experience;
+	}
+
+	public double getTotalExperience() {
+		return totalExperience;
+	}
+
+	public void setExperience(double experience) {
+		this.experience = experience;
+	}
+
+	public void setTotalExperience(double totalExperience) {
+		this.totalExperience = totalExperience;
+	}
+
+	public int getSkillPoints() {
+		return skillPoints;
+	}
+
+	public void setSkillPoints(int skillPoints) {
+		this.skillPoints = skillPoints;
+	}
+
+	public int getTotalSkillPoints() {
+		return totalSkillPoints;
+	}
+
+	public void setTotalSkillPoints(int totalSkillPoints) {
+		this.totalSkillPoints = totalSkillPoints;
 	}
 	
 

@@ -25,6 +25,7 @@ import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
 import mclama.com.level.Level;
+import mclama.com.util.Utility;
 
 import static mclama.com.util.Globals.*;
 import static mclama.com.util.Artist.*;
@@ -95,7 +96,9 @@ public class GameClient {
 					myPlayerId = msg.id;
 					Player plyr = getCharacter(msg.id);
 					deleteCharacter(msg.id);
-					myPlayer = loadPlayerCharacter();
+					System.out.println("xp: " + myPlayer.getExperience());
+					myPlayer = Utility.loadCharacter("playersave");
+					System.out.println(" new xp: " + myPlayer.getExperience());
 					if(plyr == null)
 						System.out.println("ERROR Player is NULL");
 					else
