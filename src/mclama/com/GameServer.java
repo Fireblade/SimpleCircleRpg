@@ -36,6 +36,10 @@ public class GameServer {
 				CharacterConnection connection = (CharacterConnection)c;
 				Character character = connection.character;
 
+				if (object instanceof PlayerSkillCasted) {
+					PlayerSkillCasted msg = (PlayerSkillCasted) object;
+					server.sendToAllUDP(msg);
+				}
 				if (object instanceof SendDamageDealt) {
 					SendDamageDealt msg = (SendDamageDealt) object;
 					//return
@@ -144,6 +148,7 @@ public class GameServer {
 		System.out.println("sent seed with " + seed);
 		newLevelSeed.seed = seed;
 		newLevelSeed.id = total_levels_created;
+		newLevelSeed.zoneLevel = myPlayer.getLevel();
 		server.sendToAllUDP(newLevelSeed);
 		
 		return total_levels_created;

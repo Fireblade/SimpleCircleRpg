@@ -26,6 +26,8 @@ import mclama.com.entity.Player;
 import mclama.com.item.Item;
 import mclama.com.item.ItemDrop;
 import mclama.com.level.Level;
+import mclama.com.skills.CastStandardProjectile;
+import mclama.com.skills.Skill;
 import mclama.com.util.Artist;
 import mclama.com.util.Utility;
 
@@ -271,6 +273,7 @@ public class SimpleCircleRpg {
 			        			if(myPlayerId != 0){
 			        				Player plyr = gameClient.getCharacter(myPlayerId);
 			    					if(plyr != null){
+			    						gameClient.deleteCharacter(plyr.getId());
 			    						System.out.print("Invalid player.... ");
 			    						myPlayer = Utility.loadCharacter("playersave");
 			    						myPlayer.setId(plyr.getId());
@@ -333,6 +336,11 @@ public class SimpleCircleRpg {
 							e.printStackTrace();
 						}
 					}
+					if (Keyboard.getEventKey() == Keyboard.KEY_1) {
+						System.out.println("cast");
+						gameClient.skillEntities.add(new CastStandardProjectile(myPlayer.getId(), myPlayer.getX(),
+								myPlayer.getY(), mouseX, mouseY));
+					}
 					if (Keyboard.getEventKey() == Keyboard.KEY_LEFT){
 						System.out.println("=========");
 						double grantExp = 0;
@@ -373,7 +381,7 @@ public class SimpleCircleRpg {
 							//System.out.println("send");
 							for(int count=0; count<=200; count++)
 							{
-								monst = new Monster(0, 1, mouseX+16,mouseY+16);
+								monst = new Monster(0, myPlayer.getLevel(), 1, mouseX+16,mouseY+16);
 								monst.setWidth(128);
 								monst.setHeight(128);
 								monst.die(myPlayer);
@@ -419,14 +427,15 @@ public class SimpleCircleRpg {
 			
 			if(gameClient.queGenerateNewLevelId!=0){
 				System.out.println("gen new currlevel");
-				currentLevel = gameClient.generateNewLevel(gameClient.queGenerateNewLevelId, gameClient.queGenerateNewLevelSeed);
-				gameClient.queGenerateNewLevelId=0;
-				
+				currentLevel = gameClient.generateNewLevel(gameClient.queGenerateNewLevelId,
+						gameClient.queGenerateNewLevelMsg.zoneLevel, gameClient.queGenerateNewLevelMsg.seed);
+				gameClient.queGenerateNewLevelId = 0;
+
 //				myPlayer.setX(currentLevel.getSpawnXLoc());
 //				myPlayer.setY(currentLevel.getSpawnYLoc());
 				
-				for(int i=0; i<GameClient.characters.size(); i++){
-					Player plyr = GameClient.characters.get(i);
+				for(int i=0; i<gameClient.characters.size(); i++){
+					Player plyr = gameClient.characters.get(i);
 					plyr.setX(currentLevel.getSpawnXLoc());
 					plyr.setY(currentLevel.getSpawnYLoc());
 				}
@@ -434,11 +443,15 @@ public class SimpleCircleRpg {
 			
 			//myPlayer.tick(delta);
 	
-			for(int i=0; i<GameClient.characters.size(); i++){
-				Player plyr = GameClient.characters.get(i);
+			for(int i=0; i<gameClient.characters.size(); i++){
+				Player plyr = gameClient.characters.get(i);
 				plyr.tick(delta);
 			}
-	}
+			for(int i=0; i<gameClient.skillEntities.size(); i++){
+				Skill skill = gameClient.skillEntities.get(i);
+				skill.tick(delta);
+			}
+		}
 		
 
 		updateFPS(); // update FPS Counter
@@ -626,20 +639,25 @@ public class SimpleCircleRpg {
 		
 		glColor3f(1.0f, 1.0f, 1.0f);
 		
-		if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
+		//if(myPlayer.getTexture()==null) myPlayer.setTexture(tex_circle);
 		
 		
 		
 		try {
 			if(gameIsRunning){
-				for(int i=0; i<GameClient.characters.size(); i++){
-					Player plyr = GameClient.characters.get(i);
+				for(int i=0; i<gameClient.characters.size(); i++){
+					Player plyr = gameClient.characters.get(i);
 					plyr.draw();
 				}
 				glColor4f(1f, 1f, 1f, 1f);
+				for(int i=0; i<gameClient.skillEntities.size(); i++){
+					Skill skill = gameClient.skillEntities.get(i);
+					skill.draw();
+				}
 				if(gShowInventory){
 					renderInventory();
 				}
+				
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

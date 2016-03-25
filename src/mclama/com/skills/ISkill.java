@@ -20,6 +20,7 @@ public abstract interface ISkill {
 	void onHit(Entity targetHit);
 	
 	void destroy();
+	void draw();
 
 
 }

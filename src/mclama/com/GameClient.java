@@ -16,6 +16,7 @@ import mclama.com.Network.Login;
 import mclama.com.Network.MonsterAttackOrder;
 import mclama.com.Network.MoveClickOrder;
 import mclama.com.Network.OtherClient;
+import mclama.com.Network.PlayerSkillCasted;
 import mclama.com.Network.RemoveCharacter;
 import mclama.com.Network.SendDamageDealt;
 import mclama.com.Network.SendNewLevelSeed;
@@ -25,6 +26,8 @@ import mclama.com.entity.Monster;
 import mclama.com.entity.Player;
 import mclama.com.item.Item;
 import mclama.com.level.Level;
+import mclama.com.skills.CastStandardProjectile;
+import mclama.com.skills.Skill;
 import mclama.com.util.Utility;
 
 import static mclama.com.util.Globals.*;
@@ -43,10 +46,13 @@ public class GameClient {
 	//public static HashMap<Integer, Player> characters = new HashMap();
 	public static ArrayList<Player> characters = new ArrayList<Player>();
 	public static ArrayList<Monster> activeMonsters = new ArrayList<Monster>();
+	public static ArrayList<Skill> skillEntities = new ArrayList<Skill>();
 	//public ArrayList<Level> gameLevels = new ArrayList<Level>();
 	
 	public int queGenerateNewLevelId=0;
-	public long queGenerateNewLevelSeed=0;
+	public SendNewLevelSeed queGenerateNewLevelMsg;
+	
+	public int total_skills_used=0;
 	
 	private Item playerInventory[][] = new Item[10][8];
 	
@@ -67,6 +73,13 @@ public class GameClient {
 			}
 
 			public void received (Connection connection, Object object) {
+				if (object instanceof PlayerSkillCasted) {
+					PlayerSkillCasted msg = (PlayerSkillCasted) object;
+					if (!isSkillFromMe(msg.playerId, msg.skillId)) {
+						gameClient.skillEntities.add(new CastStandardProjectile(msg.playerId, msg.skillId, msg.spawnx,
+								msg.spawny, msg.targetx, msg.targety));
+					}
+				}
 				if (object instanceof MonsterAttackOrder) {
 					MonsterAttackOrder msg = (MonsterAttackOrder) object;
 					Monster monst = currentLevel.getMonsterId(msg.monId);
@@ -85,7 +98,7 @@ public class GameClient {
 					SendNewLevelSeed msg = (SendNewLevelSeed) object;
 					//currentLevel = generateNewLevel(msg.id, msg.seed);
 					queGenerateNewLevelId = msg.id;
-					queGenerateNewLevelSeed = msg.seed;
+					queGenerateNewLevelMsg = msg;
 //					System.out.println("set new que level... " + msg.id + " .. " + msg.seed);
 				}
 				if (object instanceof OtherClient) {
@@ -171,6 +184,17 @@ public class GameClient {
 	}
 	
 	
+	protected boolean isSkillFromMe(int playerId, int skillId) {
+		for(int i=0; i<skillEntities.size(); i++){
+			Skill skill = skillEntities.get(i);
+			if(skill.getPlayerId()==playerId && skill.getSkillId()==skillId){
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 	protected Player loadPlayerCharacter() {
 		return new Player();
 	}
@@ -269,8 +293,8 @@ public class GameClient {
 		return null;
 	}
 	
-	public Level generateNewLevel(int id, long seed){
-		Level newLevel = new Level(id, seed);
+	public Level generateNewLevel(int id, int zoneLevel, long seed){
+		Level newLevel = new Level(id, zoneLevel, seed);
 		//gameLevels.add(newLevel);
 		return newLevel;
 	}
@@ -290,8 +314,8 @@ public class GameClient {
 		Entity closestTarget = null;
 		double closest = 9999;
 		double dist;
-		for(int i=0; i<GameClient.characters.size(); i++){
-			Player plyr = GameClient.characters.get(i);
+		for(int i=0; i<characters.size(); i++){
+			Player plyr = characters.get(i);
 			for(int pm=0; pm<plyr.getMinions().size();pm++){
 				Entity minion = plyr.getMinions().get(pm);
 				dist = distance(x,y, minion.getX(), minion.getY());
@@ -308,6 +332,22 @@ public class GameClient {
 			
 		}
 		return closestTarget;
+	}
+
+
+	public int newSkillUsed() {
+		total_skills_used++;
+		return total_skills_used;
+	}
+
+
+	public void skillDestroyed(int playerId, int skillId) {
+		for(int i=0; i<skillEntities.size(); i++){
+			Skill skill = skillEntities.get(i);
+			if(skill.getSkillId() == skillId && skill.getPlayerId() == playerId){
+				skillEntities.remove(i);
+			}
+		}
 	}
 
 }

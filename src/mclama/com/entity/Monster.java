@@ -35,11 +35,10 @@ public class Monster extends Entity{
 	
 	private ArrayList<Item> item_drops = new ArrayList<Item>();
 	
-	
-	public Monster(int id, float size, double x, double y){
+	public Monster(int id, int monLevel, float size, double x, double y){
 		this.id = id;
 		this.size = size;
-		this.level = gGHighestPlayerLevel;
+		this.level = monLevel;
 		this.x = x;
 		this.y = y;
 		texture = tex_circle;
@@ -209,7 +208,7 @@ public class Monster extends Entity{
 			}
 		} else texture = LoadTexture("res/images/circles/circle.png", "PNG");
 		
-		if(moveToLoc && D_PlayerShowMoveToLine){
+		if(moveToLoc && D_PlayerShowMoveToLine && alive){
 			glTranslated(camX,camY,0);
 			glDisable(GL_TEXTURE_2D);
 			glColor4f(1f,0f,0f,1f);

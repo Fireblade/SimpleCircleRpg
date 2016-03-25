@@ -53,24 +53,26 @@ public class Utility {
     }
 	
 	public static void saveCharacter(){
-		//File file = new File("Data/Characters/" + myPlayer.name + ".txt");
-		File file = new File("Data/Characters/playersave.txt");
-		try {
-			PrintWriter out = new PrintWriter(file);
-			
-			out.println("Name :: " + myPlayer.name);
-			out.println("Level :: " + myPlayer.getLevel());
-			out.println("Experience :: " + myPlayer.getExperience());
-			out.println("Total Experience :: " + myPlayer.getTotalExperience());
-			out.println("Skill Points :: " + "0");
-			out.println("Skill Points Total:: " + "0");
-			out.println("Skills Unlocked :: " + "strength_5, dexterity_1, melee splash_10");
-			out.println("Equipped Gear :: " + "][slot_weapon, weapon, damage_49-60, attack speed_1.5, mods_none][");
-			out.println("Inventory :: " + "chest, armor_5][relic, stength_12][relic, mod_5% increased damage");
-			
-			out.close();
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
+		if(gameIsHosting){ //Temp so i can see whats going on
+			//File file = new File("Data/Characters/" + myPlayer.name + ".txt");
+			File file = new File("Data/Characters/playersave.txt");
+			try {
+				PrintWriter out = new PrintWriter(file);
+				
+				out.println("Name :: " + myPlayer.name);
+				out.println("Level :: " + myPlayer.getLevel());
+				out.println("Experience :: " + myPlayer.getExperience());
+				out.println("Total Experience :: " + myPlayer.getTotalExperience());
+				out.println("Skill Points :: " + "0");
+				out.println("Skill Points Total:: " + "0");
+				out.println("Skills Unlocked :: " + "strength_5, dexterity_1, melee splash_10");
+				out.println("Equipped Gear :: " + "][slot_weapon, weapon, damage_49-60, attack speed_1.5, mods_none][");
+				out.println("Inventory :: " + "chest, armor_5][relic, stength_12][relic, mod_5% increased damage");
+				
+				out.close();
+			} catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	
